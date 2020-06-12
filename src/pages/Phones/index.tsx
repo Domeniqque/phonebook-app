@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import Button from '../../components/Button';
-import { usePhone } from '../../hooks/usePhone';
+import { usePhone } from '../../hooks/phone';
 
 import {
   Container,

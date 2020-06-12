@@ -2,7 +2,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import Phones from '../pages/Phones';
 import Person from '../pages/Person';
 
 import PersonRoutes from './phones.routes';

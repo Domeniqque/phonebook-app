@@ -12,7 +12,9 @@ const PhonesRoutes: React.FC = () => {
       <Stack.Screen
         name="Phone"
         component={Phones}
-        options={{ title: 'Números' }}
+        options={{
+          title: 'Números',
+        }}
       />
 
       <Stack.Screen

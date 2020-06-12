@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { TextInput, Alert } from 'react-native';
 import { Form, FormHandles } from '@unform/core';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
 import { Container } from './styles';
+import { usePhone } from '../../../hooks/phone';
 
 interface CreateNumbersData {
   startSequence: string;
@@ -20,6 +21,23 @@ const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const inputTimesRef = useRef<TextInput>(null);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+
+  const { getLastPhonePreview, createNumbers } = usePhone();
+
+  const handleStartCreate = useCallback(
+    ({ startSequence, times }: CreateNumbersData) => {
+      setLoading(true);
+
+      createNumbers(startSequence, times);
+
+      setLoading(false);
+      navigation.goBack();
+
+      Alert.alert('Cadastro realizado com sucesso!');
+    },
+    [navigation, createNumbers],
+  );
 
   const handleCreateNumbers = useCallback(
     async ({ startSequence, times }: CreateNumbersData) => {
@@ -33,9 +51,9 @@ const Create: React.FC = () => {
               'Formato inválido. Verifique o prefixo e se possui o 9 antes do número',
             )
             .required('Informe o início da sequência de números'),
-          times: Yup.number()
-            .min(1, 'Informe um número positivo válido')
-            .max(1000, 'Crie sequências de no máximo 1000 números'),
+          times: Yup.string().required(
+            'Informe a quantidade de números da sequência',
+          ),
         });
 
         await schema.validate(
@@ -45,11 +63,32 @@ const Create: React.FC = () => {
           },
         );
 
-        console.log({ startSequence, times });
+        let alertMessage = '';
 
-        Alert.alert('Cadastro realizado com sucesso!');
+        if (Number(times) > 1) {
+          const lastPhoneOfSequence = getLastPhonePreview(startSequence, times);
 
-        navigation.goBack();
+          alertMessage = `De ${startSequence} \n à ${lastPhoneOfSequence}`;
+        } else {
+          alertMessage = `Apenas ${startSequence}`;
+        }
+
+        Alert.alert(
+          'Confirme a sequência',
+          alertMessage,
+          [
+            {
+              text: 'OK',
+              onPress: () => handleStartCreate({ startSequence, times }),
+              style: 'default',
+            },
+            {
+              text: 'Cancelar',
+              style: 'cancel',
+            },
+          ],
+          { cancelable: false },
+        );
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -57,13 +96,10 @@ const Create: React.FC = () => {
           return;
         }
 
-        Alert.alert(
-          'Whoops!',
-          'Ocorreu um erro ao fazer cadastro, tente novamente',
-        );
+        Alert.alert('Tente novamente', 'Ocorreu um erro ao fazer cadastro');
       }
     },
-    [navigation],
+    [getLastPhonePreview, handleStartCreate],
   );
 
   return (
@@ -88,6 +124,7 @@ const Create: React.FC = () => {
         <Button
           text="Cadastrar números"
           onPress={() => formRef.current?.submitForm()}
+          isLoading={loading}
         />
       </Form>
     </Container>
