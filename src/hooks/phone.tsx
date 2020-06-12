@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useCallback } from 'react';
 
 import maskedPhoneParser from '../utils/maskedPhoneParser';
 import formatPhoneWithoutPrefix from '../utils/formatPhoneWithoutPrefix';
+import clearMaskedPhone from '../utils/clearMaskedNumber';
 
 export interface PhoneNumber {
   key: string;
@@ -45,7 +46,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
       const newNumber = `${areaCode} ${createdNumber}`;
 
       sequence.push({
-        key: newNumber.trim(),
+        key: clearMaskedPhone(newNumber),
         value: newNumber,
         state: 'new',
         active: true,

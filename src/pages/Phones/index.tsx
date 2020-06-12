@@ -1,16 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import Button from '../../components/Button';
-import { usePhone } from '../../hooks/phone';
+import { usePhone, PhoneNumber } from '../../hooks/phone';
 
 import {
   Container,
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
-  PhoneListItemAction,
 } from './styles';
 
 const Phones: React.FC = () => {
@@ -18,23 +17,28 @@ const Phones: React.FC = () => {
 
   const navigation = useNavigation();
 
+  const handleShowPhone = useCallback(
+    (phone: PhoneNumber) => {
+      navigation.navigate('ShowPhone', phone);
+    },
+    [navigation],
+  );
+
   return (
     <Container>
       <Button
         text="Adicionar números"
         icon="plus"
-        onPress={() => navigation.navigate('CreatePhones')}
+        onPress={() => navigation.navigate('CreatePhone')}
       />
 
       <PhoneList
         data={phones}
         keyExtractor={item => item.key}
         renderItem={({ item }) => (
-          <PhoneListItem>
+          <PhoneListItem onPress={() => handleShowPhone(item)}>
             <PhoneListItemNumber>{item.value}</PhoneListItemNumber>
-            <PhoneListItemAction>
-              <Icon name="phone-call" size={20} />
-            </PhoneListItemAction>
+            <Icon name="chevron-right" size={28} />
           </PhoneListItem>
         )}
       />

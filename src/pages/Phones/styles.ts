@@ -16,8 +16,7 @@ export const PhoneList = styled(FlatList as new () => FlatList<PhoneNumber>)`
 export const PhoneListItem = styled(RectButton)`
   height: 66px;
   width: 100%;
-  border-top-width: 1px;
-  border-top-color: #eee;
+  padding: 0 10px;
 
   flex-direction: row;
   justify-content: space-between;
@@ -27,11 +26,4 @@ export const PhoneListItem = styled(RectButton)`
 export const PhoneListItemNumber = styled.Text`
   font-size: 18px;
   font-weight: bold;
-`;
-
-export const PhoneListItemAction = styled.TouchableOpacity`
-  width: 60px;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
 `;
