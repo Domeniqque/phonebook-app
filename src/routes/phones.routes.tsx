@@ -1,15 +1,26 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Phones from '../pages/Phones';
+import CreatePhones from '../pages/Phones/Create';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const PhonesRoutes: React.FC = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Phones" component={Phones} />
-    </Tab.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Phone"
+        component={Phones}
+        options={{ title: 'Números' }}
+      />
+
+      <Stack.Screen
+        name="CreatePhones"
+        component={CreatePhones}
+        options={{ title: 'Adicionar Números' }}
+      />
+    </Stack.Navigator>
   );
 };
 

@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/Feather';
 import Phones from '../pages/Phones';
 import Person from '../pages/Person';
 
+import PersonRoutes from './phones.routes';
+
 const Tab = createBottomTabNavigator();
 
 const PhonesRoutes: React.FC = () => {
@@ -17,7 +19,7 @@ const PhonesRoutes: React.FC = () => {
     >
       <Tab.Screen
         name="Phones"
-        component={Phones}
+        component={PersonRoutes}
         options={{
           title: 'Números',
           tabBarIcon: ({ color, size }) => {

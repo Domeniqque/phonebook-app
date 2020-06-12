@@ -2,42 +2,11 @@ import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-export interface PhoneNumber {
-  id: string;
-  value: string;
-  state: 'new' | 'received' | 'missed' | 'dont_exists';
-  active: boolean;
-}
+import { PhoneNumber } from '../../hooks/usePhone';
 
 export const Container = styled.View`
   flex: 1;
-  padding: 0 16px;
-`;
-
-export const Title = styled.Text`
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  text-align: center;
-`;
-
-export const AddPhoneButton = styled.TouchableOpacity`
-  height: 66px;
-  width: 100%;
-  border-width: 1px;
-  border-color: #000;
-  background: #000;
-
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const AddPhoneButtonText = styled.Text`
-  color: #fff;
-  font-size: 18px;
-  margin-left: 4px;
+  padding: 20px 16px;
 `;
 
 export const PhoneList = styled(FlatList as new () => FlatList<PhoneNumber>)``;

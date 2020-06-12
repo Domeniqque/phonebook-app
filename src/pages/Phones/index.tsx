@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
-import { Text } from 'react-native';
+
+import Button from '../../components/Button';
+import { usePhone } from '../../hooks/usePhone';
 
 import {
-  PhoneNumber,
   Container,
-  Title,
-  AddPhoneButton,
-  AddPhoneButtonText,
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
@@ -15,20 +14,21 @@ import {
 } from './styles';
 
 const Phones: React.FC = () => {
-  const [numbers, setNumbers] = useState<PhoneNumber[]>([] as PhoneNumber[]);
+  const { phones } = usePhone();
+
+  const navigation = useNavigation();
 
   return (
     <Container>
-      <Title>Números</Title>
-
-      <AddPhoneButton>
-        <Icon name="plus" size={24} color="#fff" />
-        <AddPhoneButtonText>Adicionar números</AddPhoneButtonText>
-      </AddPhoneButton>
+      <Button
+        text="Adicionar números"
+        icon="plus"
+        onPress={() => navigation.navigate('CreatePhones')}
+      />
 
       <PhoneList
-        data={numbers}
-        keyExtractor={item => item.id}
+        data={phones}
+        keyExtractor={item => item.key}
         renderItem={({ item }) => (
           <PhoneListItem>
             <PhoneListItemNumber>{item.value}</PhoneListItemNumber>
