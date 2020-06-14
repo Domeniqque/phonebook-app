@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -35,6 +36,15 @@ const Phones: React.FC = () => {
       <PhoneList
         data={phones}
         keyExtractor={item => item.key}
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              height: 1,
+              width: '100%',
+              backgroundColor: '#ddd',
+            }}
+          />
+        )}
         renderItem={({ item }) => (
           <PhoneListItem onPress={() => handleShowPhone(item)}>
             <PhoneListItemNumber>{item.value}</PhoneListItemNumber>

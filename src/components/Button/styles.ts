@@ -6,6 +6,7 @@ export const ButtonContainer = styled.TouchableOpacity`
   border-width: 1px;
   border-color: #000;
   background: #000;
+  margin-bottom: 10px;
 
   flex-direction: row;
   justify-content: center;

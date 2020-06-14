@@ -16,7 +16,11 @@ const Stack = createStackNavigator<PhoneStackProps>();
 
 const PhonesRoutes: React.FC = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: '#000',
+      }}
+    >
       <Stack.Screen
         name="Phone"
         component={Phones}
