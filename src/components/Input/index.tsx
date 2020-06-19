@@ -10,10 +10,11 @@ import { TextInputProps } from 'react-native';
 
 import { useField } from '@unform/core';
 
-import { Container, TextInput, Icon, TextError } from './styles';
+import { Label, Container, TextInput, Icon, TextError } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
+  label?: string;
   icon?: string;
 }
 
@@ -26,7 +27,7 @@ interface InputRef {
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, icon, ...rest },
+  { name, label, icon, ...rest },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -69,6 +70,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
   return (
     <>
+      {label && <Label>{label}</Label>}
       <Container isFocused={isFocused} isErrored={!!error}>
         {icon && (
           <Icon

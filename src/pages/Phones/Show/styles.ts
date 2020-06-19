@@ -52,7 +52,7 @@ export const ActionButton = styled.TouchableOpacity`
 
 export const ActionButtonText = styled.Text`
   font-size: 16px;
-  margin-top: 10px;
+  margin-top: 14px;
 `;
 
 export const ActionTitle = styled.Text`

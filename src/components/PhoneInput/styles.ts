@@ -7,6 +7,12 @@ interface ContainerProps {
   isErrored: boolean;
 }
 
+export const Label = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+`;
+
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: 60px;
@@ -35,7 +41,7 @@ export const Container = styled.View<ContainerProps>`
 export const TextInput = styled(TextInputMask)`
   flex: 1;
   color: #000;
-  font-size: 16px;
+  font-size: 18px;
 `;
 
 export const Icon = styled(FeatherIcon)`

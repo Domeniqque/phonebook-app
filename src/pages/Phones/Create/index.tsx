@@ -45,12 +45,9 @@ const Create: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          startSequence: Yup.string()
-            .matches(
-              /\(\d{2}\)\s\d{5}-\d{4}/,
-              'Formato inválido. Verifique o prefixo e se possui o 9 antes do número',
-            )
-            .required('Informe o início da sequência de números'),
+          startSequence: Yup.string().required(
+            'Informe o início da sequência de números',
+          ),
           times: Yup.string().required(
             'Informe a quantidade de números da sequência',
           ),
@@ -106,8 +103,8 @@ const Create: React.FC = () => {
     <Container>
       <Form ref={formRef} onSubmit={handleCreateNumbers}>
         <PhoneInput
+          label="Primeiro telefone da lista"
           name="startSequence"
-          placeholder="Primeiro número telefônico"
           returnKeyType="next"
           onSubmitEditing={() => inputTimesRef.current?.focus()}
         />
@@ -116,7 +113,7 @@ const Create: React.FC = () => {
           ref={inputTimesRef}
           name="times"
           keyboardType="number-pad"
-          placeholder="Quantidade de números da sequência"
+          label="Quantidade de números da sequência"
           returnKeyType="send"
           onSubmitEditing={() => formRef.current?.submitForm()}
         />

@@ -38,7 +38,7 @@ const PhonesRoutes: React.FC = () => {
       <Stack.Screen
         name="ShowPhone"
         component={ShowPhone}
-        options={{ title: 'Números' }}
+        options={{ title: 'Atualizar' }}
       />
     </Stack.Navigator>
   );

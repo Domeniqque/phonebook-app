@@ -3,28 +3,24 @@ import { TextInputProps } from 'react-native';
 
 import { useField } from '@unform/core';
 
-import { Container, TextInput, Icon, TextError } from './styles';
+import { Label, Container, TextInput, Icon, TextError } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
+  label?: string;
   icon?: string;
-  placeholder: string;
 }
 
 interface InputValueReference {
   value: string;
 }
 
-const PhoneInput: React.FC<InputProps> = ({
-  name,
-  icon,
-  placeholder,
-  ...rest
-}) => {
+const PhoneInput: React.FC<InputProps> = ({ name, icon, label, ...rest }) => {
   const inputElementRef = useRef<any>(null);
   const { registerField, defaultValue, fieldName, error } = useField(name);
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
 
+  const [mask, setMask] = useState('([000]) [00000] [0000]');
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
@@ -56,6 +52,7 @@ const PhoneInput: React.FC<InputProps> = ({
 
   return (
     <>
+      {label && <Label>{label}</Label>}
       <Container isFocused={isFocused} isErrored={!!error}>
         {icon && (
           <Icon
@@ -75,8 +72,8 @@ const PhoneInput: React.FC<InputProps> = ({
           onChangeText={(formatted, extracted) => {
             inputValueRef.current.value = formatted ?? '';
           }}
-          placeholder={placeholder}
-          mask="([00]) [00000]-[0000]"
+          placeholder="(000) 00000 0000"
+          mask="([000]) [00000] [0000]"
           {...rest}
         />
       </Container>
