@@ -32,7 +32,7 @@ const PhonesRoutes: React.FC = () => {
       <Stack.Screen
         name="CreatePhone"
         component={CreatePhone}
-        options={{ title: 'Adicionar Números' }}
+        options={{ title: 'Adicionar sequência' }}
       />
 
       <Stack.Screen

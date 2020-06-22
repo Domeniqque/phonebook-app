@@ -1,16 +1,9 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useCallback,
-  useMemo,
-  useEffect,
-} from 'react';
-import { AsyncStorage } from 'react-native';
+import React, { createContext, useContext, useMemo, useCallback } from 'react';
+import { Alert } from 'react-native';
+import { AsYouType } from 'libphonenumber-js';
 
-import maskedPhoneParser from '../utils/maskedPhoneParser';
-import formatPhoneWithoutPrefix from '../utils/formatPhoneWithoutPrefix';
-import clearMaskedPhone from '../utils/clearMaskedNumber';
+import { PhoneNumberInstance } from '../components/PhoneInput';
+import { validateSequence, numberIsValid } from '../utils/validateNumber';
 
 export enum PhoneStatus {
   New,
@@ -27,103 +20,55 @@ export interface PhoneNumber {
   updated_at: Date;
 }
 
-interface HashPhoneList {
-  [key: string]: PhoneNumber;
+interface SequenceData {
+  firstNumber: PhoneNumberInstance;
+  lastNumber: PhoneNumberInstance;
 }
 
 interface PhoneContextData {
   phones: PhoneNumber[];
-  createNumbers(startSequence: string, times: string): void;
-  getLastPhonePreview(startSequence: string, times: string): string;
-  changePhoneState(phoneKey: string, status: PhoneStatus): void;
+  addSequence(data: SequenceData): boolean;
 }
 
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 
 export const PhoneProvider: React.FC = ({ children }) => {
-  const [phoneHashList, setPhoneHashList] = useState<HashPhoneList>(
-    {} as HashPhoneList,
-  );
-
   const phones = useMemo(() => {
-    return Object.values(phoneHashList).filter(
-      p => p.status === PhoneStatus.New,
-    );
-  }, [phoneHashList]);
-
-  useEffect(() => {
-    async function loadStorageData(): Promise<void> {
-      const phoneList = await AsyncStorage.getItem('@Phones');
-
-      if (phoneList) {
-        setPhoneHashList(JSON.parse(phoneList));
-      }
-    }
-    loadStorageData();
+    return [];
   }, []);
 
-  const getLastPhonePreview = useCallback(
-    (phoneNumber: string, times: string) => {
-      const { areaCode, sulfixNumber } = maskedPhoneParser(phoneNumber);
+  const addSequence = useCallback((data: SequenceData): boolean => {
+    const {
+      isValid,
+      firstNumber,
+      distanceBetween,
+      areaCode,
+    } = validateSequence(data);
 
-      const number = sulfixNumber + Number(times) - 1;
+    if (!isValid) {
+      Alert.alert('Oops!', 'Verifique seus números');
+      return false;
+    }
 
-      const formatedNumber = formatPhoneWithoutPrefix(number);
+    const sequence = [];
 
-      return `${areaCode} ${formatedNumber}`;
-    },
-    [],
-  );
+    for (let index = 0; index < distanceBetween; index++) {
+      const number = firstNumber + index;
+      const nextNumber = `${areaCode}${number}`;
 
-  const phoneExists = useCallback(key => phoneHashList[key], [phoneHashList]);
-
-  const createNumbers = useCallback(
-    (startSequence: string, times: string) => {
-      const sequence: HashPhoneList = {};
-      const { areaCode, sulfixNumber: firstNumber } = maskedPhoneParser(
-        startSequence,
-      );
-
-      for (let index = 0; index < Number(times); index++) {
-        const createdNumber = formatPhoneWithoutPrefix(firstNumber + index);
-        const newNumber = `${areaCode} ${createdNumber}`;
-
-        const key = clearMaskedPhone(newNumber);
-
-        if (!phoneExists(key)) {
-          sequence[key] = {
-            key: clearMaskedPhone(newNumber),
-            value: newNumber,
-            status: PhoneStatus.New,
-            active: true,
-            updated_at: new Date(),
-          };
-        }
+      if (numberIsValid(nextNumber, 'BR')) {
+        // TODO: criar objeto
+        sequence.push(nextNumber);
       }
+    }
 
-      setPhoneHashList(state => ({ ...state, ...sequence }));
-    },
-    [phoneExists],
-  );
+    // TODO: inserir no banco de dados
 
-  const changePhoneState = useCallback(
-    (phoneKey: string, status: PhoneStatus) => {
-      const phone = phoneExists(phoneKey);
-
-      if (phone) {
-        phone.status = status as PhoneStatus;
-        phone.updated_at = new Date();
-
-        setPhoneHashList(state => ({ ...state, [phone.key]: phone }));
-      }
-    },
-    [phoneExists],
-  );
+    return true;
+  }, []);
 
   return (
-    <PhoneContext.Provider
-      value={{ phones, createNumbers, getLastPhonePreview, changePhoneState }}
-    >
+    <PhoneContext.Provider value={{ phones, addSequence }}>
       {children}
     </PhoneContext.Provider>
   );

@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import TextInputMask from 'react-native-text-input-mask';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -18,9 +17,9 @@ export const Container = styled.View<ContainerProps>`
   height: 60px;
   padding: 0 16px;
   background: #fff;
+  border-color: #fff;
   margin-bottom: 8px;
   border-width: 2px;
-  border-color: #fff;
 
   flex-direction: row;
   align-items: center;
@@ -30,7 +29,6 @@ export const Container = styled.View<ContainerProps>`
     css`
       border-color: #c53030;
     `}
-
   ${props =>
     props.isFocused &&
     css`
@@ -38,7 +36,7 @@ export const Container = styled.View<ContainerProps>`
     `}
 `;
 
-export const TextInput = styled(TextInputMask)`
+export const TextInput = styled.TextInput`
   flex: 1;
   color: #000;
   font-size: 18px;

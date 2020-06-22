@@ -1,85 +1,80 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react';
+import {
+  parsePhoneNumberFromString,
+  PhoneNumber as PhoneNumberLib,
+} from 'libphonenumber-js/mobile';
 import { TextInputProps } from 'react-native';
 
-import { useField } from '@unform/core';
+import Input from '../Input';
 
-import { Label, Container, TextInput, Icon, TextError } from './styles';
+import countries from '../../resources/countries';
 
-interface InputProps extends TextInputProps {
+export type PhoneNumberInstance = PhoneNumberLib | undefined;
+
+export interface PhoneInputRef {
+  getPhoneInstance(): PhoneNumberInstance | undefined;
+  focus(): void;
+}
+
+interface PhoneInputProps extends TextInputProps {
   name: string;
   label?: string;
-  icon?: string;
+  code?: string;
 }
 
-interface InputValueReference {
-  value: string;
-}
+const defaultDialCode = '+55';
 
-const PhoneInput: React.FC<InputProps> = ({ name, icon, label, ...rest }) => {
-  const inputElementRef = useRef<any>(null);
-  const { registerField, defaultValue, fieldName, error } = useField(name);
-  const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
+const PhoneInput: React.RefForwardingComponent<
+  PhoneInputRef,
+  PhoneInputProps
+> = ({ name, code, ...rest }, ref) => {
+  const inputRef = useRef<any>(null);
 
-  const [mask, setMask] = useState('([000]) [00000] [0000]');
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
+  const [phoneInstance, setPhoneInstance] = useState<PhoneNumberInstance>(
+    undefined,
+  );
 
-  const handleInputFocus = useCallback(() => {
-    setIsFocused(true);
-  }, []);
+  const country = useMemo(() => countries.find(c => c.code === code), [code]);
+  const dialCode = useMemo(() => country?.dialCode || defaultDialCode, [
+    country?.dialCode,
+  ]);
 
-  const handleInputBlur = useCallback(() => {
-    setIsFocused(false);
+  const handleFormatValue = useCallback(
+    (value: string) => {
+      if (value === '') return '';
 
-    setIsFilled(!!inputValueRef.current.value);
-  }, []);
+      const number = parsePhoneNumberFromString(
+        `${dialCode}${value.replace(new RegExp(`\\${dialCode}`, 'g'), '')}`,
+      );
 
-  useEffect(() => {
-    registerField<string>({
-      name: fieldName,
-      ref: inputValueRef.current,
-      path: 'value',
-      setValue(value) {
-        inputValueRef.current.value = value;
-        inputElementRef.current.setNativeProps({ text: value });
-      },
-      clearValue() {
-        inputValueRef.current.value = '';
-        inputElementRef.current.clear();
-      },
-    });
-  }, [fieldName, registerField]);
+      setPhoneInstance(number);
+
+      return number?.formatNational() || value;
+    },
+    [dialCode],
+  );
+
+  useImperativeHandle(ref, () => ({
+    getPhoneInstance: () => phoneInstance,
+    focus: () => inputRef.current?.focus(),
+  }));
 
   return (
-    <>
-      {label && <Label>{label}</Label>}
-      <Container isFocused={isFocused} isErrored={!!error}>
-        {icon && (
-          <Icon
-            name={icon}
-            size={20}
-            color={isFocused || isFilled ? '#000' : '#666360'}
-          />
-        )}
-
-        <TextInput
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          keyboardAppearance="dark"
-          defaultValue={defaultValue}
-          placeholderTextColor="#666360"
-          keyboardType="numeric"
-          onChangeText={(formatted, extracted) => {
-            inputValueRef.current.value = formatted ?? '';
-          }}
-          placeholder="(000) 00000 0000"
-          mask="([000]) [00000] [0000]"
-          {...rest}
-        />
-      </Container>
-      {error && <TextError>{error}</TextError>}
-    </>
+    <Input
+      ref={inputRef}
+      name={name}
+      icon="phone"
+      formatValue={handleFormatValue}
+      {...rest}
+    />
   );
 };
 
-export default PhoneInput;
+export default forwardRef(PhoneInput);
