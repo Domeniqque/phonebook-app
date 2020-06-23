@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Form, FormHandles } from '@unform/core';
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 
 import { usePhone } from '../../../hooks/phone';

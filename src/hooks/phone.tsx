@@ -28,7 +28,7 @@ interface SequenceData {
 }
 
 interface PhoneContextData {
-  countryCode: 'BR';
+  countryCode: string;
   phones: PhoneNumber[];
   addSequence(data: SequenceData): boolean;
 }
