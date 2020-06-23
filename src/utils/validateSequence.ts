@@ -1,4 +1,3 @@
-import { AsYouType, CountryCode } from 'libphonenumber-js';
 import { PhoneNumberInstance } from '../components/PhoneInput';
 import { parsePhone } from './parsePhoneNumber';
 
@@ -17,7 +16,7 @@ interface Response {
 
 const maxSequenceSize = 100000;
 
-export function validateSequence(data: SequenceData): Response {
+export default function validateSequence(data: SequenceData): Response {
   if (!data.firstNumber?.isPossible() || !data.lastNumber?.isPossible()) {
     return {
       isValid: false,
@@ -42,14 +41,4 @@ export function validateSequence(data: SequenceData): Response {
     distanceBetween,
     areaCode: firstPhone.areaCode || lastPhone.areaCode,
   };
-}
-
-export function numberIsValid(
-  number: string,
-  countryCode: CountryCode,
-): boolean {
-  const numberVerifier = new AsYouType(countryCode);
-  numberVerifier.input(number);
-
-  return !!numberVerifier.getNumber()?.isPossible();
 }

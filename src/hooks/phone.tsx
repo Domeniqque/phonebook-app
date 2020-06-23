@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useCallback, useState } from 'react';
 import { Alert } from 'react-native';
-import { AsYouType } from 'libphonenumber-js';
 
 import { PhoneNumberInstance } from '../components/PhoneInput';
-import { validateSequence, numberIsValid } from '../utils/validateNumber';
+import validateSequence from '../utils/validateSequence';
+import getNumberInstance from '../utils/getNumberInstance';
 
 export enum PhoneStatus {
   New,
@@ -13,8 +13,10 @@ export enum PhoneStatus {
 }
 
 export interface PhoneNumber {
-  key: string;
-  value: string;
+  id: string;
+  nationalValue: string;
+  iterableValue: number;
+  country: string;
   status: PhoneStatus;
   active: boolean;
   updated_at: Date;
@@ -26,6 +28,7 @@ interface SequenceData {
 }
 
 interface PhoneContextData {
+  countryCode: 'BR';
   phones: PhoneNumber[];
   addSequence(data: SequenceData): boolean;
 }
@@ -33,9 +36,9 @@ interface PhoneContextData {
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 
 export const PhoneProvider: React.FC = ({ children }) => {
-  const phones = useMemo(() => {
-    return [];
-  }, []);
+  const countryCode = 'BR';
+
+  const [phones, setPhones] = useState<PhoneNumber[]>([] as PhoneNumber[]);
 
   const addSequence = useCallback((data: SequenceData): boolean => {
     const {
@@ -50,25 +53,38 @@ export const PhoneProvider: React.FC = ({ children }) => {
       return false;
     }
 
-    const sequence = [];
+    const sequence: PhoneNumber[] = [];
 
     for (let index = 0; index < distanceBetween; index++) {
-      const number = firstNumber + index;
-      const nextNumber = `${areaCode}${number}`;
+      const iterableValue = firstNumber + index;
+      const fullNumber = `${areaCode}${iterableValue}`;
+      const instance = getNumberInstance(fullNumber, countryCode);
 
-      if (numberIsValid(nextNumber, 'BR')) {
-        // TODO: criar objeto
-        sequence.push(nextNumber);
+      if (instance?.isPossible()) {
+        const phoneNumber = {
+          id: '',
+          nationalValue: instance.formatNational(),
+          iterableValue,
+          country: countryCode,
+          status: PhoneStatus.New,
+          active: true,
+          updated_at: new Date(),
+        };
+
+        console.log(phoneNumber);
+
+        sequence.push(phoneNumber);
       }
     }
 
+    setPhones(state => [...state, ...sequence]);
     // TODO: inserir no banco de dados
 
     return true;
   }, []);
 
   return (
-    <PhoneContext.Provider value={{ phones, addSequence }}>
+    <PhoneContext.Provider value={{ countryCode, phones, addSequence }}>
       {children}
     </PhoneContext.Provider>
   );

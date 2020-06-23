@@ -35,7 +35,7 @@ const Phones: React.FC = () => {
 
       <PhoneList
         data={phones}
-        keyExtractor={item => item.key}
+        keyExtractor={item => item.id}
         ItemSeparatorComponent={() => (
           <View
             style={{
@@ -47,7 +47,7 @@ const Phones: React.FC = () => {
         )}
         renderItem={({ item }) => (
           <PhoneListItem onPress={() => handleShowPhone(item)}>
-            <PhoneListItemNumber>{item.value}</PhoneListItemNumber>
+            <PhoneListItemNumber>{item.nationalValue}</PhoneListItemNumber>
             <Icon name="chevron-right" size={28} />
           </PhoneListItem>
         )}

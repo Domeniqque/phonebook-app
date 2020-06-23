@@ -15,6 +15,7 @@ export const ButtonContainer = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   margin-left: 4px;
+  margin-bottom: 2px;
 `;

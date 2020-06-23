@@ -47,8 +47,9 @@ const Create: React.FC = () => {
 
         console.log(result);
       } catch (err) {
-        console.log(err);
-        // formRef.current?.setErrors(getValidationErrors(err));
+        if (err instanceof Yup.ValidationError)
+          formRef.current?.setErrors(getValidationErrors(err));
+        else console.error(err);
       }
 
       setLoading(false);
@@ -64,9 +65,7 @@ const Create: React.FC = () => {
           label="Primeiro número"
           name="firstNumber"
           returnKeyType="next"
-          onSubmitEditing={() => {
-            lastNumberRef.current?.focus();
-          }}
+          onSubmitEditing={() => lastNumberRef.current?.focus()}
         />
 
         <PhoneInput
@@ -74,9 +73,7 @@ const Create: React.FC = () => {
           label="Último número"
           name="lastNumber"
           returnKeyType="next"
-          onSubmitEditing={() => {
-            formRef.current?.submitForm();
-          }}
+          onSubmitEditing={() => formRef.current?.submitForm()}
         />
 
         <Button
