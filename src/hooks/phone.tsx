@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useCallback, useState } from 'react';
 import { Alert } from 'react-native';
+import uuid from '../utils/uuid';
 
 import { PhoneNumberInstance } from '../components/PhoneInput';
 import validateSequence from '../utils/validateSequence';
@@ -16,7 +17,7 @@ export interface PhoneNumber {
   id: string;
   nationalValue: string;
   iterableValue: number;
-  country: string;
+  countryCode: string;
   status: PhoneStatus;
   active: boolean;
   updated_at: Date;
@@ -62,16 +63,14 @@ export const PhoneProvider: React.FC = ({ children }) => {
 
       if (instance?.isPossible()) {
         const phoneNumber = {
-          id: '',
+          id: uuid(),
           nationalValue: instance.formatNational(),
           iterableValue,
-          country: countryCode,
+          countryCode,
           status: PhoneStatus.New,
           active: true,
           updated_at: new Date(),
         };
-
-        console.log(phoneNumber);
 
         sequence.push(phoneNumber);
       }

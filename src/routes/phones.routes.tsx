@@ -7,7 +7,7 @@ import CreatePhone from '../pages/Phones/Create';
 import ShowPhone from '../pages/Phones/Show';
 
 export type PhoneStackProps = {
-  Phone: undefined;
+  Phones: undefined;
   CreatePhone: undefined;
   ShowPhone: PhoneNumber;
 };
@@ -22,7 +22,7 @@ const PhonesRoutes: React.FC = () => {
       }}
     >
       <Stack.Screen
-        name="Phone"
+        name="Phones"
         component={Phones}
         options={{
           title: 'Números',

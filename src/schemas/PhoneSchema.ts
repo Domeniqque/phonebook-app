@@ -4,11 +4,12 @@ export default class PhoneSchema {
     primaryKey: 'id',
     properties: {
       id: 'string',
-      areaCode: 'string',
-      localNumber: 'string',
-      fullNumber: { type: 'string', indexed: true },
-      status: 'string',
+      nationalValue: { type: 'string', indexed: true },
+      iterableValue: 'int',
+      countryCode: 'string',
+      status: 'int',
       active: 'bool',
+      updated_at: 'date',
     },
   };
 }

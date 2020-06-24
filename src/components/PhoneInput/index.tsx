@@ -26,7 +26,7 @@ export interface PhoneInputRef {
 interface PhoneInputProps extends TextInputProps {
   name: string;
   label?: string;
-  code?: string;
+  countryCode?: string;
 }
 
 const defaultDialCode = '+55';
@@ -34,14 +34,17 @@ const defaultDialCode = '+55';
 const PhoneInput: React.RefForwardingComponent<
   PhoneInputRef,
   PhoneInputProps
-> = ({ name, code, ...rest }, ref) => {
+> = ({ name, countryCode, ...rest }, ref) => {
   const inputRef = useRef<any>(null);
 
   const [phoneInstance, setPhoneInstance] = useState<PhoneNumberInstance>(
     undefined,
   );
 
-  const country = useMemo(() => countries.find(c => c.code === code), [code]);
+  const country = useMemo(() => countries.find(c => c.code === countryCode), [
+    countryCode,
+  ]);
+
   const dialCode = useMemo(() => country?.dialCode || defaultDialCode, [
     country?.dialCode,
   ]);

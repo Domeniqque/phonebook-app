@@ -1,12 +1,15 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { InteractionManager } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 
-import { usePhone } from '../../../hooks/phone';
 import getValidationErrors from '../../../utils/getValidationErrors';
-import Button from '../../../components/Button';
 import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
+import Button from '../../../components/Button';
+import Loading from '../../../components/Loading';
+import { usePhone } from '../../../hooks/phone';
 
 import { Container } from './styles';
 
@@ -20,9 +23,10 @@ const Create: React.FC = () => {
   const firstNumberRef = useRef<PhoneInputRef>(null);
   const lastNumberRef = useRef<PhoneInputRef>(null);
 
-  const { addSequence } = usePhone();
-
   const [loading, setLoading] = useState(false);
+
+  const { addSequence, countryCode } = usePhone();
+  const navigation = useNavigation();
 
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
@@ -41,30 +45,39 @@ const Create: React.FC = () => {
 
         await schema.validate(formData, { abortEarly: false });
 
-        const result = addSequence({
-          firstNumber: firstNumberRef.current?.getPhoneInstance(),
-          lastNumber: lastNumberRef.current?.getPhoneInstance(),
-        });
+        await InteractionManager.runAfterInteractions(() => {
+          const isSuccess = addSequence({
+            firstNumber: firstNumberRef.current?.getPhoneInstance(),
+            lastNumber: lastNumberRef.current?.getPhoneInstance(),
+          });
 
-        console.log(result);
+          setLoading(false);
+
+          if (isSuccess) {
+            navigation.navigate('Phones');
+          }
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
         else console.error(err);
-      }
 
-      setLoading(false);
+        setLoading(false);
+      }
     },
-    [addSequence],
+    [addSequence, navigation],
   );
 
   return (
     <Container>
+      {loading && <Loading />}
+
       <Form ref={formRef} onSubmit={handleCreateNumbers}>
         <PhoneInput
           ref={firstNumberRef}
           label="Primeiro número"
           name="firstNumber"
+          countryCode={countryCode}
           returnKeyType="next"
           onSubmitEditing={() => lastNumberRef.current?.focus()}
         />
@@ -74,13 +87,13 @@ const Create: React.FC = () => {
           label="Último número"
           name="lastNumber"
           returnKeyType="next"
+          countryCode={countryCode}
           onSubmitEditing={() => formRef.current?.submitForm()}
         />
 
         <Button
           text="Cadastrar números"
           onPress={() => formRef.current?.submitForm()}
-          isLoading={loading}
         />
       </Form>
     </Container>

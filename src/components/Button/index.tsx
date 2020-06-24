@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import { TouchableOpacityProps, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import { RectButtonProperties } from 'react-native-gesture-handler';
 
 import { ButtonContainer, ButtonText } from './styles';
 
-interface ButtonProps extends TouchableOpacityProps {
+interface ButtonProps extends RectButtonProperties {
   text: string;
   icon?: string;
   isLoading?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, icon, isLoading, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  icon,
+  isLoading = false,
+  onPress,
+  ...rest
+}) => {
+  const handlePress = useCallback(
+    (param: boolean) => {
+      return !isLoading && onPress ? onPress(param) : null;
+    },
+    [onPress, isLoading],
+  );
+
   return (
-    <ButtonContainer {...rest}>
+    <ButtonContainer isDisabled={isLoading} onPress={handlePress} {...rest}>
       {isLoading ? (
         <ActivityIndicator size="small" color="#fff" />
       ) : (

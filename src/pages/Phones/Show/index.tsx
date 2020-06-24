@@ -24,14 +24,14 @@ const Show: React.FC = () => {
   const { params } = useRoute<ShowPhoneScreenProps>();
 
   const handleCallToPhone = useCallback(() => {
-    Linking.openURL(`tel:${params.key}`);
-  }, [params.key]);
+    Linking.openURL(`tel:${params.nationalValue}`);
+  }, [params.nationalValue]);
 
   return (
     <Container>
       <Header>
         <HeaderAction onPress={handleCallToPhone}>
-          <HeaderText>{params.value}</HeaderText>
+          <HeaderText>{params.nationalValue}</HeaderText>
           <HeaderLabel>toque para chamar</HeaderLabel>
         </HeaderAction>
       </Header>
