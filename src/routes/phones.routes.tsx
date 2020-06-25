@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { PhoneNumber } from '../hooks/phone';
 import Phones from '../pages/Phones';
 import CreatePhone from '../pages/Phones/Create';
 import ShowPhone from '../pages/Phones/Show';
@@ -9,7 +8,7 @@ import ShowPhone from '../pages/Phones/Show';
 export type PhoneStackProps = {
   Phones: undefined;
   CreatePhone: undefined;
-  ShowPhone: PhoneNumber;
+  ShowPhone: { id: string };
 };
 
 const Stack = createStackNavigator<PhoneStackProps>();

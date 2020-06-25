@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import Button from '../../components/Button';
-import { usePhone, PhoneNumber } from '../../hooks/phone';
+import { usePhone } from '../../hooks/phone';
 
 import {
   Container,
@@ -17,13 +17,6 @@ const Phones: React.FC = () => {
   const { phones } = usePhone();
 
   const navigation = useNavigation();
-
-  const handleShowPhone = useCallback(
-    (phone: PhoneNumber) => {
-      navigation.navigate('ShowPhone', phone);
-    },
-    [navigation],
-  );
 
   return (
     <Container>
@@ -46,7 +39,9 @@ const Phones: React.FC = () => {
           />
         )}
         renderItem={({ item }) => (
-          <PhoneListItem onPress={() => handleShowPhone(item)}>
+          <PhoneListItem
+            onPress={() => navigation.navigate('ShowPhone', { id: item.id })}
+          >
             <PhoneListItemNumber>{item.nationalValue}</PhoneListItemNumber>
             <Icon name="chevron-right" size={28} />
           </PhoneListItem>

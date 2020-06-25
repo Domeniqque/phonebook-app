@@ -1,10 +1,17 @@
-import React, { createContext, useContext, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 import { Alert } from 'react-native';
 import uuid from '../utils/uuid';
 
 import { PhoneNumberInstance } from '../components/PhoneInput';
 import validateSequence from '../utils/validateSequence';
 import getNumberInstance from '../utils/getNumberInstance';
+import getRealm from '../services/realm';
 
 export enum PhoneStatus {
   New,
@@ -28,10 +35,14 @@ interface SequenceData {
   lastNumber: PhoneNumberInstance;
 }
 
+export type PhoneResults = Realm.Results<PhoneNumber & Realm.Object>;
+export type PhoneResult = (PhoneNumber & Realm.Object) | undefined;
+
 interface PhoneContextData {
   countryCode: string;
-  phones: PhoneNumber[];
-  addSequence(data: SequenceData): boolean;
+  phones: PhoneResults;
+  addSequence(data: SequenceData): Promise<boolean>;
+  find(id: string): Promise<PhoneResult>;
 }
 
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
@@ -39,9 +50,30 @@ const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 export const PhoneProvider: React.FC = ({ children }) => {
   const countryCode = 'BR';
 
-  const [phones, setPhones] = useState<PhoneNumber[]>([] as PhoneNumber[]);
+  const [phones, setPhones] = useState<PhoneResults>({} as PhoneResults);
 
-  const addSequence = useCallback((data: SequenceData): boolean => {
+  useEffect(() => {
+    async function loadPhones(): Promise<void> {
+      const realm = await getRealm();
+      const data = realm
+        .objects<PhoneNumber>('Phones')
+        .filtered('active = 1')
+        .sorted('iterableValue');
+
+      setPhones(data);
+    }
+
+    loadPhones();
+  }, []);
+
+  const find = useCallback(async (id: string): Promise<PhoneResult> => {
+    const realm = await getRealm();
+    return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
+  }, []);
+
+  const addSequence = useCallback(async (data: SequenceData): Promise<
+    boolean
+  > => {
     const {
       isValid,
       firstNumber,
@@ -54,36 +86,35 @@ export const PhoneProvider: React.FC = ({ children }) => {
       return false;
     }
 
-    const sequence: PhoneNumber[] = [];
+    const realm = await getRealm();
 
-    for (let index = 0; index < distanceBetween; index++) {
-      const iterableValue = firstNumber + index;
-      const fullNumber = `${areaCode}${iterableValue}`;
-      const instance = getNumberInstance(fullNumber, countryCode);
+    realm.write(() => {
+      for (let index = 0; index < distanceBetween; index++) {
+        const iterableValue = firstNumber + index;
+        const fullNumber = `${areaCode}${iterableValue}`;
+        const instance = getNumberInstance(fullNumber, countryCode);
 
-      if (instance?.isPossible()) {
-        const phoneNumber = {
-          id: uuid(),
-          nationalValue: instance.formatNational(),
-          iterableValue,
-          countryCode,
-          status: PhoneStatus.New,
-          active: true,
-          updated_at: new Date(),
-        };
+        if (instance?.isPossible()) {
+          const phoneNumber = {
+            id: uuid(),
+            nationalValue: instance.formatNational(),
+            iterableValue,
+            countryCode,
+            status: PhoneStatus.New,
+            active: true,
+            updated_at: new Date(),
+          };
 
-        sequence.push(phoneNumber);
+          realm.create('Phones', phoneNumber);
+        }
       }
-    }
-
-    setPhones(state => [...state, ...sequence]);
-    // TODO: inserir no banco de dados
+    });
 
     return true;
   }, []);
 
   return (
-    <PhoneContext.Provider value={{ countryCode, phones, addSequence }}>
+    <PhoneContext.Provider value={{ countryCode, phones, addSequence, find }}>
       {children}
     </PhoneContext.Provider>
   );
