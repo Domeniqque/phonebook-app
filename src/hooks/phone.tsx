@@ -42,7 +42,7 @@ interface PhoneContextData {
   countryCode: string;
   phones: PhoneResults;
   addSequence(data: SequenceData): Promise<boolean>;
-  find(id: string): Promise<PhoneResult>;
+  findById(id: string): Promise<PhoneResult>;
 }
 
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
@@ -66,7 +66,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
     loadPhones();
   }, []);
 
-  const find = useCallback(async (id: string): Promise<PhoneResult> => {
+  const findById = useCallback(async (id: string): Promise<PhoneResult> => {
     const realm = await getRealm();
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
   }, []);
@@ -114,7 +114,9 @@ export const PhoneProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <PhoneContext.Provider value={{ countryCode, phones, addSequence, find }}>
+    <PhoneContext.Provider
+      value={{ countryCode, phones, addSequence, findById }}
+    >
       {children}
     </PhoneContext.Provider>
   );

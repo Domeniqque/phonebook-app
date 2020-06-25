@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking } from 'react-native';
+import { Linking, InteractionManager } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
-import { PhoneResult, PhoneNumber, usePhone } from '../../../hooks/phone';
-import getRealm from '../../../services/realm';
+import { PhoneResult, usePhone } from '../../../hooks/phone';
+import Loading from '../../../components/Loading';
 
 import {
   Container,
@@ -22,15 +22,23 @@ import {
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
 
 const Show: React.FC = () => {
-  const { params } = useRoute<ShowPhoneScreenProps>();
   const [phone, setPhone] = useState<PhoneResult>({} as PhoneResult);
-  const { find } = usePhone();
+  const [loading, setLoading] = useState(true);
+
+  const { params } = useRoute<ShowPhoneScreenProps>();
+  const { findById } = usePhone();
 
   useEffect(() => {
-    find(params.id).then(data => {
+    async function loadPhone(): Promise<void> {
+      const data = await findById(params.id);
+
       if (data) setPhone(data);
-    });
-  }, [params.id, find]);
+
+      setLoading(false);
+    }
+
+    InteractionManager.runAfterInteractions(loadPhone);
+  }, [params.id, findById]);
 
   const handleCallToPhone = useCallback(() => {
     Linking.openURL(`tel:${phone?.nationalValue}`);
@@ -38,6 +46,8 @@ const Show: React.FC = () => {
 
   return (
     <Container>
+      {loading && <Loading />}
+
       <Header>
         <HeaderAction onPress={handleCallToPhone}>
           <HeaderText>{phone?.nationalValue}</HeaderText>
