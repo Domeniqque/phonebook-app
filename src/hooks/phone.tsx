@@ -91,21 +91,31 @@ export const PhoneProvider: React.FC = ({ children }) => {
     realm.write(() => {
       for (let index = 0; index < distanceBetween; index++) {
         const iterableValue = firstNumber + index;
+
         const fullNumber = `${areaCode}${iterableValue}`;
         const instance = getNumberInstance(fullNumber, countryCode);
 
         if (instance?.isPossible()) {
-          const phoneNumber = {
-            id: uuid(),
-            nationalValue: instance.formatNational(),
-            iterableValue,
-            countryCode,
-            status: PhoneStatus.New,
-            active: true,
-            updated_at: new Date(),
-          };
+          const nationalValue = instance.formatNational();
 
-          realm.create('Phones', phoneNumber);
+          const phoneExists =
+            realm
+              .objects<PhoneNumber>('Phones')
+              .filtered(`nationalValue = "${nationalValue}"`).length >= 1;
+
+          if (!phoneExists) {
+            const phoneNumber = {
+              id: uuid(),
+              nationalValue,
+              iterableValue,
+              countryCode,
+              status: PhoneStatus.New,
+              active: true,
+              updated_at: new Date(),
+            };
+
+            realm.create('Phones', phoneNumber);
+          }
         }
       }
     });

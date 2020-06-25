@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
@@ -45,8 +45,8 @@ const Create: React.FC = () => {
 
         await schema.validate(formData, { abortEarly: false });
 
-        await InteractionManager.runAfterInteractions(() => {
-          const isSuccess = addSequence({
+        InteractionManager.runAfterInteractions(async () => {
+          const isSuccess = await addSequence({
             firstNumber: firstNumberRef.current?.getPhoneInstance(),
             lastNumber: lastNumberRef.current?.getPhoneInstance(),
           });
