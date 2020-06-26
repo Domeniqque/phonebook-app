@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import Loading from '../../components/Loading';
-import Button from '../../components/Button';
+import PhoneFilter from '../../components/PhoneFilter';
 import { usePhone, PhoneResults, PhoneStatus } from '../../hooks/phone';
 
 import {
@@ -12,10 +12,12 @@ import {
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
+  HeaderButtonAdd,
 } from './styles';
 
 const Phones: React.FC = () => {
   const [phones, setPhones] = useState<PhoneResults>();
+  const [status, setStatus] = useState<PhoneStatus>(PhoneStatus.New);
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -26,7 +28,7 @@ const Phones: React.FC = () => {
       InteractionManager.runAfterInteractions(async () => {
         setLoading(true);
 
-        const data = await findByStatus(PhoneStatus.New);
+        const data = await findByStatus(status);
 
         setPhones(data);
         setLoading(false);
@@ -38,17 +40,27 @@ const Phones: React.FC = () => {
     const unsubscribe = navigation.addListener('focus', loadPhones);
 
     return unsubscribe;
-  }, [navigation, findByStatus]);
+  }, [navigation, findByStatus, status]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtonAdd>
+          <Icon
+            name="plus"
+            size={28}
+            onPress={() => navigation.navigate('CreatePhone')}
+          />
+        </HeaderButtonAdd>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <Container>
-      <Button
-        text="Adicionar"
-        icon="plus"
-        onPress={() => navigation.navigate('CreatePhone')}
-      />
-
       {loading && <Loading />}
+
+      <PhoneFilter onStatusChange={setStatus} />
 
       <PhoneList
         data={phones}

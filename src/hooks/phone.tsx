@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useState,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
 import { Alert } from 'react-native';
 import uuid from '../utils/uuid';
 
