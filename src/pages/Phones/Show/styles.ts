@@ -9,6 +9,7 @@ export const Container = styled.View`
   flex: 1;
   padding: 20px 16px;
   align-items: center;
+  background: #fff;
 `;
 
 export const Header = styled.View`
@@ -29,7 +30,7 @@ export const HeaderText = styled.Text`
 
 export const HeaderLabel = styled.Text`
   font-size: 12px;
-  color: #333;
+  color: #757575;
 `;
 
 export const ActionContainer = styled.View`
@@ -45,13 +46,14 @@ export const ActionButton = styled.TouchableOpacity`
   border-width: 2px;
   border-color: #eee;
   background: #fff;
-
+  margin: 2px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.04);
   justify-content: center;
   align-items: center;
 `;
 
 export const ActionButtonText = styled.Text`
-  font-size: 16px;
+  font-size: 20px;
   margin-top: 14px;
 `;
 

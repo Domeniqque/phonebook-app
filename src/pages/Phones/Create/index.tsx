@@ -93,6 +93,7 @@ const Create: React.FC = () => {
 
         <Button
           text="Cadastrar números"
+          icon="save"
           onPress={() => formRef.current?.submitForm()}
         />
       </Form>

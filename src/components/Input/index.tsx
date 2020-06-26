@@ -78,7 +78,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   }, [fieldName, registerField]);
 
   return (
-    <View>
+    <View style={{ marginTop: 10, marginBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
       <Container isFocused={isFocused} isErrored={!!error}>
@@ -86,7 +86,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           <Icon
             name={icon}
             size={20}
-            color={isFocused || isFilled ? '#000' : '#666360'}
+            color={isFocused || isFilled ? '#000' : '#757575'}
           />
         )}
 
@@ -96,7 +96,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           keyboardAppearance="dark"
           onFocus={handleInputFocus}
           defaultValue={defaultValue}
-          placeholderTextColor="#666360"
+          placeholderTextColor="#757575"
           onChangeText={handleChangeText}
           {...rest}
         />

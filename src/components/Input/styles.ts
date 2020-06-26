@@ -14,10 +14,10 @@ export const Label = styled.Text`
 
 export const Container = styled.View<ContainerProps>`
   width: 100%;
-  height: 60px;
+  height: 64px;
   padding: 0 16px;
-  background: #fff;
-  border-color: #fff;
+  background: #eee;
+  border-color: #eee;
   margin-bottom: 8px;
   border-width: 2px;
 
@@ -39,7 +39,7 @@ export const Container = styled.View<ContainerProps>`
 export const TextInput = styled.TextInput`
   flex: 1;
   color: #000;
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 export const Icon = styled(FeatherIcon)`

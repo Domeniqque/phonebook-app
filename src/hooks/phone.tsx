@@ -58,7 +58,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
       const data = realm
         .objects<PhoneNumber>('Phones')
         .filtered('active = 1')
-        .sorted('iterableValue');
+        .sorted('nationalValue');
 
       setPhones(data);
     }

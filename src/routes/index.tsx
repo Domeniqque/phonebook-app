@@ -14,6 +14,9 @@ const PhonesRoutes: React.FC = () => {
       tabBarOptions={{
         activeTintColor: '#000',
         inactiveTintColor: '#ccc',
+        style: {
+          borderTopColor: 'transparent',
+        },
       }}
     >
       <Tab.Screen

@@ -18,6 +18,9 @@ const PhonesRoutes: React.FC = () => {
     <Stack.Navigator
       screenOptions={{
         headerTintColor: '#000',
+        headerStyle: {
+          shadowColor: 'transparent',
+        },
       }}
     >
       <Stack.Screen

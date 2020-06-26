@@ -21,7 +21,7 @@ const Phones: React.FC = () => {
   return (
     <Container>
       <Button
-        text="Adicionar números"
+        text="Adicionar"
         icon="plus"
         onPress={() => navigation.navigate('CreatePhone')}
       />
@@ -34,7 +34,7 @@ const Phones: React.FC = () => {
             style={{
               height: 1,
               width: '100%',
-              backgroundColor: '#ddd',
+              backgroundColor: 'rgba(0,0,0,0.05)',
             }}
           />
         )}
