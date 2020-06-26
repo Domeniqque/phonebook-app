@@ -37,6 +37,7 @@ export const ActionContainer = styled.View`
   flex: 1;
   flex-direction: column;
   flex-wrap: wrap;
+  margin-top: 40px;
 `;
 
 export const ActionButton = styled.TouchableOpacity`

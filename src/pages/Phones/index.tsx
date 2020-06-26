@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
+import Loading from '../../components/Loading';
 import Button from '../../components/Button';
-import { usePhone } from '../../hooks/phone';
+import { usePhone, PhoneResults, PhoneStatus } from '../../hooks/phone';
 
 import {
   Container,
@@ -14,9 +15,30 @@ import {
 } from './styles';
 
 const Phones: React.FC = () => {
-  const { phones } = usePhone();
+  const [phones, setPhones] = useState<PhoneResults>();
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+  const { findByStatus } = usePhone();
+
+  useEffect(() => {
+    function loadPhones(): void {
+      InteractionManager.runAfterInteractions(async () => {
+        setLoading(true);
+
+        const data = await findByStatus(PhoneStatus.New);
+
+        setPhones(data);
+        setLoading(false);
+      });
+    }
+
+    loadPhones();
+
+    const unsubscribe = navigation.addListener('focus', loadPhones);
+
+    return unsubscribe;
+  }, [navigation, findByStatus]);
 
   return (
     <Container>
@@ -25,6 +47,8 @@ const Phones: React.FC = () => {
         icon="plus"
         onPress={() => navigation.navigate('CreatePhone')}
       />
+
+      {loading && <Loading />}
 
       <PhoneList
         data={phones}

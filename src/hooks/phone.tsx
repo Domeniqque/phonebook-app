@@ -18,6 +18,7 @@ export enum PhoneStatus {
   Received,
   Missed,
   DontExists,
+  Removed,
 }
 
 export interface PhoneNumber {
@@ -40,9 +41,10 @@ export type PhoneResult = (PhoneNumber & Realm.Object) | undefined;
 
 interface PhoneContextData {
   countryCode: string;
-  phones: PhoneResults;
+  findByStatus(status: PhoneStatus): Promise<PhoneResults>;
   addSequence(data: SequenceData): Promise<boolean>;
   findById(id: string): Promise<PhoneResult>;
+  setStatus(id: string, status: PhoneStatus): Promise<void>;
 }
 
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
@@ -50,23 +52,18 @@ const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 export const PhoneProvider: React.FC = ({ children }) => {
   const countryCode = 'BR';
 
-  const [phones, setPhones] = useState<PhoneResults>({} as PhoneResults);
+  const findByStatus = useCallback(async (status: PhoneStatus) => {
+    const realm = await getRealm();
 
-  useEffect(() => {
-    async function loadPhones(): Promise<void> {
-      const realm = await getRealm();
-      const data = realm
-        .objects<PhoneNumber>('Phones')
-        .filtered('active = 1')
-        .sorted('nationalValue');
+    const data = realm
+      .objects<PhoneNumber>('Phones')
+      .filtered(`active = 1 AND status = ${status}`)
+      .sorted('nationalValue');
 
-      setPhones(data);
-    }
-
-    loadPhones();
+    return data;
   }, []);
 
-  const findById = useCallback(async (id: string): Promise<PhoneResult> => {
+  const findById = useCallback(async (id: string) => {
     const realm = await getRealm();
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
   }, []);
@@ -123,9 +120,22 @@ export const PhoneProvider: React.FC = ({ children }) => {
     return true;
   }, []);
 
+  const setStatus = useCallback(async (id: string, status: PhoneStatus) => {
+    const realm = await getRealm();
+    const updated_at = new Date();
+
+    realm.write(() => {
+      realm.create(
+        'Phones',
+        { id, status, updated_at },
+        Realm.UpdateMode.Modified,
+      );
+    });
+  }, []);
+
   return (
     <PhoneContext.Provider
-      value={{ countryCode, phones, addSequence, findById }}
+      value={{ countryCode, findByStatus, addSequence, findById, setStatus }}
     >
       {children}
     </PhoneContext.Provider>

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, InteractionManager } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { Linking, InteractionManager, Alert } from 'react-native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
-import { PhoneResult, usePhone } from '../../../hooks/phone';
+import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import Loading from '../../../components/Loading';
 
 import {
@@ -16,7 +16,6 @@ import {
   ActionContainer,
   ActionButton,
   ActionButtonText,
-  ActionTitle,
 } from './styles';
 
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
@@ -26,7 +25,8 @@ const Show: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const { params } = useRoute<ShowPhoneScreenProps>();
-  const { findById } = usePhone();
+  const { findById, setStatus } = usePhone();
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function loadPhone(): Promise<void> {
@@ -44,6 +44,29 @@ const Show: React.FC = () => {
     Linking.openURL(`tel:${phone?.nationalValue}`);
   }, [phone?.nationalValue]);
 
+  const handlePhoneStatus = useCallback(
+    async (status: PhoneStatus) => {
+      if (!phone?.id) return;
+
+      setLoading(true);
+
+      InteractionManager.runAfterInteractions(() => {
+        setStatus(phone?.id, status)
+          .then(() => {
+            setLoading(false);
+
+            navigation.navigate('Phones');
+          })
+          .catch(() => {
+            setLoading(false);
+
+            Alert.alert('Desculpe', 'Não foi possível atalizar a situação');
+          });
+      });
+    },
+    [phone?.id, setStatus, navigation],
+  );
+
   return (
     <Container>
       {loading && <Loading />}
@@ -55,25 +78,25 @@ const Show: React.FC = () => {
         </HeaderAction>
       </Header>
 
-      <ActionTitle>Situação</ActionTitle>
+      {/* <ActionTitle>Situação</ActionTitle> */}
 
       <ActionContainer>
-        <ActionButton>
+        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>
           <Icon name="phone-incoming" size={36} />
           <ActionButtonText>Atendeu</ActionButtonText>
         </ActionButton>
 
-        <ActionButton>
+        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.DontExists)}>
           <Icon name="phone-off" size={36} />
           <ActionButtonText>Inexistente</ActionButtonText>
         </ActionButton>
 
-        <ActionButton>
+        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Missed)}>
           <Icon name="phone-missed" size={36} />
           <ActionButtonText>Não atendeu</ActionButtonText>
         </ActionButton>
 
-        <ActionButton>
+        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Removed)}>
           <Icon name="x" size={36} />
           <ActionButtonText>Não ligar mais</ActionButtonText>
         </ActionButton>
