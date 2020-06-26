@@ -45,6 +45,7 @@ interface PhoneContextData {
   addSequence(data: SequenceData): Promise<boolean>;
   findById(id: string): Promise<PhoneResult>;
   setStatus(id: string, status: PhoneStatus): Promise<void>;
+  destroy(id: string): Promise<void>;
 }
 
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
@@ -133,9 +134,28 @@ export const PhoneProvider: React.FC = ({ children }) => {
     });
   }, []);
 
+  const destroy = useCallback(async (id: string) => {
+    const realm = await getRealm();
+
+    realm.write(() => {
+      const phone = realm
+        .objects<PhoneNumber>('Phones')
+        .filtered(`id = "${id}"`);
+
+      if (phone) realm.delete(phone);
+    });
+  }, []);
+
   return (
     <PhoneContext.Provider
-      value={{ countryCode, findByStatus, addSequence, findById, setStatus }}
+      value={{
+        countryCode,
+        findByStatus,
+        addSequence,
+        findById,
+        setStatus,
+        destroy,
+      }}
     >
       {children}
     </PhoneContext.Provider>

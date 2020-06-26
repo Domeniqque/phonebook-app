@@ -16,6 +16,7 @@ import {
   ActionContainer,
   ActionButton,
   ActionButtonText,
+  DeleteButton,
 } from './styles';
 
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
@@ -25,7 +26,7 @@ const Show: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const { params } = useRoute<ShowPhoneScreenProps>();
-  const { findById, setStatus } = usePhone();
+  const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -67,18 +68,44 @@ const Show: React.FC = () => {
     [phone?.id, setStatus, navigation],
   );
 
+  const handleDeletePhone = useCallback(() => {
+    if (!phone?.id) return;
+
+    Alert.alert(
+      'Confirmar exclusão',
+      `Você tem certeza que deseja excluir o número ${phone?.nationalValue}?`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          onPress: () => {
+            destroy(phone?.id).then(() => {
+              navigation.navigate('Phones');
+              Alert.alert('Número excluído com sucesso');
+            });
+          },
+        },
+      ],
+    );
+  }, [phone?.nationalValue, phone?.id, destroy, navigation]);
+
   return (
     <Container>
       {loading && <Loading />}
 
       <Header>
+        <DeleteButton onPress={handleDeletePhone}>
+          <Icon name="trash" size={25} color="#000" />
+        </DeleteButton>
+
         <HeaderAction onPress={handleCallToPhone}>
           <HeaderText>{phone?.nationalValue}</HeaderText>
           <HeaderLabel>toque para chamar</HeaderLabel>
         </HeaderAction>
       </Header>
-
-      {/* <ActionTitle>Situação</ActionTitle> */}
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>
