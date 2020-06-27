@@ -1,5 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Modal } from 'react-native';
+import LottieView from 'lottie-react-native';
+
+import checkmarkSource from '../../assets/lottie-checkmark.json';
 
 import {
   Container,
@@ -12,6 +15,7 @@ import {
   RoundedButton,
   RoundedButtonText,
   ButtonContainer,
+  CheckmarkContent,
 } from './styles';
 
 interface AlertProps {
@@ -22,6 +26,7 @@ interface AlertProps {
   onConfirm?(): void;
   cancelText?: string;
   onCancel?(): void;
+  useCheckmark?: boolean;
 }
 
 const Alert: React.FC<AlertProps> = ({
@@ -32,6 +37,7 @@ const Alert: React.FC<AlertProps> = ({
   cancelText,
   onCancel,
   onConfirm,
+  useCheckmark,
 }) => {
   const handleCancel = useCallback(() => {
     if (onCancel) onCancel();
@@ -43,25 +49,38 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <Container>
-      <Modal animationType="none" transparent visible={visible}>
-        <Backdrop>
-          <Content>
-            {title && <Title>{title}</Title>}
+      <Modal animationType="none" transparent={!useCheckmark} visible={visible}>
+        <Backdrop transparent={!useCheckmark}>
+          {useCheckmark ? (
+            <CheckmarkContent>
+              <LottieView
+                source={checkmarkSource}
+                style={{ width: 90 }}
+                resizeMode="cover"
+                autoSize
+                autoPlay
+                loop={false}
+              />
+            </CheckmarkContent>
+          ) : (
+            <Content>
+              {title && <Title>{title}</Title>}
 
-            {text && <Text>{text}</Text>}
+              {text && <Text>{text}</Text>}
 
-            <ButtonContainer>
-              {cancelText && (
-                <TextButton onPress={handleCancel}>
-                  <TextButtonText>{cancelText}</TextButtonText>
-                </TextButton>
-              )}
+              <ButtonContainer>
+                {cancelText && (
+                  <TextButton onPress={handleCancel}>
+                    <TextButtonText>{cancelText}</TextButtonText>
+                  </TextButton>
+                )}
 
-              <RoundedButton onPress={handleConfirm}>
-                <RoundedButtonText>{confirmText || 'OK'}</RoundedButtonText>
-              </RoundedButton>
-            </ButtonContainer>
-          </Content>
+                <RoundedButton onPress={handleConfirm}>
+                  <RoundedButtonText>{confirmText || 'OK'}</RoundedButtonText>
+                </RoundedButton>
+              </ButtonContainer>
+            </Content>
+          )}
         </Backdrop>
       </Modal>
     </Container>

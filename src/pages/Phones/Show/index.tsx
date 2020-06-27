@@ -29,7 +29,7 @@ const Show: React.FC = () => {
   const { params } = useRoute<ShowPhoneScreenProps>();
   const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
-  const { alert } = useAlert();
+  const { alert, success } = useAlert();
 
   const handleCallToPhone = useCallback(() => {
     Linking.openURL(`tel:${phone?.nationalValue}`);
@@ -68,12 +68,12 @@ const Show: React.FC = () => {
       cancelText: 'Cancelar',
       onConfirm: () => {
         destroy(phone?.id).then(() => {
+          success();
           navigation.navigate('Phones');
-          Alert.alert('Número excluído com sucesso');
         });
       },
     });
-  }, [phone?.nationalValue, phone?.id, destroy, navigation, alert]);
+  }, [phone?.nationalValue, phone?.id, destroy, navigation, alert, success]);
 
   useEffect(() => {
     navigation.setOptions({

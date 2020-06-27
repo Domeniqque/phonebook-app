@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components/native';
 
+interface BackdropProps {
+  transparent?: boolean;
+}
+
 export const Container = styled.View.attrs({
   contentContainerStyle: () => css`
     align-items: center;
@@ -12,8 +16,9 @@ export const Container = styled.View.attrs({
   `,
 })``;
 
-export const Backdrop = styled.View`
-  background-color: 'rgba(0,0,0,0.1)';
+export const Backdrop = styled.View<BackdropProps>`
+  background-color: ${props =>
+    props.transparent ? 'rgba(0, 0, 0, 0.1)' : '#fff'};
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -70,3 +75,5 @@ export const TextButtonText = styled.Text`
   font-size: 16px;
   text-transform: uppercase;
 `;
+
+export const CheckmarkContent = styled.View``;
