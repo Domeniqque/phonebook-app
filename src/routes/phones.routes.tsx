@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Feather';
 
 import Phones from '../pages/Phones';
 import CreatePhone from '../pages/Phones/Create';
@@ -18,6 +19,15 @@ const PhonesRoutes: React.FC = () => {
     <Stack.Navigator
       screenOptions={{
         headerTintColor: '#000',
+        headerBackTitleVisible: false,
+        headerBackImage: ({ tintColor }) => (
+          <Icon
+            name="arrow-left"
+            size={35}
+            color={tintColor}
+            style={{ paddingLeft: 16 }}
+          />
+        ),
         headerStyle: {
           shadowColor: 'transparent',
         },

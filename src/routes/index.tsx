@@ -23,7 +23,7 @@ const PhonesRoutes: React.FC = () => {
         name="Phones"
         component={PersonRoutes}
         options={{
-          title: 'Números',
+          title: 'NÚMEROS',
           tabBarIcon: ({ color, size }) => {
             return <Icon name="list" size={size} color={color} />;
           },
@@ -34,7 +34,7 @@ const PhonesRoutes: React.FC = () => {
         name="Person"
         component={Person}
         options={{
-          title: 'Interessados',
+          title: 'INTERESSADOS',
           tabBarIcon: ({ color, size }) => {
             return <Icon name="users" size={size} color={color} />;
           },

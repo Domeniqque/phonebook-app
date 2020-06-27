@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { PhoneProvider } from './phone';
+import { AlertProvider } from './alert';
 
 const AppProvider: React.FC = ({ children }) => {
-  return <PhoneProvider>{children}</PhoneProvider>;
+  return (
+    <AlertProvider>
+      <PhoneProvider>{children}</PhoneProvider>
+    </AlertProvider>
+  );
 };
 
 export default AppProvider;

@@ -8,13 +8,15 @@ import AppProvider from './hooks';
 
 const App: React.FC = () => {
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor="#000" />
+    <>
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor="#000" />
 
-      <AppProvider>
-        <Routes />
-      </AppProvider>
-    </NavigationContainer>
+        <AppProvider>
+          <Routes />
+        </AppProvider>
+      </NavigationContainer>
+    </>
   );
 };
 

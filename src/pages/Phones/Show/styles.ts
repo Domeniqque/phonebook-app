@@ -1,16 +1,17 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
-const margin = 4;
+const margin = 8;
 const cardWidth = width / 2 - margin * 2;
+const cardHeigth = cardWidth;
 
 export const Container = styled.View`
   flex: 1;
   padding: 0 16px;
   background: #fff;
   align-items: center;
+  justify-content: space-around;
 `;
 
 export const Header = styled.View`
@@ -36,14 +37,15 @@ export const HeaderLabel = styled.Text`
 `;
 
 export const ActionContainer = styled.View`
-  flex: 1;
+  height: ${cardHeigth * 2 + 40}px;
   flex-direction: column;
   flex-wrap: wrap;
   margin-top: 40px;
+  margin: 20px 0;
 `;
 
 export const ActionButton = styled.TouchableOpacity`
-  height: ${cardWidth}px;
+  height: ${cardHeigth}px;
   width: ${cardWidth}px;
 
   border-width: 2px;
@@ -67,7 +69,6 @@ export const ActionTitle = styled.Text`
 `;
 
 export const DeleteButton = styled.TouchableOpacity`
-  align-self: flex-end;
-  margin-bottom: 30px;
-  padding: 12px;
+  margin-right: 6px;
+  padding: 10px 12px;
 `;

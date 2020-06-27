@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
+import { useAlert } from '../../../hooks/alert';
 import Loading from '../../../components/Loading';
 
 import {
@@ -28,18 +29,7 @@ const Show: React.FC = () => {
   const { params } = useRoute<ShowPhoneScreenProps>();
   const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
-
-  useEffect(() => {
-    async function loadPhone(): Promise<void> {
-      const data = await findById(params.id);
-
-      if (data) setPhone(data);
-
-      setLoading(false);
-    }
-
-    InteractionManager.runAfterInteractions(loadPhone);
-  }, [params.id, findById]);
+  const { alert } = useAlert();
 
   const handleCallToPhone = useCallback(() => {
     Linking.openURL(`tel:${phone?.nationalValue}`);
@@ -71,36 +61,47 @@ const Show: React.FC = () => {
   const handleDeletePhone = useCallback(() => {
     if (!phone?.id) return;
 
-    Alert.alert(
-      'Confirmar exclusão',
-      `Você tem certeza que deseja excluir o número ${phone?.nationalValue}?`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Excluir',
-          onPress: () => {
-            destroy(phone?.id).then(() => {
-              navigation.navigate('Phones');
-              Alert.alert('Número excluído com sucesso');
-            });
-          },
-        },
-      ],
-    );
-  }, [phone?.nationalValue, phone?.id, destroy, navigation]);
+    alert({
+      title: 'Excluir este número?',
+      text: phone.nationalValue,
+      confirmText: 'Sim, excluir',
+      cancelText: 'Cancelar',
+      onConfirm: () => {
+        destroy(phone?.id).then(() => {
+          navigation.navigate('Phones');
+          Alert.alert('Número excluído com sucesso');
+        });
+      },
+    });
+  }, [phone?.nationalValue, phone?.id, destroy, navigation, alert]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <DeleteButton onPress={handleDeletePhone}>
+          <Icon name="trash" size={25} color="#000" />
+        </DeleteButton>
+      ),
+    });
+  }, [navigation, handleDeletePhone]);
+
+  useEffect(() => {
+    async function loadPhone(): Promise<void> {
+      const data = await findById(params.id);
+
+      if (data) setPhone(data);
+
+      setLoading(false);
+    }
+
+    InteractionManager.runAfterInteractions(loadPhone);
+  }, [params.id, findById]);
 
   return (
     <Container>
       {loading && <Loading />}
 
       <Header>
-        <DeleteButton onPress={handleDeletePhone}>
-          <Icon name="trash" size={25} color="#000" />
-        </DeleteButton>
-
         <HeaderAction onPress={handleCallToPhone}>
           <HeaderText>{phone?.nationalValue}</HeaderText>
           <HeaderLabel>toque para chamar</HeaderLabel>
