@@ -57,6 +57,15 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
             Inexistentes
           </FilterItemText>
         </FilterItem>
+
+        <FilterItem
+          onPress={() => handleSelect(PhoneStatus.Removed)}
+          selected={PhoneStatus.Removed === selected}
+        >
+          <FilterItemText selected={PhoneStatus.Removed === selected}>
+            Não ligar mais
+          </FilterItemText>
+        </FilterItem>
       </FilterList>
     </Container>
   );
