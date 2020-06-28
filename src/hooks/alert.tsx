@@ -16,7 +16,7 @@ interface AlertSuccessProp {
 }
 
 interface AlertContextData {
-  success(data: AlertSuccessProp): void;
+  success(data?: AlertSuccessProp): void;
   alert(data: AlertProps): void;
 }
 
