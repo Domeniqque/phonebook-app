@@ -6,6 +6,7 @@ import validateSequence from '../utils/validateSequence';
 import getNumberInstance from '../utils/getNumberInstance';
 import getRealm from '../services/realm';
 import { useAlert } from './alert';
+import { useLang } from './lang';
 
 export enum PhoneStatus {
   New,
@@ -46,8 +47,8 @@ interface PhoneContextData {
 const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 
 export const PhoneProvider: React.FC = ({ children }) => {
-  const countryCode = 'BR';
   const { alert } = useAlert();
+  const { language: countryCode } = useLang();
 
   const findByStatus = useCallback(async (status: PhoneStatus) => {
     const realm = await getRealm();

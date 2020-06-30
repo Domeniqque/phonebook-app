@@ -27,10 +27,10 @@ export const SelectButtonText = styled.Text`
 
 export const PickerBlackdrop = styled.TouchableOpacity`
   position: absolute;
-  bottom: -100px;
+  bottom: -200px;
   right: 0;
   left: 0;
-  top: -100px;
+  top: -200px;
   background: rgba(0, 0, 0, 0.4);
   z-index: 2000;
 `;

@@ -8,12 +8,12 @@ export const Container = styled.SafeAreaView`
 export const Title = styled.Text`
   font-weight: bold;
   font-size: 24px;
-  margin-top: 10px;
+  margin-top: 8px;
   text-align: center;
 `;
 
 export const Content = styled.View`
   flex: 1;
   padding: 10px 20px;
-  margin-top: 40px;
+  margin-top: 15px;
 `;

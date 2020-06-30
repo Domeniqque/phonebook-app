@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Select from '../../components/Select';
+import { useLang } from '../../hooks/lang';
 
 import { Container, Title, Content } from './styles';
 
@@ -20,6 +21,8 @@ const languages = [
 ];
 
 const Settings: React.FC = () => {
+  const { language, changeLanguage } = useLang();
+
   return (
     <Container>
       <Title>Ajustes</Title>
@@ -28,8 +31,8 @@ const Settings: React.FC = () => {
         <Select
           values={languages}
           placeholder="Selecione um idioma"
-          defaultValue="EN"
-          onSelect={item => console.log(item)}
+          defaultValue={language}
+          onSelect={item => changeLanguage(item.value)}
         />
       </Content>
     </Container>
