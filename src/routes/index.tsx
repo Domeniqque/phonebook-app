@@ -2,9 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import Person from '../pages/Person';
+// import Person from '../pages/Person';
 
 import PersonRoutes from './phones.routes';
+import Settings from '../pages/Settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,17 @@ const PhonesRoutes: React.FC = () => {
       />
 
       <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          title: 'AJUSTES',
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="settings" size={size} color={color} />;
+          },
+        }}
+      />
+
+      {/* <Tab.Screen
         name="Person"
         component={Person}
         options={{
@@ -39,7 +51,7 @@ const PhonesRoutes: React.FC = () => {
             return <Icon name="users" size={size} color={color} />;
           },
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

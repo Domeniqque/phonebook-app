@@ -11,12 +11,8 @@ interface AlertProps {
   onCancel?(): void;
 }
 
-interface AlertSuccessProp {
-  time?: number;
-}
-
 interface AlertContextData {
-  success(data?: AlertSuccessProp): void;
+  success(time?: number): void;
   alert(data: AlertProps): void;
 }
 
@@ -32,19 +28,18 @@ export const AlertProvider: React.FC = ({ children }) => {
     setOpened(true);
   }, []);
 
-  const success = useCallback((data: AlertSuccessProp) => {
+  const success = useCallback((time: number) => {
     setUseCheckmark(true);
     setOpened(true);
 
-    setTimeout(() => {
+    const close = (): void => {
       setOpened(false);
       setUseCheckmark(false);
-    }, data?.time || 1200);
-
-    return () => {
-      setUseCheckmark(true);
-      setOpened(true);
     };
+
+    setTimeout(close, time || 1200);
+
+    return () => close();
   }, []);
 
   const handleCancel = useCallback(() => {

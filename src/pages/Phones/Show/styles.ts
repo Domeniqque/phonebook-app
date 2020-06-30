@@ -50,9 +50,10 @@ export const ActionButton = styled.TouchableOpacity`
 
   border-width: 2px;
   border-color: #eee;
+  border-radius: 10px;
   background: #fff;
   margin: 2px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.04);
   justify-content: center;
   align-items: center;
 `;

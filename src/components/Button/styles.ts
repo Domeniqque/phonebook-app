@@ -11,11 +11,12 @@ export const ButtonContainer = styled(RectButton)<ButtonProps>`
   border-width: 1px;
   border-color: #000;
   background: #000;
-  margin-bottom: 10px;
+  margin: 10px 0;
 
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 33px;
 
   opacity: ${props => (props.isDisabled ? 0.7 : 1)};
 `;
@@ -23,6 +24,6 @@ export const ButtonContainer = styled(RectButton)<ButtonProps>`
 export const ButtonText = styled.Text`
   color: #fff;
   font-size: 20px;
-  margin-left: 4px;
+  margin-left: 8px;
   margin-bottom: 2px;
 `;

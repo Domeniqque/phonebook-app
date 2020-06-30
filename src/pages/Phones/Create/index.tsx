@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { InteractionManager, Alert } from 'react-native';
+import { InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
@@ -10,6 +10,7 @@ import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
 import Button from '../../../components/Button';
 import Loading from '../../../components/Loading';
 import { usePhone } from '../../../hooks/phone';
+import { useAlert } from '../../../hooks/alert';
 
 import { Container } from './styles';
 
@@ -26,6 +27,8 @@ const Create: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { addSequence, countryCode } = usePhone();
+  const { alert, success } = useAlert();
+
   const navigation = useNavigation();
 
   const handleCreateNumbers = useCallback(
@@ -46,26 +49,33 @@ const Create: React.FC = () => {
         await schema.validate(formData, { abortEarly: false });
 
         InteractionManager.runAfterInteractions(async () => {
-          const isSuccess = await addSequence({
+          await addSequence({
             firstNumber: firstNumberRef.current?.getPhoneInstance(),
             lastNumber: lastNumberRef.current?.getPhoneInstance(),
+            callOnSuccess: () => {
+              success();
+              navigation.navigate('Phones');
+            },
           });
 
           setLoading(false);
-
-          if (isSuccess) {
-            navigation.navigate('Phones');
-          }
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
-        else console.error(err);
+        else {
+          alert({
+            title: 'Ops, me desculpe 😢',
+            text:
+              'Houve erro inesperado. O que acha de fechar o aplicativo e tentar novamente?',
+            confirmText: 'OK',
+          });
+        }
 
         setLoading(false);
       }
     },
-    [addSequence, navigation],
+    [addSequence, navigation, success, alert],
   );
 
   return (
@@ -80,6 +90,7 @@ const Create: React.FC = () => {
           countryCode={countryCode}
           returnKeyType="next"
           onSubmitEditing={() => lastNumberRef.current?.focus()}
+          focusable
         />
 
         <PhoneInput

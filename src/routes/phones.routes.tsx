@@ -31,6 +31,9 @@ const PhonesRoutes: React.FC = () => {
         headerStyle: {
           shadowColor: 'transparent',
         },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
       }}
     >
       <Stack.Screen

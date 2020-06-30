@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, InteractionManager, Alert } from 'react-native';
+import { Linking, InteractionManager } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
-import Loading from '../../../components/Loading';
 
 import {
   Container,
@@ -24,7 +23,6 @@ type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
 
 const Show: React.FC = () => {
   const [phone, setPhone] = useState<PhoneResult>({} as PhoneResult);
-  const [loading, setLoading] = useState(true);
 
   const { params } = useRoute<ShowPhoneScreenProps>();
   const { findById, setStatus, destroy } = usePhone();
@@ -39,23 +37,24 @@ const Show: React.FC = () => {
     async (status: PhoneStatus) => {
       if (!phone?.id) return;
 
-      setLoading(true);
-
       InteractionManager.runAfterInteractions(() => {
         setStatus(phone?.id, status)
           .then(() => {
-            setLoading(false);
+            success();
 
             navigation.navigate('Phones');
           })
           .catch(() => {
-            setLoading(false);
-
-            Alert.alert('Desculpe', 'Não foi possível atalizar a situação');
+            alert({
+              title: 'Desculpe! Algo deu errado. 😢',
+              text:
+                'Não foi possível alterar a situação. O que acha de fechar o aplicativo e tentar novamente?',
+              confirmText: 'OK',
+            });
           });
       });
     },
-    [phone?.id, setStatus, navigation],
+    [phone?.id, setStatus, navigation, success, alert],
   );
 
   const handleDeletePhone = useCallback(() => {
@@ -90,8 +89,6 @@ const Show: React.FC = () => {
       const data = await findById(params.id);
 
       if (data) setPhone(data);
-
-      setLoading(false);
     }
 
     InteractionManager.runAfterInteractions(loadPhone);
@@ -99,8 +96,6 @@ const Show: React.FC = () => {
 
   return (
     <Container>
-      {loading && <Loading />}
-
       <Header>
         <HeaderAction onPress={handleCallToPhone}>
           <HeaderText>{phone?.nationalValue}</HeaderText>
