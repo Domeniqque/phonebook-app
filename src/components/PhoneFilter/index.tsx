@@ -1,4 +1,7 @@
 import React, { useState, useCallback } from 'react';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+
+import { View } from 'react-native';
 import { PhoneStatus } from '../../hooks/phone';
 import { useLang } from '../../hooks/lang';
 
@@ -6,21 +9,36 @@ import { Container, FilterList, FilterItem, FilterItemText } from './styles';
 
 interface PhoneFilter {
   onStatusChange(status: PhoneStatus): void;
+  loading?: boolean;
 }
 
-const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
+const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
   const [selected, setSelected] = useState<PhoneStatus>(PhoneStatus.New);
 
   const { trans } = useLang();
 
   const handleSelect = useCallback(
     (status: PhoneStatus) => {
-      setSelected(status);
-
       onStatusChange(status);
+
+      setSelected(status);
     },
     [onStatusChange],
   );
+
+  if (loading) {
+    return (
+      <Placeholder Animation={Fade}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <PlaceholderLine height={24} width={20} style={{ marginRight: 10 }} />
+          <PlaceholderLine height={24} width={30} style={{ marginRight: 10 }} />
+          <PlaceholderLine height={24} width={24} style={{ marginRight: 10 }} />
+          <PlaceholderLine height={24} width={32} style={{ marginRight: 10 }} />
+          <PlaceholderLine height={24} width={20} style={{ marginRight: 10 }} />
+        </View>
+      </Placeholder>
+    );
+  }
 
   return (
     <Container>

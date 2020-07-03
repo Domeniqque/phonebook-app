@@ -31,3 +31,9 @@ export const PhoneListItemNumber = styled.Text`
 export const HeaderButtonAdd = styled.TouchableOpacity`
   padding: 0px 12px;
 `;
+
+export const Divisor = styled.View`
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.05);
+`;

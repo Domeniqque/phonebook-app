@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, InteractionManager } from 'react-native';
+import { Linking, InteractionManager, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
@@ -24,6 +25,7 @@ type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
 
 const Show: React.FC = () => {
   const [phone, setPhone] = useState<PhoneResult>({} as PhoneResult);
+  const [loading, setLoading] = useState(true);
 
   const { params } = useRoute<ShowPhoneScreenProps>();
   const { findById, setStatus, destroy } = usePhone();
@@ -49,15 +51,14 @@ const Show: React.FC = () => {
           })
           .catch(() => {
             alert({
-              title: 'Desculpe! Algo deu errado. 😢',
-              text:
-                'Não foi possível alterar a situação. O que acha de fechar o aplicativo e tentar novamente?',
+              title: trans('defaultError.title'),
+              text: trans('defaultError.text'),
               confirmText: 'OK',
             });
           });
       });
     },
-    [phone?.id, setStatus, navigation, success, alert],
+    [phone?.id, setStatus, navigation, success, alert, trans],
   );
 
   const handleDeletePhone = useCallback(() => {
@@ -91,6 +92,7 @@ const Show: React.FC = () => {
       const data = await findById(params.id);
 
       if (data) setPhone(data);
+      setLoading(false);
     }
 
     InteractionManager.runAfterInteractions(loadPhone);
@@ -99,12 +101,20 @@ const Show: React.FC = () => {
   return (
     <Container>
       <Header>
-        <HeaderAction onPress={handleCallToPhone}>
-          <HeaderText>{phone?.nationalValue}</HeaderText>
-          {phone?.status !== PhoneStatus.Removed && (
-            <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
-          )}
-        </HeaderAction>
+        {loading ? (
+          <Placeholder Animation={Fade}>
+            <View style={{ alignItems: 'center' }}>
+              <PlaceholderLine height={35} width={50} />
+            </View>
+          </Placeholder>
+        ) : (
+          <HeaderAction onPress={handleCallToPhone}>
+            <HeaderText>{phone?.nationalValue}</HeaderText>
+            {phone?.status !== PhoneStatus.Removed && (
+              <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
+            )}
+          </HeaderAction>
+        )}
       </Header>
 
       <ActionContainer>

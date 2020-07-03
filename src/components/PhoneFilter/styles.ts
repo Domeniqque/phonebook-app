@@ -8,9 +8,7 @@ interface FilterTextProps {
   selected?: boolean;
 }
 
-export const Container = styled.View`
-  margin: 10px 0;
-`;
+export const Container = styled.View``;
 
 export const FilterList = styled.ScrollView.attrs({
   horizontal: true,

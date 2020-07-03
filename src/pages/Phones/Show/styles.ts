@@ -3,8 +3,8 @@ import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 const margin = 8;
-const cardWidth = width / 2 - margin * 2;
-const cardHeigth = cardWidth;
+export const cardWidth = width / 2 - margin * 2;
+export const cardHeigth = cardWidth;
 
 export const Container = styled.View`
   flex: 1;
@@ -49,13 +49,14 @@ export const ActionButton = styled.TouchableOpacity`
   width: ${cardWidth}px;
 
   border-width: 2px;
-  border-color: #eee;
   border-radius: 10px;
-  background: #fff;
   margin: 2px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.04);
   justify-content: center;
   align-items: center;
+  background: #fff;
+  border-color: #eee;
+
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.04);
 `;
 
 export const ActionButtonText = styled.Text`

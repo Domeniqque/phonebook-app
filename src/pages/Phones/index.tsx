@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, InteractionManager } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import Loading from '../../components/Loading';
 import PhoneFilter from '../../components/PhoneFilter';
@@ -13,25 +14,31 @@ import {
   PhoneListItem,
   PhoneListItemNumber,
   HeaderButtonAdd,
+  Divisor,
 } from './styles';
 
 const Phones: React.FC = () => {
   const [phones, setPhones] = useState<PhoneResults>();
   const [status, setStatus] = useState<PhoneStatus>(PhoneStatus.New);
-  const [loading, setLoading] = useState(false);
+  const [filterLoading, setFilterLoading] = useState(true);
+  const [phoneLoading, setPhoneLoading] = useState(true);
 
   const navigation = useNavigation();
   const { findByStatus } = usePhone();
 
   useEffect(() => {
     function loadPhones(): void {
-      InteractionManager.runAfterInteractions(async () => {
-        setLoading(true);
+      setPhoneLoading(true);
 
+      InteractionManager.runAfterInteractions(async () => {
         const data = await findByStatus(status);
 
         setPhones(data);
-        setLoading(false);
+
+        setTimeout(() => {
+          setFilterLoading(false);
+          setPhoneLoading(false);
+        }, 300);
       });
     }
 
@@ -56,33 +63,42 @@ const Phones: React.FC = () => {
     });
   }, [navigation]);
 
+  const renderPlaceholderItems = useCallback(() => {
+    const items = [];
+
+    for (let index = 0; index < 10; index++) {
+      items.push(<PlaceholderLine height={30} key={`${index}-ph-phone`} />);
+    }
+
+    return items;
+  }, []);
+
   return (
     <Container>
-      {loading && <Loading />}
+      <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
 
-      <PhoneFilter onStatusChange={setStatus} />
-
-      <PhoneList
-        data={phones}
-        keyExtractor={item => item.id}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 1,
-              width: '100%',
-              backgroundColor: 'rgba(0,0,0,0.05)',
-            }}
-          />
-        )}
-        renderItem={({ item }) => (
-          <PhoneListItem
-            onPress={() => navigation.navigate('ShowPhone', { id: item.id })}
-          >
-            <PhoneListItemNumber>{item.nationalValue}</PhoneListItemNumber>
-            <Icon name="chevron-right" size={28} />
-          </PhoneListItem>
-        )}
-      />
+      {phoneLoading ? (
+        <Placeholder
+          Animation={props => <Fade {...props} duration={500} />}
+          style={{ marginTop: 30 }}
+        >
+          {renderPlaceholderItems()}
+        </Placeholder>
+      ) : (
+        <PhoneList
+          data={phones}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={() => <Divisor />}
+          renderItem={({ item }) => (
+            <PhoneListItem
+              onPress={() => navigation.navigate('ShowPhone', { id: item.id })}
+            >
+              <PhoneListItemNumber>{item.nationalValue}</PhoneListItemNumber>
+              <Icon name="chevron-right" size={28} />
+            </PhoneListItem>
+          )}
+        />
+      )}
     </Container>
   );
 };
