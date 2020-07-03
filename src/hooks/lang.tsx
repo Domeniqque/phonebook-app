@@ -5,15 +5,14 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
 import { CountryCode } from 'libphonenumber-js';
 import { TranslateOptions } from 'i18n-js';
 
 import {
-  getLanguageByDevice,
   translate,
   setLanguageToI18n,
   availableLanguages,
+  getLanguage,
 } from '../locale';
 
 interface LanguageContextData {
@@ -27,32 +26,30 @@ const LanguageContext = createContext<LanguageContextData>(
   {} as LanguageContextData,
 );
 
-const STORAGE_KEY = '@Phonebook:language';
-
 export const LanguageProvider: React.FC = ({ children }) => {
   const [language, setLanguage] = useState<CountryCode>('en_US' as CountryCode);
 
   useEffect(() => {
     async function loadLanguage(): Promise<void> {
-      const lang =
-        (await AsyncStorage.getItem(STORAGE_KEY)) || getLanguageByDevice();
-
-      setLanguageToI18n(lang);
+      const lang = await getLanguage();
       setLanguage(lang as CountryCode);
     }
-
     loadLanguage();
   }, []);
 
   const changeLanguage = useCallback(async (lang: string) => {
-    setLanguageToI18n(lang);
-    await AsyncStorage.setItem(STORAGE_KEY, lang);
+    await setLanguageToI18n(lang);
     setLanguage(lang as CountryCode);
   }, []);
 
   return (
     <LanguageContext.Provider
-      value={{ language, availableLanguages, changeLanguage, trans: translate }}
+      value={{
+        language,
+        availableLanguages,
+        changeLanguage,
+        trans: translate,
+      }}
     >
       {children}
     </LanguageContext.Provider>

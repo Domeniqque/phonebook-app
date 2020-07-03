@@ -19,10 +19,10 @@ import {
 } from './styles';
 
 interface AlertProps {
-  title: string;
+  title?: string;
   text?: string;
   visible?: boolean;
-  confirmText: string;
+  confirmText?: string;
   onConfirm?(): void;
   cancelText?: string;
   onCancel?(): void;

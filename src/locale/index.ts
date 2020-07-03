@@ -1,8 +1,11 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { Platform, NativeModules } from 'react-native';
 import I18n, { TranslateOptions } from 'i18n-js';
 
 import en from './en-US';
 import pt from './pt-BR';
+
+export const LANG_STORAGE_KEY = '@Phonebook:language';
 
 export const availableLanguages = [
   {
@@ -26,7 +29,7 @@ const normalizeTranslate: { [key: string]: string } = {
 };
 
 // Função responsável por adquirir o idioma utilizado no device
-export const getLanguageByDevice = (): string => {
+const getLanguageByDevice = (): string => {
   return Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLocale
     : NativeModules.I18nManager.localeIdentifier;
@@ -39,7 +42,7 @@ I18n.translations = {
 };
 
 // Função responsável por verificar se o idioma atual do divice está sendo suportado, caso não ele irá setar como 'en_US'
-export const setLanguageToI18n = (language: string): void => {
+export const setLanguageToI18n = async (language: string): Promise<void> => {
   const translateNormalize = normalizeTranslate[language];
 
   // eslint-disable-next-line no-prototype-builtins
@@ -47,12 +50,25 @@ export const setLanguageToI18n = (language: string): void => {
     translateNormalize,
   );
 
-  iHaveThisLanguage
-    ? (I18n.locale = translateNormalize)
-    : (I18n.defaultLocale = 'en_US');
+  if (iHaveThisLanguage) {
+    I18n.locale = translateNormalize;
+    await AsyncStorage.setItem(LANG_STORAGE_KEY, translateNormalize);
+  } else {
+    I18n.defaultLocale = 'en_US';
+    await AsyncStorage.setItem(LANG_STORAGE_KEY, 'en_US');
+  }
 };
 
-setLanguageToI18n('en_US');
+export async function getLanguage(): Promise<string> {
+  return (
+    (await AsyncStorage.getItem(LANG_STORAGE_KEY)) || getLanguageByDevice()
+  );
+}
+
+export const startLaguage = async (): Promise<void> => {
+  const lang = await getLanguage();
+  setLanguageToI18n(lang);
+};
 
 export const translate = (key: string, options?: TranslateOptions): string =>
   I18n.t(key, options);
