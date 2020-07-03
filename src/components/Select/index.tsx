@@ -18,6 +18,7 @@ export interface SelectItem {
 }
 
 interface SelectProps {
+  label: string;
   values: SelectItem[];
   defaultValue?: string;
   placeholder?: string;
@@ -25,6 +26,7 @@ interface SelectProps {
 }
 
 const Select: React.FC<SelectProps> = ({
+  label,
   values,
   defaultValue,
   placeholder,
@@ -74,7 +76,7 @@ const Select: React.FC<SelectProps> = ({
   return (
     <>
       <Container>
-        <Label>Idioma</Label>
+        <Label>{label}</Label>
 
         <SelectButton onPress={() => setSelectVisible(!selectVisible)}>
           <SelectButtonText>

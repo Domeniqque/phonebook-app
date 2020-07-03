@@ -6,6 +6,8 @@ import Phones from '../pages/Phones';
 import CreatePhone from '../pages/Phones/Create';
 import ShowPhone from '../pages/Phones/Show';
 
+import { useLang } from '../hooks/lang';
+
 export type PhoneStackProps = {
   Phones: undefined;
   CreatePhone: undefined;
@@ -15,6 +17,8 @@ export type PhoneStackProps = {
 const Stack = createStackNavigator<PhoneStackProps>();
 
 const PhonesRoutes: React.FC = () => {
+  const { trans } = useLang();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -40,20 +44,20 @@ const PhonesRoutes: React.FC = () => {
         name="Phones"
         component={Phones}
         options={{
-          title: 'Números',
+          title: trans('phones.title'),
         }}
       />
 
       <Stack.Screen
         name="CreatePhone"
         component={CreatePhone}
-        options={{ title: 'Adicionar sequência' }}
+        options={{ title: trans('phones.create.title') }}
       />
 
       <Stack.Screen
         name="ShowPhone"
         component={ShowPhone}
-        options={{ title: 'Atualizar' }}
+        options={{ title: trans('phones.show.title') }}
       />
     </Stack.Navigator>
   );

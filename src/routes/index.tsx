@@ -2,14 +2,17 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-// import Person from '../pages/Person';
+import { useLang } from '../hooks/lang';
 
+// import Person from '../pages/Person';
 import PersonRoutes from './phones.routes';
 import Settings from '../pages/Settings';
 
 const Tab = createBottomTabNavigator();
 
 const PhonesRoutes: React.FC = () => {
+  const { trans } = useLang();
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -24,7 +27,7 @@ const PhonesRoutes: React.FC = () => {
         name="Phones"
         component={PersonRoutes}
         options={{
-          title: 'NÚMEROS',
+          title: trans('tabs.numbers'),
           tabBarIcon: ({ color, size }) => {
             return <Icon name="list" size={size} color={color} />;
           },
@@ -35,7 +38,7 @@ const PhonesRoutes: React.FC = () => {
         name="Settings"
         component={Settings}
         options={{
-          title: 'AJUSTES',
+          title: trans('tabs.settings'),
           tabBarIcon: ({ color, size }) => {
             return <Icon name="settings" size={size} color={color} />;
           },

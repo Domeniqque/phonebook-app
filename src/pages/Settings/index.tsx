@@ -5,32 +5,18 @@ import { useLang } from '../../hooks/lang';
 
 import { Container, Title, Content } from './styles';
 
-const languages = [
-  {
-    label: 'Português',
-    value: 'BR',
-  },
-  {
-    label: 'Inglês',
-    value: 'EN',
-  },
-  {
-    label: 'Espanhol',
-    value: 'ES',
-  },
-];
-
 const Settings: React.FC = () => {
-  const { language, changeLanguage } = useLang();
+  const { language, changeLanguage, availableLanguages, trans } = useLang();
 
   return (
     <Container>
-      <Title>Ajustes</Title>
+      <Title>{trans('settings.title')}</Title>
 
       <Content>
         <Select
-          values={languages}
-          placeholder="Selecione um idioma"
+          label={trans('settings.language.label')}
+          placeholder={trans('settings.language.placeholder')}
+          values={availableLanguages}
           defaultValue={language}
           onSelect={item => changeLanguage(item.value)}
         />

@@ -1,8 +1,19 @@
 import { Platform, NativeModules } from 'react-native';
-import I18n from 'i18n-js';
+import I18n, { TranslateOptions } from 'i18n-js';
 
 import en from './en-US';
 import pt from './pt-BR';
+
+export const availableLanguages = [
+  {
+    label: 'Português',
+    value: 'pt_BR',
+  },
+  {
+    label: 'Inglês',
+    value: 'en_US',
+  },
+];
 
 // Função que irá nos auxiliar a normalizar as traduções que serão recebidas pela função getLanguageByDevice
 // Isso é necessário pois no android e no iOS o retorno do mesmo idioma pode ser diferente
@@ -15,7 +26,7 @@ const normalizeTranslate: { [key: string]: string } = {
 };
 
 // Função responsável por adquirir o idioma utilizado no device
-const getLanguageByDevice = (): string => {
+export const getLanguageByDevice = (): string => {
   return Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLocale
     : NativeModules.I18nManager.localeIdentifier;
@@ -28,8 +39,7 @@ I18n.translations = {
 };
 
 // Função responsável por verificar se o idioma atual do divice está sendo suportado, caso não ele irá setar como 'en_US'
-const setLanguageToI18n = (): void => {
-  const language = getLanguageByDevice();
+export const setLanguageToI18n = (language: string): void => {
   const translateNormalize = normalizeTranslate[language];
 
   // eslint-disable-next-line no-prototype-builtins
@@ -42,6 +52,7 @@ const setLanguageToI18n = (): void => {
     : (I18n.defaultLocale = 'en_US');
 };
 
-setLanguageToI18n();
+setLanguageToI18n('en_US');
 
-export const translate = (key: string): string => I18n.t(key);
+export const translate = (key: string, options?: TranslateOptions): string =>
+  I18n.t(key, options);

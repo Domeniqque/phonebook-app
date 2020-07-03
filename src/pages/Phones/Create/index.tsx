@@ -11,6 +11,7 @@ import Button from '../../../components/Button';
 import Loading from '../../../components/Loading';
 import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
+import { useLang } from '../../../hooks/lang';
 
 import { Container } from './styles';
 
@@ -28,6 +29,7 @@ const Create: React.FC = () => {
 
   const { addSequence, countryCode } = usePhone();
   const { alert, success } = useAlert();
+  const { trans } = useLang();
 
   const navigation = useNavigation();
 
@@ -39,10 +41,10 @@ const Create: React.FC = () => {
       try {
         const schema = Yup.object({
           firstNumber: Yup.string().required(
-            'Qual o primeiro número telefônico da sequência?',
+            trans('phones.create.validation.firstNumberRequired'),
           ),
           lastNumber: Yup.string().required(
-            'Não esqueça do último número da sequência',
+            trans('phones.create.validation.lastNumberRequired'),
           ),
         });
 
@@ -65,9 +67,8 @@ const Create: React.FC = () => {
           formRef.current?.setErrors(getValidationErrors(err));
         else {
           alert({
-            title: 'Ops, me desculpe 😢',
-            text:
-              'Houve erro inesperado. O que acha de fechar o aplicativo e tentar novamente?',
+            title: trans('defaultError.title'),
+            text: trans('defaultError.text'),
             confirmText: 'OK',
           });
         }
@@ -75,17 +76,21 @@ const Create: React.FC = () => {
         setLoading(false);
       }
     },
-    [addSequence, navigation, success, alert],
+    [addSequence, navigation, success, alert, trans],
   );
 
   return (
     <Container>
       {loading && <Loading />}
 
-      <Form ref={formRef} onSubmit={handleCreateNumbers}>
+      <Form
+        ref={formRef}
+        onSubmit={handleCreateNumbers}
+        style={{ marginTop: 20 }}
+      >
         <PhoneInput
           ref={firstNumberRef}
-          label="Primeiro número"
+          label={trans('phones.create.label.first')}
           name="firstNumber"
           countryCode={countryCode}
           returnKeyType="next"
@@ -95,7 +100,7 @@ const Create: React.FC = () => {
 
         <PhoneInput
           ref={lastNumberRef}
-          label="Último número"
+          label={trans('phones.create.label.last')}
           name="lastNumber"
           returnKeyType="next"
           countryCode={countryCode}
@@ -103,8 +108,9 @@ const Create: React.FC = () => {
         />
 
         <Button
-          text="Cadastrar números"
+          text={trans('phones.create.button')}
           icon="save"
+          style={{ marginTop: 30 }}
           onPress={() => formRef.current?.submitForm()}
         />
       </Form>

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
+import { useLang } from '../../../hooks/lang';
 
 import {
   Container,
@@ -28,10 +29,12 @@ const Show: React.FC = () => {
   const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
   const { alert, success } = useAlert();
+  const { trans } = useLang();
 
   const handleCallToPhone = useCallback(() => {
-    Linking.openURL(`tel:${phone?.nationalValue}`);
-  }, [phone?.nationalValue]);
+    if (phone?.status !== PhoneStatus.Removed)
+      Linking.openURL(`tel:${phone?.nationalValue}`);
+  }, [phone?.nationalValue, phone?.status]);
 
   const handlePhoneStatus = useCallback(
     async (status: PhoneStatus) => {
@@ -61,10 +64,9 @@ const Show: React.FC = () => {
     if (!phone?.id) return;
 
     alert({
-      title: 'Excluir este número?',
-      text: phone.nationalValue,
-      confirmText: 'Sim, excluir',
-      cancelText: 'Cancelar',
+      title: trans('phones.show.deleteTitle'),
+      confirmText: trans('phones.show.deleteOk'),
+      cancelText: trans('phones.show.deleteCancel'),
       onConfirm: () => {
         destroy(phone?.id).then(() => {
           success();
@@ -72,7 +74,7 @@ const Show: React.FC = () => {
         });
       },
     });
-  }, [phone?.nationalValue, phone?.id, destroy, navigation, alert, success]);
+  }, [phone?.id, destroy, navigation, alert, success, trans]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -99,29 +101,31 @@ const Show: React.FC = () => {
       <Header>
         <HeaderAction onPress={handleCallToPhone}>
           <HeaderText>{phone?.nationalValue}</HeaderText>
-          <HeaderLabel>toque para chamar</HeaderLabel>
+          {phone?.status !== PhoneStatus.Removed && (
+            <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
+          )}
         </HeaderAction>
       </Header>
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>
           <Icon name="phone-incoming" size={36} />
-          <ActionButtonText>Atendeu</ActionButtonText>
+          <ActionButtonText>{trans('phoneFilter.received')}</ActionButtonText>
         </ActionButton>
 
-        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.DontExists)}>
+        <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.NotExist)}>
           <Icon name="phone-off" size={36} />
-          <ActionButtonText>Inexistente</ActionButtonText>
+          <ActionButtonText>{trans('phoneFilter.notExist')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Missed)}>
           <Icon name="phone-missed" size={36} />
-          <ActionButtonText>Não atendeu</ActionButtonText>
+          <ActionButtonText>{trans('phoneFilter.missed')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Removed)}>
           <Icon name="x" size={36} />
-          <ActionButtonText>Não ligar mais</ActionButtonText>
+          <ActionButtonText>{trans('phoneFilter.removed')}</ActionButtonText>
         </ActionButton>
       </ActionContainer>
     </Container>

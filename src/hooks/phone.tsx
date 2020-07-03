@@ -12,7 +12,7 @@ export enum PhoneStatus {
   New,
   Received,
   Missed,
-  DontExists,
+  NotExist,
   Removed,
 }
 
@@ -48,7 +48,7 @@ const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 
 export const PhoneProvider: React.FC = ({ children }) => {
   const { alert } = useAlert();
-  const { language: countryCode } = useLang();
+  const { language: countryCode, trans } = useLang();
 
   const findByStatus = useCallback(async (status: PhoneStatus) => {
     const realm = await getRealm();
@@ -77,9 +77,9 @@ export const PhoneProvider: React.FC = ({ children }) => {
 
       if (!isValid) {
         alert({
-          title: 'Verifique seus números',
-          text: 'Não é possível criar uma sequência com os números informados',
-          confirmText: 'Ok',
+          title: trans('phones.create.validation.isInvalidTitle'),
+          text: trans('phones.create.validation.isInvalidText'),
+          confirmText: 'OK',
         });
         return;
       }
@@ -124,10 +124,12 @@ export const PhoneProvider: React.FC = ({ children }) => {
 
       if (distanceBetween > 100) {
         alert({
-          title: `Sua sequência possui \n ${distanceBetween} números`,
-          text: 'Deseja criar mesmo assim?',
-          confirmText: 'Sim, cadastrar',
-          cancelText: 'Não',
+          title: trans('phones.create.validation.veryLargeTitle', {
+            distanceBetween,
+          }),
+          text: trans('phones.create.validation.veryLargeQuestion'),
+          confirmText: trans('phones.create.validation.veryLargeOk'),
+          cancelText: trans('phones.create.validation.veryLargeCancel'),
           onConfirm: () => {
             createPhoneNumbers();
           },
@@ -136,7 +138,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
         createPhoneNumbers();
       }
     },
-    [alert],
+    [alert, trans, countryCode],
   );
 
   const setStatus = useCallback(async (id: string, status: PhoneStatus) => {

@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { PhoneStatus } from '../../hooks/phone';
+import { useLang } from '../../hooks/lang';
 
 import { Container, FilterList, FilterItem, FilterItemText } from './styles';
 
@@ -9,6 +10,8 @@ interface PhoneFilter {
 
 const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
   const [selected, setSelected] = useState<PhoneStatus>(PhoneStatus.New);
+
+  const { trans } = useLang();
 
   const handleSelect = useCallback(
     (status: PhoneStatus) => {
@@ -27,7 +30,7 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
           selected={PhoneStatus.New === selected}
         >
           <FilterItemText selected={PhoneStatus.New === selected}>
-            Novos
+            {trans('phoneFilter.new')}
           </FilterItemText>
         </FilterItem>
 
@@ -36,7 +39,7 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
           selected={PhoneStatus.Received === selected}
         >
           <FilterItemText selected={PhoneStatus.Received === selected}>
-            Atendidos
+            {trans('phoneFilter.received')}
           </FilterItemText>
         </FilterItem>
 
@@ -45,16 +48,16 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
           selected={PhoneStatus.Missed === selected}
         >
           <FilterItemText selected={PhoneStatus.Missed === selected}>
-            Não atendidos
+            {trans('phoneFilter.missed')}
           </FilterItemText>
         </FilterItem>
 
         <FilterItem
-          onPress={() => handleSelect(PhoneStatus.DontExists)}
-          selected={PhoneStatus.DontExists === selected}
+          onPress={() => handleSelect(PhoneStatus.NotExist)}
+          selected={PhoneStatus.NotExist === selected}
         >
-          <FilterItemText selected={PhoneStatus.DontExists === selected}>
-            Inexistentes
+          <FilterItemText selected={PhoneStatus.NotExist === selected}>
+            {trans('phoneFilter.notExist')}
           </FilterItemText>
         </FilterItem>
 
@@ -63,7 +66,7 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange }) => {
           selected={PhoneStatus.Removed === selected}
         >
           <FilterItemText selected={PhoneStatus.Removed === selected}>
-            Não ligar mais
+            {trans('phoneFilter.removed')}
           </FilterItemText>
         </FilterItem>
       </FilterList>
