@@ -47,9 +47,16 @@ export default {
   },
   phoneFilter: {
     new: 'New',
-    received: 'Received',
-    missed: 'Call missed',
+    received: 'Answered calls',
+    missed: 'Missed calls',
     notExist: 'Does not exist',
+    removed: 'Removed',
+  },
+  phoneStatus: {
+    new: 'New',
+    received: 'Answered call',
+    missed: 'Missed call',
+    notExist: 'Do not exist',
     removed: 'Removed',
   },
   defaultError: {

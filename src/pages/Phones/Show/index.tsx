@@ -103,15 +103,15 @@ const Show: React.FC = () => {
     (status: number): string => {
       switch (status) {
         case PhoneStatus.Received:
-          return trans('phoneFilter.received');
+          return trans('phoneStatus.received');
         case PhoneStatus.Missed:
-          return trans('phoneFilter.missed');
+          return trans('phoneStatus.missed');
         case PhoneStatus.NotExist:
-          return trans('phoneFilter.notExist');
+          return trans('phoneStatus.notExist');
         case PhoneStatus.Removed:
-          return trans('phoneFilter.removed');
+          return trans('phoneStatus.removed');
         default:
-          return trans('phoneFilter.new');
+          return trans('phoneStatus.new');
       }
     },
     [trans],
@@ -136,29 +136,31 @@ const Show: React.FC = () => {
         )}
       </Header>
 
-      <PhoneStatusLabel>
-        {resolvePhoneStatusName(phone?.status)}
-      </PhoneStatusLabel>
+      {phone?.status && (
+        <PhoneStatusLabel>
+          {resolvePhoneStatusName(phone?.status)}
+        </PhoneStatusLabel>
+      )}
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>
           <Icon name="phone-incoming" size={36} />
-          <ActionButtonText>{trans('phoneFilter.received')}</ActionButtonText>
+          <ActionButtonText>{trans('phoneStatus.received')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.NotExist)}>
           <Icon name="phone-off" size={36} />
-          <ActionButtonText>{trans('phoneFilter.notExist')}</ActionButtonText>
+          <ActionButtonText>{trans('phoneStatus.notExist')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Missed)}>
           <Icon name="phone-missed" size={36} />
-          <ActionButtonText>{trans('phoneFilter.missed')}</ActionButtonText>
+          <ActionButtonText>{trans('phoneStatus.missed')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Removed)}>
           <Icon name="x" size={36} />
-          <ActionButtonText>{trans('phoneFilter.removed')}</ActionButtonText>
+          <ActionButtonText>{trans('phoneStatus.removed')}</ActionButtonText>
         </ActionButton>
       </ActionContainer>
     </Container>

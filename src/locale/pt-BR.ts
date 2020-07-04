@@ -48,8 +48,15 @@ export default {
   },
   phoneFilter: {
     new: 'Novos',
-    received: 'Recebidos',
+    received: 'Atendidos',
     missed: 'Não atendidos',
+    notExist: 'Não existem',
+    removed: 'Removidos',
+  },
+  phoneStatus: {
+    new: 'Novo',
+    received: 'Atendido',
+    missed: 'Não atendido',
     notExist: 'Não existe',
     removed: 'Removido',
   },
