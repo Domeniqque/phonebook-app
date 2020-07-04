@@ -6,7 +6,7 @@ import Phones from '../pages/Phones';
 import CreatePhone from '../pages/Phones/Create';
 import ShowPhone from '../pages/Phones/Show';
 
-import { useLang } from '../hooks/lang';
+import { useLocale } from '../hooks/locale';
 
 export type PhoneStackProps = {
   Phones: undefined;
@@ -17,7 +17,7 @@ export type PhoneStackProps = {
 const Stack = createStackNavigator<PhoneStackProps>();
 
 const PhonesRoutes: React.FC = () => {
-  const { trans } = useLang();
+  const { trans } = useLocale();
 
   return (
     <Stack.Navigator

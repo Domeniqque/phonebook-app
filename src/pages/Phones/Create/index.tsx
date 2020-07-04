@@ -11,7 +11,7 @@ import Button from '../../../components/Button';
 import Loading from '../../../components/Loading';
 import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
-import { useLang } from '../../../hooks/lang';
+import { useLocale } from '../../../hooks/locale';
 
 import { Container, Tip, TipText, TipDelimiter } from './styles';
 
@@ -29,7 +29,7 @@ const Create: React.FC = () => {
 
   const { addSequence, countryCode } = usePhone();
   const { alert, success } = useAlert();
-  const { trans } = useLang();
+  const { trans, dialCode } = useLocale();
 
   const navigation = useNavigation();
 
@@ -97,6 +97,7 @@ const Create: React.FC = () => {
           label={trans('phones.create.label.first')}
           name="firstNumber"
           countryCode={countryCode}
+          dialCode={dialCode}
           returnKeyType="next"
           onSubmitEditing={() => lastNumberRef.current?.focus()}
           autoFocus
@@ -108,6 +109,7 @@ const Create: React.FC = () => {
           name="lastNumber"
           returnKeyType="next"
           countryCode={countryCode}
+          dialCode={dialCode}
           onSubmitEditing={() => formRef.current?.submitForm()}
         />
 

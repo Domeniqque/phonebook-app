@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { useLang } from '../hooks/lang';
+import { useLocale } from '../hooks/locale';
 
 // import Person from '../pages/Person';
 import PersonRoutes from './phones.routes';
@@ -11,7 +11,7 @@ import Settings from '../pages/Settings';
 const Tab = createBottomTabNavigator();
 
 const PhonesRoutes: React.FC = () => {
-  const { trans } = useLang();
+  const { trans } = useLocale();
 
   return (
     <Tab.Navigator

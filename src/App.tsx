@@ -7,13 +7,13 @@ import Routes from './routes';
 import AppProvider from './hooks';
 import Loading from './components/Loading';
 
-import { startLaguage } from './locale';
+import { startI18nLaguage } from './locale';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    startLaguage().then(() => setLoading(false));
+    startI18nLaguage().then(() => setLoading(false));
   }, []);
 
   return (

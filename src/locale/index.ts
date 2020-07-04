@@ -4,8 +4,20 @@ import I18n, { TranslateOptions } from 'i18n-js';
 
 import en from './en-US';
 import pt from './pt-BR';
+import countries from './countries';
 
 export const LANG_STORAGE_KEY = '@Phonebook:language';
+export const COUNTRY_STORAGE_KEY = '@Phonebook:country';
+export const DIAL_CODE_STORAGE_KEY = '@Phonebook:dial';
+
+export interface CountryData {
+  label: string;
+  name: string;
+  value: string;
+  dial: string[];
+  defaultLanguage: string;
+  languages: string[];
+}
 
 export const availableLanguages = [
   {
@@ -31,8 +43,25 @@ const normalizeTranslate: { [key: string]: string } = {
 // Função responsável por adquirir o idioma utilizado no device
 const getLanguageByDevice = (): string => {
   return Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale
+    ? NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0]
     : NativeModules.I18nManager.localeIdentifier;
+};
+
+const getCountryByLanguageDevice = (): CountryData | undefined => {
+  const lang = normalizeTranslate[getLanguageByDevice()];
+
+  const countryKey = lang.split('_')[1];
+
+  return countries.find(a => a.value === countryKey);
+};
+
+export const setCountryLocale = async (country: CountryData): Promise<void> => {
+  await AsyncStorage.setItem(COUNTRY_STORAGE_KEY, JSON.stringify(country));
+};
+
+export const setDialCodeLocale = async (dial: string): Promise<void> => {
+  await AsyncStorage.setItem(DIAL_CODE_STORAGE_KEY, dial);
 };
 
 // Idiomas que o I18N irá dar suporte
@@ -59,15 +88,40 @@ export const setLanguageToI18n = async (language: string): Promise<void> => {
   }
 };
 
-export async function getLanguage(): Promise<string> {
-  return (
-    (await AsyncStorage.getItem(LANG_STORAGE_KEY)) || getLanguageByDevice()
-  );
+export async function getLocale(): Promise<{
+  country: CountryData;
+  language: string;
+  dialCode: string;
+}> {
+  const [
+    langStorage,
+    countryStorage,
+    dialCodeStorage,
+  ] = await AsyncStorage.multiGet([
+    LANG_STORAGE_KEY,
+    COUNTRY_STORAGE_KEY,
+    DIAL_CODE_STORAGE_KEY,
+  ]);
+
+  const countryStored = countryStorage[1]
+    ? (JSON.parse(countryStorage[1]) as CountryData)
+    : null;
+
+  const country = (countryStored ||
+    getCountryByLanguageDevice()) as CountryData;
+
+  const data = {
+    language: langStorage[1] || getLanguageByDevice(),
+    country,
+    dialCode: dialCodeStorage[1] || country?.dial[0] || ' ',
+  };
+
+  return data;
 }
 
-export const startLaguage = async (): Promise<void> => {
-  const lang = await getLanguage();
-  setLanguageToI18n(lang);
+export const startI18nLaguage = async (): Promise<void> => {
+  const { language } = await getLocale();
+  setLanguageToI18n(language);
 };
 
 export const translate = (key: string, options?: TranslateOptions): string =>

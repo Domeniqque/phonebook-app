@@ -3,7 +3,7 @@ import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import { View } from 'react-native';
 import { PhoneStatus } from '../../hooks/phone';
-import { useLang } from '../../hooks/lang';
+import { useLocale } from '../../hooks/locale';
 
 import { Container, FilterList, FilterItem, FilterItemText } from './styles';
 
@@ -15,7 +15,7 @@ interface PhoneFilter {
 const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
   const [selected, setSelected] = useState<PhoneStatus>(PhoneStatus.New);
 
-  const { trans } = useLang();
+  const { trans } = useLocale();
 
   const handleSelect = useCallback(
     (status: PhoneStatus) => {

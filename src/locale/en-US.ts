@@ -37,11 +37,15 @@ export default {
     title: 'Settings',
     language: {
       label: 'Language',
-      placeholder: 'Select a language',
+      placeholder: 'Select',
     },
-    countryCode: {
+    country: {
       label: 'Country',
-      placeholder: 'Select your country',
+      placeholder: 'Select',
+    },
+    dialCode: {
+      label: 'Dial code',
+      placeholder: 'Select',
     },
     searchPlaceholder: 'Search',
   },

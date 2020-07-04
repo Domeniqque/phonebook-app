@@ -14,8 +14,6 @@ import { TextInputProps } from 'react-native';
 
 import Input from '../Input';
 
-import countries from '../../resources/countries';
-
 export type PhoneNumberInstance = PhoneNumberLib | undefined;
 
 export interface PhoneInputRef {
@@ -27,27 +25,18 @@ interface PhoneInputProps extends TextInputProps {
   name: string;
   label?: string;
   countryCode?: string;
+  dialCode: string;
 }
-
-const defaultDialCode = '+55';
 
 const PhoneInput: React.RefForwardingComponent<
   PhoneInputRef,
   PhoneInputProps
-> = ({ name, countryCode, ...rest }, ref) => {
+> = ({ name, countryCode, dialCode, ...rest }, ref) => {
   const inputRef = useRef<any>(null);
 
   const [phoneInstance, setPhoneInstance] = useState<PhoneNumberInstance>(
     undefined,
   );
-
-  const country = useMemo(() => countries.find(c => c.code === countryCode), [
-    countryCode,
-  ]);
-
-  const dialCode = useMemo(() => country?.dialCode || defaultDialCode, [
-    country?.dialCode,
-  ]);
 
   const handleFormatValue = useCallback(
     (value: string) => {

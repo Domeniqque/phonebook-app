@@ -5,7 +5,7 @@ import { Form } from '@unform/mobile';
 
 import Input from '../Input';
 import { useAlert } from '../../hooks/alert';
-import { useLang } from '../../hooks/lang';
+import { useLocale } from '../../hooks/locale';
 
 import {
   Container,
@@ -52,7 +52,7 @@ const Select: React.FC<SelectProps> = ({
   const [filter, setFilter] = useState('');
 
   const { success } = useAlert();
-  const { trans } = useLang();
+  const { trans } = useLocale();
 
   const items = useMemo(() => {
     if (!filter) return values;

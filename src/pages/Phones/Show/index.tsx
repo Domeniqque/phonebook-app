@@ -7,7 +7,7 @@ import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
-import { useLang } from '../../../hooks/lang';
+import { useLocale } from '../../../hooks/locale';
 
 import {
   Container,
@@ -32,7 +32,7 @@ const Show: React.FC = () => {
   const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
   const { alert, success } = useAlert();
-  const { trans } = useLang();
+  const { trans } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
     if (phone?.status !== PhoneStatus.Removed)

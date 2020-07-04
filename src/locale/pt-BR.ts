@@ -38,11 +38,15 @@ export default {
     title: 'Ajustes',
     language: {
       label: 'Idioma',
-      placeholder: 'Selecione um idioma',
+      placeholder: 'Selecione',
     },
-    countryCode: {
+    country: {
       label: 'Seu país',
-      placeholder: 'Selecione seu país',
+      placeholder: 'Selecione',
+    },
+    dialCode: {
+      label: 'Código do país',
+      placeholder: 'Selecione',
     },
     searchPlaceholder: 'Buscar',
   },

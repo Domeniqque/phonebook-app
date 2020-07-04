@@ -1,27 +1,37 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import Select from '../../components/Select';
-import { useLang } from '../../hooks/lang';
+import { useLocale } from '../../hooks/locale';
 import countries from '../../locale/countries';
+import { CountryData } from '../../locale';
 
 import { Container, Title, Content } from './styles';
 
-interface CountryData {
-  label: string;
-  name: string;
-  value: string;
-  language: string;
-  defaultLanguage: string;
-}
-
 const Settings: React.FC = () => {
-  const { language, changeLanguage, availableLanguages, trans } = useLang();
+  const {
+    language,
+    country,
+    dialCode,
+    changeLanguage,
+    changeCountry,
+    changeDialCode,
+    availableLanguages,
+    trans,
+  } = useLocale();
+
+  const dialCodes = useMemo(() => {
+    return country.dial.map(d => ({
+      value: d,
+      label: d,
+    }));
+  }, [country.dial]);
 
   const handleChangeCountry = useCallback(
-    (country: CountryData) => {
-      changeLanguage(country.defaultLanguage);
+    (data: CountryData) => {
+      changeCountry(data);
+      changeLanguage(data.defaultLanguage);
     },
-    [changeLanguage],
+    [changeLanguage, changeCountry],
   );
 
   return (
@@ -30,12 +40,20 @@ const Settings: React.FC = () => {
 
       <Content>
         <Select
-          label={trans('settings.countryCode.label')}
-          placeholder={trans('settings.countryCode.placeholder')}
+          label={trans('settings.country.label')}
+          placeholder={trans('settings.country.placeholder')}
           values={countries}
           filterable
-          // defaultValue={language}
+          defaultValue={country.value}
           onSelect={handleChangeCountry}
+        />
+
+        <Select
+          label={trans('settings.dialCode.label')}
+          placeholder={trans('settings.dialCode.placeholder')}
+          values={dialCodes}
+          defaultValue={dialCode}
+          onSelect={item => changeDialCode(item.value)}
         />
 
         <Select

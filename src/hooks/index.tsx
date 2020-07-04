@@ -2,15 +2,15 @@ import React from 'react';
 
 import { PhoneProvider } from './phone';
 import { AlertProvider } from './alert';
-import { LanguageProvider } from './lang';
+import { LocaleProvider } from './locale';
 
 const AppProvider: React.FC = ({ children }) => {
   return (
-    <LanguageProvider>
+    <LocaleProvider>
       <AlertProvider>
         <PhoneProvider>{children}</PhoneProvider>
       </AlertProvider>
-    </LanguageProvider>
+    </LocaleProvider>
   );
 };
 
