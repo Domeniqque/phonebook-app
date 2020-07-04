@@ -7,6 +7,7 @@ export default {
     title: 'Telefones',
     create: {
       title: 'Adicionar Telefones',
+      tip: '💡 Informe o código de área (DDD)',
       label: {
         first: 'Primeiro telefone da lista',
         last: 'Último telefone da lista',
@@ -43,6 +44,7 @@ export default {
       label: 'Seu país',
       placeholder: 'Selecione seu país',
     },
+    searchPlaceholder: 'Buscar',
   },
   phoneFilter: {
     new: 'Novos',

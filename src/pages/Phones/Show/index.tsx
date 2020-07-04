@@ -15,6 +15,7 @@ import {
   HeaderAction,
   HeaderText,
   HeaderLabel,
+  PhoneStatusLabel,
   ActionContainer,
   ActionButton,
   ActionButtonText,
@@ -98,6 +99,24 @@ const Show: React.FC = () => {
     InteractionManager.runAfterInteractions(loadPhone);
   }, [params.id, findById]);
 
+  const resolvePhoneStatusName = useCallback(
+    (status: number): string => {
+      switch (status) {
+        case PhoneStatus.Received:
+          return trans('phoneFilter.received');
+        case PhoneStatus.Missed:
+          return trans('phoneFilter.missed');
+        case PhoneStatus.NotExist:
+          return trans('phoneFilter.notExist');
+        case PhoneStatus.Removed:
+          return trans('phoneFilter.removed');
+        default:
+          return trans('phoneFilter.new');
+      }
+    },
+    [trans],
+  );
+
   return (
     <Container>
       <Header>
@@ -116,6 +135,10 @@ const Show: React.FC = () => {
           </HeaderAction>
         )}
       </Header>
+
+      <PhoneStatusLabel>
+        {resolvePhoneStatusName(phone?.status)}
+      </PhoneStatusLabel>
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>

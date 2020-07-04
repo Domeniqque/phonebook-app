@@ -5,6 +5,7 @@ import { Form } from '@unform/mobile';
 
 import Input from '../Input';
 import { useAlert } from '../../hooks/alert';
+import { useLang } from '../../hooks/lang';
 
 import {
   Container,
@@ -49,7 +50,9 @@ const Select: React.FC<SelectProps> = ({
   const [selectedValue, setSelectedValue] = useState<SelectItem>();
   const [selectVisible, setSelectVisible] = useState(false);
   const [filter, setFilter] = useState('');
+
   const { success } = useAlert();
+  const { trans } = useLang();
 
   const items = useMemo(() => {
     if (!filter) return values;
@@ -67,12 +70,13 @@ const Select: React.FC<SelectProps> = ({
 
   const handleSelectItem = useCallback(
     (value: SelectItem) => {
+      if (alertOnSelect) success();
+      if (onSelect) onSelect(value);
+
       setSelectedValue(value);
       setSelectVisible(false);
 
-      if (onSelect) onSelect(value);
-
-      if (alertOnSelect) success();
+      setFilter('');
     },
     [onSelect, success, alertOnSelect],
   );
@@ -97,14 +101,24 @@ const Select: React.FC<SelectProps> = ({
               <PickerHeader>
                 {placeholder && <PickerTitle>{placeholder}</PickerTitle>}
 
-                <PickerClose onPress={() => setSelectVisible(false)}>
+                <PickerClose
+                  onPress={() => {
+                    setSelectVisible(false);
+                    setFilter('');
+                  }}
+                >
                   <Icon name="x" size={36} />
                 </PickerClose>
               </PickerHeader>
 
               {filterable && (
                 <Form onSubmit={() => null}>
-                  <Input name="filter" onChangeText={setFilter} />
+                  <Input
+                    name="filter"
+                    autoFocus
+                    onChangeText={setFilter}
+                    placeholder={trans('settings.searchPlaceholder')}
+                  />
                 </Form>
               )}
 

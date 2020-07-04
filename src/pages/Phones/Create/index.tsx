@@ -13,7 +13,7 @@ import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
 import { useLang } from '../../../hooks/lang';
 
-import { Container } from './styles';
+import { Container, Tip, TipText, TipDelimiter } from './styles';
 
 interface CreateNumbersData {
   firstNumber: string;
@@ -82,6 +82,10 @@ const Create: React.FC = () => {
   return (
     <Container>
       {loading && <Loading />}
+      <Tip>
+        <TipText>{trans('phones.create.tip')}</TipText>
+        <TipDelimiter />
+      </Tip>
 
       <Form
         ref={formRef}
@@ -95,7 +99,7 @@ const Create: React.FC = () => {
           countryCode={countryCode}
           returnKeyType="next"
           onSubmitEditing={() => lastNumberRef.current?.focus()}
-          focusable
+          autoFocus
         />
 
         <PhoneInput

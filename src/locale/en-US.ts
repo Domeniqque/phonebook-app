@@ -7,6 +7,7 @@ export default {
     title: 'Phones',
     create: {
       title: 'Add New Phone List',
+      tip: '💡 Enter the area code (DDD)',
       label: {
         first: 'First phone in the list',
         last: 'Last phone in the list',
@@ -42,6 +43,7 @@ export default {
       label: 'Country',
       placeholder: 'Select your country',
     },
+    searchPlaceholder: 'Search',
   },
   phoneFilter: {
     new: 'New',
