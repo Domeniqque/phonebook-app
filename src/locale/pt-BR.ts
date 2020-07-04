@@ -39,6 +39,10 @@ export default {
       label: 'Idioma',
       placeholder: 'Selecione um idioma',
     },
+    countryCode: {
+      label: 'Seu país',
+      placeholder: 'Selecione seu país',
+    },
   },
   phoneFilter: {
     new: 'Novos',

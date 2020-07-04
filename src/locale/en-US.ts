@@ -38,6 +38,10 @@ export default {
       label: 'Language',
       placeholder: 'Select a language',
     },
+    countryCode: {
+      label: 'Country',
+      placeholder: 'Select your country',
+    },
   },
   phoneFilter: {
     new: 'New',
