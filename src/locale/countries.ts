@@ -1,7 +1,9 @@
+import { CountryCode } from 'libphonenumber-js';
+
 interface CountryData {
   label: string;
   name: string;
-  value: string;
+  value: CountryCode;
   dial: string[];
   defaultLanguage: string;
   languages: string[];

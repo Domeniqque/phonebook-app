@@ -12,7 +12,6 @@ import {
   translate,
   setLanguageToI18n,
   setCountryLocale,
-  setDialCodeLocale,
   availableLanguages,
   getLocale,
   CountryData,
@@ -21,11 +20,9 @@ import {
 interface LocaleContextData {
   language: CountryCode;
   country: CountryData;
-  dialCode: string;
   availableLanguages: { label: string; value: string }[];
   changeLanguage(lang: string): void;
   changeCountry(country: CountryData): void;
-  changeDialCode(dial: string): void;
   trans(key: string, options?: TranslateOptions): string;
 }
 
@@ -34,19 +31,13 @@ const LocaleContext = createContext<LocaleContextData>({} as LocaleContextData);
 export const LocaleProvider: React.FC = ({ children }) => {
   const [language, setLanguage] = useState<CountryCode>('en_US' as CountryCode);
   const [country, setCountry] = useState<CountryData>({} as CountryData);
-  const [dialCode, setDialCode] = useState('');
 
   useEffect(() => {
     async function loadData(): Promise<void> {
-      const {
-        language: lang,
-        country: coun,
-        dialCode: dial,
-      } = await getLocale();
+      const { language: lang, country: coun } = await getLocale();
 
       setLanguage(lang as CountryCode);
       setCountry(coun);
-      setDialCode(dial);
     }
 
     loadData();
@@ -57,30 +48,19 @@ export const LocaleProvider: React.FC = ({ children }) => {
     setLanguage(lang as CountryCode);
   }, []);
 
-  const changeDialCode = useCallback((dial: string) => {
-    setDialCode(dial);
-    setDialCodeLocale(dial);
+  const changeCountry = useCallback((data: CountryData) => {
+    setCountry(data);
+    setCountryLocale(data);
   }, []);
-
-  const changeCountry = useCallback(
-    async (data: CountryData) => {
-      setCountry(data);
-      setCountryLocale(data);
-      await changeDialCode(data.dial[0]);
-    },
-    [changeDialCode],
-  );
 
   return (
     <LocaleContext.Provider
       value={{
         language,
         country,
-        dialCode,
         availableLanguages,
         changeLanguage,
         changeCountry,
-        changeDialCode,
         trans: translate,
       }}
     >

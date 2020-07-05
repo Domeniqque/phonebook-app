@@ -100,7 +100,7 @@ const Show: React.FC = () => {
   }, [params.id, findById]);
 
   const resolvePhoneStatusName = useCallback(
-    (status: number): string => {
+    (status: number | undefined): string => {
       switch (status) {
         case PhoneStatus.Received:
           return trans('phoneStatus.received');
@@ -136,11 +136,9 @@ const Show: React.FC = () => {
         )}
       </Header>
 
-      {phone?.status && (
-        <PhoneStatusLabel>
-          {resolvePhoneStatusName(phone?.status)}
-        </PhoneStatusLabel>
-      )}
+      <PhoneStatusLabel>
+        {resolvePhoneStatusName(phone?.status)}
+      </PhoneStatusLabel>
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>

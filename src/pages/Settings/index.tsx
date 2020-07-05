@@ -11,20 +11,11 @@ const Settings: React.FC = () => {
   const {
     language,
     country,
-    dialCode,
     changeLanguage,
     changeCountry,
-    changeDialCode,
     availableLanguages,
     trans,
   } = useLocale();
-
-  const dialCodes = useMemo(() => {
-    return country.dial.map(d => ({
-      value: d,
-      label: d,
-    }));
-  }, [country.dial]);
 
   const handleChangeCountry = useCallback(
     (data: CountryData) => {
@@ -46,14 +37,6 @@ const Settings: React.FC = () => {
           filterable
           defaultValue={country.value}
           onSelect={handleChangeCountry}
-        />
-
-        <Select
-          label={trans('settings.dialCode.label')}
-          placeholder={trans('settings.dialCode.placeholder')}
-          values={dialCodes}
-          defaultValue={dialCode}
-          onSelect={item => changeDialCode(item.value)}
         />
 
         <Select

@@ -36,7 +36,6 @@ export type PhoneResults = Realm.Results<PhoneNumber & Realm.Object>;
 export type PhoneResult = (PhoneNumber & Realm.Object) | undefined;
 
 interface PhoneContextData {
-  countryCode: string;
   findByStatus(status: PhoneStatus): Promise<PhoneResults>;
   addSequence(data: SequenceData): Promise<void>;
   findById(id: string): Promise<PhoneResult>;
@@ -48,7 +47,7 @@ const PhoneContext = createContext<PhoneContextData>({} as PhoneContextData);
 
 export const PhoneProvider: React.FC = ({ children }) => {
   const { alert } = useAlert();
-  const { language: countryCode, trans } = useLocale();
+  const { country, trans } = useLocale();
 
   const findByStatus = useCallback(async (status: PhoneStatus) => {
     const realm = await getRealm();
@@ -92,7 +91,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
             const iterableValue = firstNumber + index;
 
             const fullNumber = `${areaCode}${iterableValue}`;
-            const instance = getNumberInstance(fullNumber, countryCode);
+            const instance = getNumberInstance(fullNumber, country.value);
 
             if (instance?.isPossible()) {
               const nationalValue = instance.formatNational();
@@ -107,7 +106,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
                   id: uuid(),
                   nationalValue,
                   iterableValue,
-                  countryCode,
+                  countryCode: country.value,
                   status: PhoneStatus.New,
                   active: true,
                   updated_at: new Date(),
@@ -138,7 +137,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
         createPhoneNumbers();
       }
     },
-    [alert, trans, countryCode],
+    [alert, trans, country],
   );
 
   const setStatus = useCallback(async (id: string, status: PhoneStatus) => {
@@ -169,7 +168,6 @@ export const PhoneProvider: React.FC = ({ children }) => {
   return (
     <PhoneContext.Provider
       value={{
-        countryCode,
         findByStatus,
         addSequence,
         findById,

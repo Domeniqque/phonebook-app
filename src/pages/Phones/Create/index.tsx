@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useMemo } from 'react';
 import { InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
@@ -14,6 +14,8 @@ import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
 
 import { Container, Tip, TipText, TipDelimiter } from './styles';
+import exampleLocales from '../../../locale/examples.mobile';
+import getNumberInstance from '../../../utils/getNumberInstance';
 
 interface CreateNumbersData {
   firstNumber: string;
@@ -27,11 +29,18 @@ const Create: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { addSequence, countryCode } = usePhone();
+  const { addSequence } = usePhone();
   const { alert, success } = useAlert();
-  const { trans, dialCode } = useLocale();
+  const { trans, country } = useLocale();
 
   const navigation = useNavigation();
+
+  const placeholder = useMemo(() => {
+    const phoneExample = exampleLocales[country.value];
+    const phoneExampleInstance = getNumberInstance(phoneExample, country.value);
+
+    return phoneExampleInstance?.formatNational();
+  }, [country.value]);
 
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
@@ -96,10 +105,10 @@ const Create: React.FC = () => {
           ref={firstNumberRef}
           label={trans('phones.create.label.first')}
           name="firstNumber"
-          countryCode={countryCode}
-          dialCode={dialCode}
+          countryCode={country.value}
           returnKeyType="next"
           onSubmitEditing={() => lastNumberRef.current?.focus()}
+          placeholder={placeholder}
           autoFocus
         />
 
@@ -108,9 +117,9 @@ const Create: React.FC = () => {
           label={trans('phones.create.label.last')}
           name="lastNumber"
           returnKeyType="next"
-          countryCode={countryCode}
-          dialCode={dialCode}
+          countryCode={country.value}
           onSubmitEditing={() => formRef.current?.submitForm()}
+          placeholder={placeholder}
         />
 
         <Button

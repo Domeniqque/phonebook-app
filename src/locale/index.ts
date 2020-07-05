@@ -2,18 +2,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Platform, NativeModules } from 'react-native';
 import I18n, { TranslateOptions } from 'i18n-js';
 
+import { CountryCode } from 'libphonenumber-js';
 import en from './en-US';
 import pt from './pt-BR';
 import countries from './countries';
 
 export const LANG_STORAGE_KEY = '@Phonebook:language';
 export const COUNTRY_STORAGE_KEY = '@Phonebook:country';
-export const DIAL_CODE_STORAGE_KEY = '@Phonebook:dial';
 
 export interface CountryData {
   label: string;
   name: string;
-  value: string;
+  value: CountryCode;
   dial: string[];
   defaultLanguage: string;
   languages: string[];
@@ -51,17 +51,13 @@ const getLanguageByDevice = (): string => {
 const getCountryByLanguageDevice = (): CountryData | undefined => {
   const lang = normalizeTranslate[getLanguageByDevice()];
 
-  const countryKey = lang.split('_')[1];
+  const countryKey = lang.split('_')[1] as CountryCode;
 
   return countries.find(a => a.value === countryKey);
 };
 
 export const setCountryLocale = async (country: CountryData): Promise<void> => {
   await AsyncStorage.setItem(COUNTRY_STORAGE_KEY, JSON.stringify(country));
-};
-
-export const setDialCodeLocale = async (dial: string): Promise<void> => {
-  await AsyncStorage.setItem(DIAL_CODE_STORAGE_KEY, dial);
 };
 
 // Idiomas que o I18N irá dar suporte
@@ -91,16 +87,10 @@ export const setLanguageToI18n = async (language: string): Promise<void> => {
 export async function getLocale(): Promise<{
   country: CountryData;
   language: string;
-  dialCode: string;
 }> {
-  const [
-    langStorage,
-    countryStorage,
-    dialCodeStorage,
-  ] = await AsyncStorage.multiGet([
+  const [langStorage, countryStorage] = await AsyncStorage.multiGet([
     LANG_STORAGE_KEY,
     COUNTRY_STORAGE_KEY,
-    DIAL_CODE_STORAGE_KEY,
   ]);
 
   const countryStored = countryStorage[1]
@@ -113,7 +103,6 @@ export async function getLocale(): Promise<{
   const data = {
     language: langStorage[1] || getLanguageByDevice(),
     country,
-    dialCode: dialCodeStorage[1] || country?.dial[0] || ' ',
   };
 
   return data;

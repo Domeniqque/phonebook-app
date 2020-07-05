@@ -1,16 +1,17 @@
 import React, {
   useCallback,
-  useMemo,
   useState,
   forwardRef,
   useImperativeHandle,
   useRef,
 } from 'react';
 import {
-  parsePhoneNumberFromString,
   PhoneNumber as PhoneNumberLib,
+  CountryCode,
 } from 'libphonenumber-js/mobile';
 import { TextInputProps } from 'react-native';
+
+import getNumberInstance from '../../utils/getNumberInstance';
 
 import Input from '../Input';
 
@@ -24,14 +25,13 @@ export interface PhoneInputRef {
 interface PhoneInputProps extends TextInputProps {
   name: string;
   label?: string;
-  countryCode?: string;
-  dialCode: string;
+  countryCode: CountryCode;
 }
 
 const PhoneInput: React.RefForwardingComponent<
   PhoneInputRef,
   PhoneInputProps
-> = ({ name, countryCode, dialCode, ...rest }, ref) => {
+> = ({ name, countryCode, ...rest }, ref) => {
   const inputRef = useRef<any>(null);
 
   const [phoneInstance, setPhoneInstance] = useState<PhoneNumberInstance>(
@@ -42,15 +42,13 @@ const PhoneInput: React.RefForwardingComponent<
     (value: string) => {
       if (value === '') return '';
 
-      const number = parsePhoneNumberFromString(
-        `${dialCode}${value.replace(new RegExp(`\\${dialCode}`, 'g'), '')}`,
-      );
+      const numberInstance = getNumberInstance(value, countryCode);
 
-      setPhoneInstance(number);
+      setPhoneInstance(numberInstance);
 
-      return number?.formatNational() || value;
+      return numberInstance?.formatNational() || value;
     },
-    [dialCode],
+    [countryCode],
   );
 
   useImperativeHandle(ref, () => ({
