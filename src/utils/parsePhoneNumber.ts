@@ -32,8 +32,6 @@ export function parsePhone(phoneNumber: PhoneNumber | string): PhoneParsed {
     }
   }
 
-  console.log(fullNumber, { areaCode, number });
-
   return {
     number: Number(number),
     areaCode,
