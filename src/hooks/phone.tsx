@@ -52,10 +52,14 @@ export const PhoneProvider: React.FC = ({ children }) => {
   const findByStatus = useCallback(async (status: PhoneStatus) => {
     const realm = await getRealm();
 
+    const sortSql =
+      status === PhoneStatus.New
+        ? 'SORT(nationalValue ASC)'
+        : 'SORT(updated_at DESC, nationalValue ASC)';
+
     const data = realm
       .objects<PhoneNumber>('Phones')
-      .filtered(`active = 1 AND status = ${status}`)
-      .sorted('nationalValue');
+      .filtered(`active = 1 AND status = ${status} ${sortSql}`);
 
     return data;
   }, []);

@@ -31,6 +31,7 @@ export default {
       deleteTitle: 'Delete this number?',
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
+      updatedAt: 'Updated on',
     },
   },
   settings: {

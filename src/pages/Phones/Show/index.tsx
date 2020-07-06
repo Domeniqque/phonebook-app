@@ -1,8 +1,11 @@
+/* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Linking, InteractionManager, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { format } from 'date-fns';
+import { ptBR, enUS } from 'date-fns/locale';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
@@ -20,6 +23,7 @@ import {
   ActionButton,
   ActionButtonText,
   DeleteButton,
+  LastUpdate,
 } from './styles';
 
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
@@ -32,7 +36,7 @@ const Show: React.FC = () => {
   const { findById, setStatus, destroy } = usePhone();
   const navigation = useNavigation();
   const { alert, success } = useAlert();
-  const { trans } = useLocale();
+  const { trans, language } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
     if (phone?.status !== PhoneStatus.Removed)
@@ -99,6 +103,19 @@ const Show: React.FC = () => {
     InteractionManager.runAfterInteractions(loadPhone);
   }, [params.id, findById]);
 
+  const getUpdatedAtFormated = useCallback(
+    (date: Date) => {
+      const dateLocale = language === 'pt_BR' ? ptBR : enUS;
+
+      const updatedAtFormated = format(date, 'cccc, dd MMM yyyy', {
+        locale: dateLocale,
+      });
+
+      return `${trans('phones.show.updatedAt')} ${updatedAtFormated}`;
+    },
+    [language, trans],
+  );
+
   const resolvePhoneStatusName = useCallback(
     (status: number | undefined): string => {
       switch (status) {
@@ -161,6 +178,10 @@ const Show: React.FC = () => {
           <ActionButtonText>{trans('phoneStatus.removed')}</ActionButtonText>
         </ActionButton>
       </ActionContainer>
+
+      {phone?.updated_at && phone.status !== PhoneStatus.New && (
+        <LastUpdate>{getUpdatedAtFormated(phone?.updated_at)}</LastUpdate>
+      )}
     </Container>
   );
 };

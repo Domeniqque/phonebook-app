@@ -1,12 +1,21 @@
+/* eslint-disable import/no-duplicates */
 import React, { useState, useEffect, useCallback } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, SectionList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { format } from 'date-fns';
+import { ptBR, enUS } from 'date-fns/locale';
+import uuid from '../../utils/uuid';
 
-import Loading from '../../components/Loading';
 import PhoneFilter from '../../components/PhoneFilter';
-import { usePhone, PhoneResults, PhoneStatus } from '../../hooks/phone';
+import {
+  usePhone,
+  PhoneResults,
+  PhoneStatus,
+  PhoneResult,
+} from '../../hooks/phone';
+import { useLocale } from '../../hooks/locale';
 
 import {
   Container,
@@ -15,15 +24,23 @@ import {
   PhoneListItemNumber,
   HeaderButtonAdd,
   Divisor,
+  SectionHeader,
 } from './styles';
+
+interface PhoneResultGrouped {
+  title: string;
+  data: PhoneResult[];
+}
 
 const Phones: React.FC = () => {
   const [phones, setPhones] = useState<PhoneResults>();
+  const [groupedPhones, setGroupedPhones] = useState<PhoneResultGrouped[]>();
   const [status, setStatus] = useState<PhoneStatus>(PhoneStatus.New);
   const [filterLoading, setFilterLoading] = useState(true);
   const [phoneLoading, setPhoneLoading] = useState(true);
 
   const navigation = useNavigation();
+  const { language } = useLocale();
   const { findByStatus } = usePhone();
 
   useEffect(() => {
@@ -31,9 +48,36 @@ const Phones: React.FC = () => {
       setPhoneLoading(true);
 
       InteractionManager.runAfterInteractions(async () => {
-        const data = await findByStatus(status);
+        const phoneRawList = await findByStatus(status);
 
-        setPhones(data);
+        if (status !== PhoneStatus.New) {
+          const dateLocale = language === 'pt_BR' ? ptBR : enUS;
+
+          const map = new Map<string, PhoneResult[]>();
+
+          phoneRawList.forEach(item => {
+            const updatedAtKey = format(item.updated_at, 'ccc, dd MMM yyyy', {
+              locale: dateLocale,
+            });
+
+            const collection = map.get(updatedAtKey);
+
+            if (!collection) {
+              map.set(updatedAtKey, [item]);
+            } else {
+              collection.push(item);
+            }
+          });
+
+          const result = Array.from(map, ([title, data]) => ({
+            title,
+            data,
+          })) as PhoneResultGrouped[];
+
+          setGroupedPhones(result);
+        } else {
+          setPhones(phoneRawList);
+        }
 
         setTimeout(() => {
           setFilterLoading(false);
@@ -47,7 +91,7 @@ const Phones: React.FC = () => {
     const unsubscribe = navigation.addListener('focus', loadPhones);
 
     return unsubscribe;
-  }, [navigation, findByStatus, status]);
+  }, [navigation, findByStatus, status, language]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -73,17 +117,47 @@ const Phones: React.FC = () => {
     return items;
   }, []);
 
-  return (
-    <Container>
-      <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+  if (phoneLoading) {
+    return (
+      <Container>
+        <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
 
-      {phoneLoading ? (
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
           style={{ marginTop: 30 }}
         >
           {renderPlaceholderItems()}
         </Placeholder>
+      </Container>
+    );
+  }
+
+  return (
+    <Container>
+      <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+
+      {status !== PhoneStatus.New && groupedPhones ? (
+        <SectionList
+          style={{ marginTop: 20 }}
+          sections={groupedPhones}
+          keyExtractor={item => item?.id || uuid()}
+          renderItem={({ item }) => (
+            <>
+              <Divisor />
+              <PhoneListItem
+                onPress={() => {
+                  navigation.navigate('ShowPhone', { id: item?.id });
+                }}
+              >
+                <PhoneListItemNumber>{item?.nationalValue}</PhoneListItemNumber>
+                <Icon name="chevron-right" size={28} />
+              </PhoneListItem>
+            </>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <SectionHeader>{title}</SectionHeader>
+          )}
+        />
       ) : (
         <PhoneList
           data={phones}

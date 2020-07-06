@@ -18,7 +18,7 @@ import {
 } from '../locale';
 
 interface LocaleContextData {
-  language: CountryCode;
+  language: string;
   country: CountryData;
   availableLanguages: { label: string; value: string }[];
   changeLanguage(lang: string): void;
@@ -29,14 +29,14 @@ interface LocaleContextData {
 const LocaleContext = createContext<LocaleContextData>({} as LocaleContextData);
 
 export const LocaleProvider: React.FC = ({ children }) => {
-  const [language, setLanguage] = useState<CountryCode>('en_US' as CountryCode);
+  const [language, setLanguage] = useState<string>('en_US');
   const [country, setCountry] = useState<CountryData>({} as CountryData);
 
   useEffect(() => {
     async function loadData(): Promise<void> {
       const { language: lang, country: coun } = await getLocale();
 
-      setLanguage(lang as CountryCode);
+      setLanguage(lang);
       setCountry(coun);
     }
 

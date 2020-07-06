@@ -16,8 +16,6 @@ import { useLocale } from '../../../hooks/locale';
 import { Container, Tip, TipText, TipDelimiter } from './styles';
 import exampleLocales from '../../../locale/examples.mobile';
 import getNumberInstance from '../../../utils/getNumberInstance';
-import { parsePhone } from '../../../utils/parsePhoneNumber';
-import locales from '../../../locale/countries';
 
 interface CreateNumbersData {
   firstNumber: string;
@@ -40,14 +38,6 @@ const Create: React.FC = () => {
   const placeholder = useMemo(() => {
     const phoneExample = exampleLocales[country.value];
     const phoneExampleInstance = getNumberInstance(phoneExample, country.value);
-
-    locales.forEach(locale => {
-      const number = exampleLocales[locale.value];
-      const inst = getNumberInstance(number, locale.value);
-      if (inst) parsePhone(inst);
-    });
-
-    // parsePhone(phoneExampleInstance);
 
     return phoneExampleInstance?.formatNational();
   }, [country.value]);
