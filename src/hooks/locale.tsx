@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { CountryCode } from 'libphonenumber-js';
 import { TranslateOptions } from 'i18n-js';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {
   translate,
@@ -33,6 +34,7 @@ export const LocaleProvider: React.FC = ({ children }) => {
   const [country, setCountry] = useState<CountryData>({} as CountryData);
 
   useEffect(() => {
+    crashlytics().log('Carregando idioma');
     async function loadData(): Promise<void> {
       const { language: lang, country: coun } = await getLocale();
 
@@ -44,11 +46,15 @@ export const LocaleProvider: React.FC = ({ children }) => {
   }, []);
 
   const changeLanguage = useCallback((lang: string) => {
+    crashlytics().log('Alterando o idioma');
+
     setLanguageToI18n(lang);
     setLanguage(lang as CountryCode);
   }, []);
 
   const changeCountry = useCallback((data: CountryData) => {
+    crashlytics().log('Alterando o país');
+
     setCountry(data);
     setCountryLocale(data);
   }, []);

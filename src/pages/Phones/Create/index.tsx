@@ -3,6 +3,7 @@ import { InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
+import crashlytics from '@react-native-firebase/crashlytics';
 import * as Yup from 'yup';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -44,6 +45,8 @@ const Create: React.FC = () => {
 
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
+      crashlytics().log('Criando uma lista de números');
+
       formRef.current?.setErrors({});
       setLoading(true);
 
@@ -80,6 +83,8 @@ const Create: React.FC = () => {
             text: trans('defaultError.text'),
             confirmText: 'OK',
           });
+
+          crashlytics().recordError(err);
         }
 
         setLoading(false);

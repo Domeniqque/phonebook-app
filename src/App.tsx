@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import Routes from './routes';
 import AppProvider from './hooks';
@@ -13,7 +14,10 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    startI18nLaguage().then(() => setLoading(false));
+    startI18nLaguage().then(lang => {
+      crashlytics().log(`App mounted. Language: "${lang}"`);
+      setLoading(false);
+    });
   }, []);
 
   return (

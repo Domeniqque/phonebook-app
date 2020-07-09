@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 import Select from '../../components/Select';
 import { useLocale } from '../../hooks/locale';

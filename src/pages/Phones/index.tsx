@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
+import crashlytics from '@react-native-firebase/crashlytics';
 import uuid from '../../utils/uuid';
 
 import PhoneFilter from '../../components/PhoneFilter';
@@ -45,6 +46,7 @@ const Phones: React.FC = () => {
 
   useEffect(() => {
     function loadPhones(): void {
+      crashlytics().log('Listando telefones');
       setPhoneLoading(true);
 
       InteractionManager.runAfterInteractions(async () => {
