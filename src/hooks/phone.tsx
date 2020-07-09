@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useCallback } from 'react';
-import uuid from '../utils/uuid';
+import crashlytics from '@react-native-firebase/crashlytics';
 
+import uuid from '../utils/uuid';
 import { PhoneNumberInstance } from '../components/PhoneInput';
 import validateSequence from '../utils/validateSequence';
 import getNumberInstance from '../utils/getNumberInstance';
@@ -50,6 +51,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
   const { country, trans } = useLocale();
 
   const findByStatus = useCallback(async (status: PhoneStatus) => {
+    crashlytics().log(`Usando findByStatus ${status}`);
     const realm = await getRealm();
 
     const sortSql =
@@ -65,12 +67,16 @@ export const PhoneProvider: React.FC = ({ children }) => {
   }, []);
 
   const findById = useCallback(async (id: string) => {
+    crashlytics().log('Usando findById');
+
     const realm = await getRealm();
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
   }, []);
 
   const addSequence = useCallback(
     async (data: SequenceData): Promise<void> => {
+      crashlytics().log('Usando método addSequencce');
+
       const {
         isValid,
         firstNumber,
@@ -86,6 +92,17 @@ export const PhoneProvider: React.FC = ({ children }) => {
         });
         return;
       }
+
+      crashlytics().setAttribute(
+        'data',
+        JSON.stringify({
+          isValid,
+          firstNumber,
+          distanceBetween,
+          areaCode,
+          originalData: data,
+        }),
+      );
 
       const realm = await getRealm();
 
@@ -125,7 +142,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
         if (data?.callOnSuccess) data.callOnSuccess();
       };
 
-      if (distanceBetween > 100) {
+      if (distanceBetween > 300) {
         alert({
           title: trans('phones.create.validation.veryLargeTitle', {
             distanceBetween,

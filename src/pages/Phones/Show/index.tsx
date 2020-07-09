@@ -5,6 +5,7 @@ import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { format } from 'date-fns';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { ptBR, enUS } from 'date-fns/locale';
 
 import { PhoneStackProps } from '../../../routes/phones.routes';
@@ -39,6 +40,8 @@ const Show: React.FC = () => {
   const { trans, language } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
+    crashlytics().log(`Abrindo o número ${phone?.nationalValue} na chamada`);
+
     if (phone?.status !== PhoneStatus.Removed)
       Linking.openURL(`tel:${phone?.nationalValue}`);
   }, [phone?.nationalValue, phone?.status]);
@@ -47,6 +50,8 @@ const Show: React.FC = () => {
     async (status: PhoneStatus) => {
       if (!phone?.id) return;
 
+      crashlytics().log('Alterando a situação de um número');
+
       InteractionManager.runAfterInteractions(() => {
         setStatus(phone?.id, status)
           .then(() => {
@@ -54,12 +59,14 @@ const Show: React.FC = () => {
 
             navigation.navigate('Phones');
           })
-          .catch(() => {
+          .catch(error => {
             alert({
               title: trans('defaultError.title'),
               text: trans('defaultError.text'),
               confirmText: 'OK',
             });
+
+            crashlytics().recordError(error);
           });
       });
     },
@@ -74,10 +81,14 @@ const Show: React.FC = () => {
       confirmText: trans('phones.show.deleteOk'),
       cancelText: trans('phones.show.deleteCancel'),
       onConfirm: () => {
-        destroy(phone?.id).then(() => {
-          success();
-          navigation.navigate('Phones');
-        });
+        crashlytics().log('Deletando um número');
+
+        destroy(phone?.id)
+          .then(() => {
+            success();
+            navigation.navigate('Phones');
+          })
+          .catch(error => crashlytics().recordError(error));
       },
     });
   }, [phone?.id, destroy, navigation, alert, success, trans]);
@@ -93,6 +104,8 @@ const Show: React.FC = () => {
   }, [navigation, handleDeletePhone]);
 
   useEffect(() => {
+    crashlytics().log('Exibindo um número');
+
     async function loadPhone(): Promise<void> {
       const data = await findById(params.id);
 

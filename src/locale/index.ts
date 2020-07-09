@@ -108,9 +108,11 @@ export async function getLocale(): Promise<{
   return data;
 }
 
-export const startI18nLaguage = async (): Promise<void> => {
+export const startI18nLaguage = async (): Promise<string> => {
   const { language } = await getLocale();
   setLanguageToI18n(language);
+
+  return language;
 };
 
 export const translate = (key: string, options?: TranslateOptions): string =>
