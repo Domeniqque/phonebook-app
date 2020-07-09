@@ -4,6 +4,7 @@ import { InteractionManager, SectionList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import uuid from '../../utils/uuid';
@@ -45,6 +46,7 @@ const Phones: React.FC = () => {
 
   useEffect(() => {
     function loadPhones(): void {
+      crashlytics().log('Loading phone list.');
       setPhoneLoading(true);
 
       InteractionManager.runAfterInteractions(async () => {

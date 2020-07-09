@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useCallback } from 'react';
+import crashlytics from '@react-native-firebase/crashlytics';
 import uuid from '../utils/uuid';
 
 import { PhoneNumberInstance } from '../components/PhoneInput';
@@ -77,6 +78,17 @@ export const PhoneProvider: React.FC = ({ children }) => {
         distanceBetween,
         areaCode,
       } = validateSequence(data);
+
+      crashlytics().setAttribute(
+        'data',
+        JSON.stringify({
+          isValid,
+          firstNumber,
+          distanceBetween,
+          areaCode,
+          country,
+        }),
+      );
 
       if (!isValid) {
         alert({

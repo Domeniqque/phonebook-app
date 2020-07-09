@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "613355417433",
+    "firebase_url": "https://phonebook-app-daa1c.firebaseio.com",
+    "project_id": "phonebook-app-daa1c",
+    "storage_bucket": "phonebook-app-daa1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613355417433:android:af196a053cf49854b7a648",
+        "android_client_info": {
+          "package_name": "com.appphonebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613355417433-9gdhar9f8gk6bvcq98f0djicnnt7l3ue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnhng9-b4u-aJNZBVg0dLuhT72ozILASU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613355417433-9gdhar9f8gk6bvcq98f0djicnnt7l3ue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

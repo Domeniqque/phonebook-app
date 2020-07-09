@@ -4,6 +4,7 @@ import { Linking, InteractionManager, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 
@@ -39,6 +40,8 @@ const Show: React.FC = () => {
   const { trans, language } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
+    crashlytics().log('Opening phone keypad');
+
     if (phone?.status !== PhoneStatus.Removed)
       Linking.openURL(`tel:${phone?.nationalValue}`);
   }, [phone?.nationalValue, phone?.status]);
@@ -46,6 +49,7 @@ const Show: React.FC = () => {
   const handlePhoneStatus = useCallback(
     async (status: PhoneStatus) => {
       if (!phone?.id) return;
+      crashlytics().log('Setting phone status');
 
       InteractionManager.runAfterInteractions(() => {
         setStatus(phone?.id, status)
@@ -60,6 +64,9 @@ const Show: React.FC = () => {
               text: trans('defaultError.text'),
               confirmText: 'OK',
             });
+          })
+          .catch(error => {
+            crashlytics().recordError(error);
           });
       });
     },
@@ -74,10 +81,16 @@ const Show: React.FC = () => {
       confirmText: trans('phones.show.deleteOk'),
       cancelText: trans('phones.show.deleteCancel'),
       onConfirm: () => {
-        destroy(phone?.id).then(() => {
-          success();
-          navigation.navigate('Phones');
-        });
+        crashlytics().log('Deleting phone');
+
+        destroy(phone?.id)
+          .then(() => {
+            success();
+            navigation.navigate('Phones');
+          })
+          .catch(err => {
+            crashlytics().recordError(err);
+          });
       },
     });
   }, [phone?.id, destroy, navigation, alert, success, trans]);

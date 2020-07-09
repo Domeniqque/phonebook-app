@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState, useMemo } from 'react';
 import { InteractionManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
@@ -44,6 +45,7 @@ const Create: React.FC = () => {
 
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
+      crashlytics().log('Create numbers');
       formRef.current?.setErrors({});
       setLoading(true);
 
@@ -72,14 +74,16 @@ const Create: React.FC = () => {
           setLoading(false);
         });
       } catch (err) {
-        if (err instanceof Yup.ValidationError)
+        if (err instanceof Yup.ValidationError) {
           formRef.current?.setErrors(getValidationErrors(err));
-        else {
+        } else {
           alert({
             title: trans('defaultError.title'),
             text: trans('defaultError.text'),
             confirmText: 'OK',
           });
+
+          crashlytics().recordError(err);
         }
 
         setLoading(false);
