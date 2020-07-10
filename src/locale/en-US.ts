@@ -5,6 +5,7 @@ export default {
   },
   phones: {
     title: 'Phones',
+    emptyContentButton: 'Add phone numbers',
     create: {
       title: 'Add New Phone List',
       tip: '💡 Enter the area code (DDD)',

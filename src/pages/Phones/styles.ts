@@ -45,3 +45,20 @@ export const SectionHeader = styled.Text`
   padding: 4px 10px;
   margin-right: 5px;
 `;
+
+export const EmptyContentContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+export const CenteredAddButton = styled.TouchableOpacity`
+  flex-direction: row;
+  border: #000;
+  padding: 10px 16px;
+  border-radius: 30px;
+`;
+export const CenteredAddButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+`;

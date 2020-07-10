@@ -1,5 +1,5 @@
 /* eslint-disable import/no-duplicates */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { InteractionManager, SectionList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -26,6 +26,9 @@ import {
   HeaderButtonAdd,
   Divisor,
   SectionHeader,
+  CenteredAddButton,
+  CenteredAddButtonText,
+  EmptyContentContainer,
 } from './styles';
 
 interface PhoneResultGrouped {
@@ -39,9 +42,13 @@ const Phones: React.FC = () => {
   const [status, setStatus] = useState<PhoneStatus>(PhoneStatus.New);
   const [filterLoading, setFilterLoading] = useState(true);
   const [phoneLoading, setPhoneLoading] = useState(true);
+  const isEmptyContent = useMemo(
+    () => status === PhoneStatus.New && !phoneLoading && phones?.length === 0,
+    [status, phoneLoading, phones?.length],
+  );
 
   const navigation = useNavigation();
-  const { language } = useLocale();
+  const { language, trans } = useLocale();
   const { findByStatus } = usePhone();
 
   useEffect(() => {
@@ -96,18 +103,20 @@ const Phones: React.FC = () => {
   }, [navigation, findByStatus, status, language]);
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtonAdd>
-          <Icon
-            name="plus"
-            size={28}
-            onPress={() => navigation.navigate('CreatePhone')}
-          />
-        </HeaderButtonAdd>
-      ),
-    });
-  }, [navigation]);
+    if (!isEmptyContent) {
+      navigation.setOptions({
+        headerRight: () => (
+          <HeaderButtonAdd onPress={() => navigation.navigate('CreatePhone')}>
+            <Icon name="plus" size={28} />
+          </HeaderButtonAdd>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerRight: () => null,
+      });
+    }
+  }, [navigation, isEmptyContent]);
 
   const renderPlaceholderItems = useCallback(() => {
     const items = [];
@@ -130,6 +139,21 @@ const Phones: React.FC = () => {
         >
           {renderPlaceholderItems()}
         </Placeholder>
+      </Container>
+    );
+  }
+
+  if (isEmptyContent) {
+    return (
+      <Container>
+        <EmptyContentContainer>
+          <CenteredAddButton onPress={() => navigation.navigate('CreatePhone')}>
+            <Icon name="plus" size={24} />
+            <CenteredAddButtonText>
+              {trans('phones.emptyContentButton')}
+            </CenteredAddButtonText>
+          </CenteredAddButton>
+        </EmptyContentContainer>
       </Container>
     );
   }

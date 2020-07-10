@@ -5,6 +5,7 @@ export default {
   },
   phones: {
     title: 'Telefones',
+    emptyContentButton: 'Adicionar números',
     create: {
       title: 'Adicionar Telefones',
       tip: '💡 Informe o código de área (DDD)',
