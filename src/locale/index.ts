@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Platform, NativeModules } from 'react-native';
 import I18n, { TranslateOptions } from 'i18n-js';
+import * as RNLocalize from 'react-native-localize';
 
 import { CountryCode } from 'libphonenumber-js';
 import en from './en-US';
 import pt from './pt-BR';
-import countries from './countries';
+import countries, { defaultCountry } from './countries';
 
 export const LANG_STORAGE_KEY = '@Phonebook:language';
 export const COUNTRY_STORAGE_KEY = '@Phonebook:country';
@@ -30,9 +31,6 @@ export const availableLanguages = [
   },
 ];
 
-// Função que irá nos auxiliar a normalizar as traduções que serão recebidas pela função getLanguageByDevice
-// Isso é necessário pois no android e no iOS o retorno do mesmo idioma pode ser diferente
-// Exemplo: no iOS podemos receber pt_US e no android pt_BR para o idioma português Brasil.
 const normalizeTranslate: { [key: string]: string } = {
   en_US: 'en_US',
   pt_BR: 'pt_BR',
@@ -40,20 +38,16 @@ const normalizeTranslate: { [key: string]: string } = {
   pt_US: 'pt_BR',
 };
 
-// Função responsável por adquirir o idioma utilizado no device
 const getLanguageByDevice = (): string => {
-  return Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale ||
-        NativeModules.SettingsManager.settings.AppleLanguages[0]
-    : NativeModules.I18nManager.localeIdentifier;
+  const { languageTag } = RNLocalize.getLocales()[0];
+
+  return languageTag.replace('-', '_');
 };
 
-const getCountryByLanguageDevice = (): CountryData | undefined => {
-  const lang = normalizeTranslate[getLanguageByDevice()];
+const getCountryByDevice = (): CountryData => {
+  const { countryCode } = RNLocalize.getLocales()[0];
 
-  const countryKey = lang.split('_')[1] as CountryCode;
-
-  return countries.find(a => a.value === countryKey);
+  return countries.find(a => a.value === countryCode) || defaultCountry;
 };
 
 export const setCountryLocale = async (country: CountryData): Promise<void> => {
@@ -93,12 +87,9 @@ export async function getLocale(): Promise<{
     COUNTRY_STORAGE_KEY,
   ]);
 
-  const countryStored = countryStorage[1]
+  const country = countryStorage[1]
     ? (JSON.parse(countryStorage[1]) as CountryData)
-    : null;
-
-  const country = (countryStored ||
-    getCountryByLanguageDevice()) as CountryData;
+    : getCountryByDevice();
 
   const data = {
     language: langStorage[1] || getLanguageByDevice(),
@@ -110,6 +101,7 @@ export async function getLocale(): Promise<{
 
 export const startI18nLaguage = async (): Promise<string> => {
   const { language } = await getLocale();
+
   setLanguageToI18n(language);
 
   return language;
