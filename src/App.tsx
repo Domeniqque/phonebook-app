@@ -7,17 +7,20 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import Routes from './routes';
 import AppProvider from './hooks';
 import Loading from './components/Loading';
-
 import { startI18nLaguage } from './locale';
+
+import './exception';
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    startI18nLaguage().then(lang => {
-      crashlytics().log(`App mounted. Language: "${lang}"`);
-      setLoading(false);
-    });
+    startI18nLaguage()
+      .then(lang => {
+        crashlytics().log(`App mounted. Language: "${lang}"`);
+        setLoading(false);
+      })
+      .catch(err => crashlytics().recordError(err));
   }, []);
 
   return (
