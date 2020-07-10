@@ -103,20 +103,14 @@ const Phones: React.FC = () => {
   }, [navigation, findByStatus, status, language]);
 
   useEffect(() => {
-    if (!isEmptyContent) {
-      navigation.setOptions({
-        headerRight: () => (
-          <HeaderButtonAdd onPress={() => navigation.navigate('CreatePhone')}>
-            <Icon name="plus" size={28} />
-          </HeaderButtonAdd>
-        ),
-      });
-    } else {
-      navigation.setOptions({
-        headerRight: () => null,
-      });
-    }
-  }, [navigation, isEmptyContent]);
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtonAdd onPress={() => navigation.navigate('CreatePhone')}>
+          <Icon name="plus" size={28} />
+        </HeaderButtonAdd>
+      ),
+    });
+  }, [navigation]);
 
   const renderPlaceholderItems = useCallback(() => {
     const items = [];
@@ -146,6 +140,8 @@ const Phones: React.FC = () => {
   if (isEmptyContent) {
     return (
       <Container>
+        <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+
         <EmptyContentContainer>
           <CenteredAddButton onPress={() => navigation.navigate('CreatePhone')}>
             <Icon name="plus" size={24} />

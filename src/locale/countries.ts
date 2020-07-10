@@ -9,6 +9,15 @@ interface CountryData {
   languages: string[];
 }
 
+export const defaultCountry: CountryData = {
+  defaultLanguage: 'en_US',
+  dial: ['+1'],
+  label: '🇺🇸 United States',
+  languages: ['eng'],
+  name: 'United States',
+  value: 'US',
+};
+
 const Countries: CountryData[] = [
   {
     defaultLanguage: 'en_US',
