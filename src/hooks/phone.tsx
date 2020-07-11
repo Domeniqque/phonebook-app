@@ -3,7 +3,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import uuid from '../utils/uuid';
 import { PhoneNumberInstance } from '../components/PhoneInput';
-import validateSequence from '../utils/validateSequence';
+import parseAndValidateSequence from '../utils/validateSequence';
 import getNumberInstance from '../utils/getNumberInstance';
 import getRealm from '../services/realm';
 import { useAlert } from './alert';
@@ -82,7 +82,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
         firstNumber,
         distanceBetween,
         areaCode,
-      } = validateSequence(data);
+      } = parseAndValidateSequence(data);
 
       if (!isValid) {
         alert({

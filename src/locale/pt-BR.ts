@@ -5,10 +5,10 @@ export default {
   },
   phones: {
     title: 'Telefones',
-    emptyContentButton: 'Adicionar números',
+    emptyContentButton: 'ADICIONAR NÚMEROS',
     create: {
       title: 'Adicionar Telefones',
-      tip: '💡 Informe o código de área (DDD)',
+      tip: 'Informe o código de área (DDD)',
       label: {
         first: 'Primeiro telefone da lista',
         last: 'Último telefone da lista',

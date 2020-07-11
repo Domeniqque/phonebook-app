@@ -159,9 +159,7 @@ const Show: React.FC = () => {
         ) : (
           <HeaderAction onPress={handleCallToPhone}>
             <HeaderText>{phone?.nationalValue}</HeaderText>
-            {phone?.status !== PhoneStatus.Removed && (
-              <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
-            )}
+            <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
           </HeaderAction>
         )}
       </Header>

@@ -19,9 +19,8 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
 
   const handleSelect = useCallback(
     (status: PhoneStatus) => {
-      onStatusChange(status);
-
       setSelected(status);
+      onStatusChange(status);
     },
     [onStatusChange],
   );

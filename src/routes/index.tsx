@@ -18,8 +18,10 @@ const PhonesRoutes: React.FC = () => {
       tabBarOptions={{
         activeTintColor: '#000',
         inactiveTintColor: '#ccc',
+        keyboardHidesTabBar: true,
         style: {
           borderTopColor: 'transparent',
+          elevation: 0,
         },
       }}
     >

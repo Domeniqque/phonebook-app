@@ -62,6 +62,7 @@ const PhoneInput: React.RefForwardingComponent<
       name={name}
       icon="phone"
       formatValue={handleFormatValue}
+      keyboardType="phone-pad"
       {...rest}
     />
   );
