@@ -23,7 +23,7 @@ import {
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
-  HeaderButtonAdd,
+  FabButton,
   Divisor,
   SectionHeader,
   CenteredAddButton,
@@ -42,19 +42,20 @@ const Phones: React.FC = () => {
   const [status, setStatus] = useState<PhoneStatus>(PhoneStatus.New);
   const [filterLoading, setFilterLoading] = useState(true);
   const [phoneLoading, setPhoneLoading] = useState(true);
-  const isEmptyContent = useMemo(
-    () => status === PhoneStatus.New && !phoneLoading && phones?.length === 0,
-    [status, phoneLoading, phones?.length],
-  );
+  const isEmptyContent = useMemo(() => !phoneLoading && phones?.length === 0, [
+    phoneLoading,
+    phones?.length,
+  ]);
 
   const navigation = useNavigation();
   const { language, trans } = useLocale();
   const { findByStatus } = usePhone();
 
   useEffect(() => {
+    setPhoneLoading(true);
+
     function loadPhones(): void {
       crashlytics().log('Listando telefones');
-      setPhoneLoading(true);
 
       InteractionManager.runAfterInteractions(async () => {
         const phoneRawList = await findByStatus(status);
@@ -88,10 +89,8 @@ const Phones: React.FC = () => {
           setPhones(phoneRawList);
         }
 
-        setTimeout(() => {
-          setFilterLoading(false);
-          setPhoneLoading(false);
-        }, 300);
+        setFilterLoading(false);
+        setPhoneLoading(false);
       });
     }
 
@@ -102,30 +101,28 @@ const Phones: React.FC = () => {
     return unsubscribe;
   }, [navigation, findByStatus, status, language]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtonAdd onPress={() => navigation.navigate('CreatePhone')}>
-          <Icon name="plus" size={28} />
-        </HeaderButtonAdd>
-      ),
-    });
-  }, [navigation]);
-
   const renderPlaceholderItems = useCallback(() => {
     const items = [];
 
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 9; index++) {
       items.push(<PlaceholderLine height={30} key={`${index}-ph-phone`} />);
     }
 
     return items;
   }, []);
 
+  const handleChangeStatus = useCallback((data: PhoneStatus) => {
+    setPhoneLoading(true);
+    setStatus(data);
+  }, []);
+
   if (phoneLoading) {
     return (
       <Container>
-        <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+        <PhoneFilter
+          onStatusChange={handleChangeStatus}
+          loading={filterLoading}
+        />
 
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
@@ -137,14 +134,17 @@ const Phones: React.FC = () => {
     );
   }
 
-  if (isEmptyContent) {
+  if (isEmptyContent && status === PhoneStatus.New) {
     return (
       <Container>
-        <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+        <PhoneFilter
+          onStatusChange={handleChangeStatus}
+          loading={filterLoading}
+        />
 
         <EmptyContentContainer>
           <CenteredAddButton onPress={() => navigation.navigate('CreatePhone')}>
-            <Icon name="plus" size={24} />
+            <Icon name="plus" size={24} color="#000" />
             <CenteredAddButtonText>
               {trans('phones.emptyContentButton')}
             </CenteredAddButtonText>
@@ -156,7 +156,10 @@ const Phones: React.FC = () => {
 
   return (
     <Container>
-      <PhoneFilter onStatusChange={setStatus} loading={filterLoading} />
+      <PhoneFilter
+        onStatusChange={handleChangeStatus}
+        loading={filterLoading}
+      />
 
       {status !== PhoneStatus.New && groupedPhones ? (
         <SectionList
@@ -187,7 +190,9 @@ const Phones: React.FC = () => {
           ItemSeparatorComponent={() => <Divisor />}
           renderItem={({ item }) => (
             <PhoneListItem
-              onPress={() => navigation.navigate('ShowPhone', { id: item.id })}
+              onPress={() => {
+                navigation.navigate('ShowPhone', { id: item.id });
+              }}
             >
               <PhoneListItemNumber>{item.nationalValue}</PhoneListItemNumber>
               <Icon name="chevron-right" size={28} />
@@ -195,6 +200,10 @@ const Phones: React.FC = () => {
           )}
         />
       )}
+
+      <FabButton onPress={() => navigation.navigate('CreatePhone')}>
+        <Icon name="plus" size={24} color="#fff" />
+      </FabButton>
     </Container>
   );
 };

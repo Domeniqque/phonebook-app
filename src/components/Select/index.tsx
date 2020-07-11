@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import { Modal } from 'react-native';
+import { Modal, InteractionManager } from 'react-native';
 import { Form } from '@unform/mobile';
 
 import Input from '../Input';
@@ -45,7 +45,7 @@ const Select: React.FC<SelectProps> = ({
   placeholder,
   filterable,
   onSelect,
-  alertOnSelect = true,
+  alertOnSelect = false,
 }) => {
   const [selectedValue, setSelectedValue] = useState<SelectItem>();
   const [selectVisible, setSelectVisible] = useState(false);
@@ -57,7 +57,9 @@ const Select: React.FC<SelectProps> = ({
   const items = useMemo(() => {
     if (!filter) return values;
 
-    return values.filter(i => i.label.indexOf(filter) > -1);
+    return values.filter(
+      i => i.label.toLowerCase().indexOf(filter.toLowerCase()) > -1,
+    );
   }, [values, filter]);
 
   useEffect(() => {
@@ -74,6 +76,7 @@ const Select: React.FC<SelectProps> = ({
       if (onSelect) onSelect(value);
 
       setSelectedValue(value);
+
       setSelectVisible(false);
 
       setFilter('');

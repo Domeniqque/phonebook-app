@@ -34,8 +34,11 @@ const PhonesRoutes: React.FC = () => {
         ),
         headerStyle: {
           shadowColor: 'transparent',
+          elevation: 0,
         },
         headerTitleStyle: {
+          textAlign: 'center',
+          alignSelf: 'center',
           fontSize: 24,
         },
       }}
@@ -51,7 +54,9 @@ const PhonesRoutes: React.FC = () => {
       <Stack.Screen
         name="CreatePhone"
         component={CreatePhone}
-        options={{ title: trans('phones.create.title') }}
+        options={{
+          title: trans('phones.create.title'),
+        }}
       />
 
       <Stack.Screen

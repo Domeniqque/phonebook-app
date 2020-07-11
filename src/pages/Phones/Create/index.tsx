@@ -1,5 +1,9 @@
 import React, { useCallback, useRef, useState, useMemo } from 'react';
-import { InteractionManager } from 'react-native';
+import {
+  InteractionManager,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
@@ -14,7 +18,7 @@ import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
 
-import { Container, Tip, TipText, TipDelimiter } from './styles';
+import { Container, Tip, TipText } from './styles';
 import exampleLocales from '../../../locale/examples.mobile';
 import getNumberInstance from '../../../utils/getNumberInstance';
 
@@ -98,7 +102,6 @@ const Create: React.FC = () => {
       {loading && <Loading />}
       <Tip>
         <TipText>{trans('phones.create.tip')}</TipText>
-        <TipDelimiter />
       </Tip>
 
       <Form
@@ -106,33 +109,38 @@ const Create: React.FC = () => {
         onSubmit={handleCreateNumbers}
         style={{ marginTop: 20 }}
       >
-        <PhoneInput
-          ref={firstNumberRef}
-          label={trans('phones.create.label.first')}
-          name="firstNumber"
-          countryCode={country.value}
-          returnKeyType="next"
-          onSubmitEditing={() => lastNumberRef.current?.focus()}
-          placeholder={placeholder}
-          autoFocus
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <PhoneInput
+            ref={firstNumberRef}
+            label={trans('phones.create.label.first')}
+            name="firstNumber"
+            countryCode={country.value}
+            returnKeyType="next"
+            onSubmitEditing={() => lastNumberRef.current?.focus()}
+            placeholder={placeholder}
+            autoFocus
+          />
 
-        <PhoneInput
-          ref={lastNumberRef}
-          label={trans('phones.create.label.last')}
-          name="lastNumber"
-          returnKeyType="next"
-          countryCode={country.value}
-          onSubmitEditing={() => formRef.current?.submitForm()}
-          placeholder={placeholder}
-        />
+          <PhoneInput
+            ref={lastNumberRef}
+            label={trans('phones.create.label.last')}
+            name="lastNumber"
+            returnKeyType="next"
+            countryCode={country.value}
+            onSubmitEditing={() => formRef.current?.submitForm()}
+            placeholder={placeholder}
+          />
 
-        <Button
-          text={trans('phones.create.button')}
-          icon="save"
-          style={{ marginTop: 30 }}
-          onPress={() => formRef.current?.submitForm()}
-        />
+          <Button
+            text={trans('phones.create.button')}
+            icon="save"
+            style={{ marginTop: 8 }}
+            onPress={() => formRef.current?.submitForm()}
+          />
+        </KeyboardAvoidingView>
       </Form>
     </Container>
   );

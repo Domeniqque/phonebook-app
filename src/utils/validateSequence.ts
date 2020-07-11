@@ -14,9 +14,9 @@ interface Response {
   distanceBetween: number;
 }
 
-const maxSequenceSize = 100000;
+const maxSequenceSize = 50000;
 
-export default function validateSequence(data: SequenceData): Response {
+export default function parseAndValidateSequence(data: SequenceData): Response {
   if (!data.firstNumber?.isPossible() || !data.lastNumber?.isPossible()) {
     return {
       isValid: false,
@@ -32,7 +32,7 @@ export default function validateSequence(data: SequenceData): Response {
 
   const distanceBetween = lastPhone.number - firstPhone.number + 1;
 
-  const isValid = distanceBetween > 1 && distanceBetween < maxSequenceSize;
+  const isValid = distanceBetween >= 1 && distanceBetween <= maxSequenceSize;
 
   return {
     isValid,
