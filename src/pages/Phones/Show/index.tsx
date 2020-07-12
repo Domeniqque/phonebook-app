@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, InteractionManager, View } from 'react-native';
+import { Linking, InteractionManager, View, NativeModules } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
@@ -12,7 +12,6 @@ import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
-
 import {
   Container,
   Header,
@@ -27,6 +26,11 @@ import {
   LastUpdate,
 } from './styles';
 
+const { PlatformConstants } = NativeModules;
+const deviceType = PlatformConstants.interfaceIdiom;
+
+const isMobilePhone = deviceType !== 'pad';
+
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
 
 const Show: React.FC = () => {
@@ -40,11 +44,11 @@ const Show: React.FC = () => {
   const { trans, language } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
+    if (!isMobilePhone) return;
     crashlytics().log(`Abrindo o número ${phone?.nationalValue} na chamada`);
 
-    if (phone?.status !== PhoneStatus.Removed)
-      Linking.openURL(`tel:${phone?.nationalValue}`);
-  }, [phone?.nationalValue, phone?.status]);
+    Linking.openURL(`tel:${phone?.nationalValue}`);
+  }, [phone?.nationalValue]);
 
   const handlePhoneStatus = useCallback(
     async (status: PhoneStatus) => {
@@ -159,7 +163,9 @@ const Show: React.FC = () => {
         ) : (
           <HeaderAction onPress={handleCallToPhone}>
             <HeaderText>{phone?.nationalValue}</HeaderText>
-            <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
+            {isMobilePhone && (
+              <HeaderLabel>{trans('phones.show.clickToCall')}</HeaderLabel>
+            )}
           </HeaderAction>
         )}
       </Header>
