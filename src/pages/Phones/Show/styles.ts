@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 const margin = 8;
-export const cardWidth = width / 2 - margin * 2;
+export const cardWidth = Math.min(width / 2 - margin * 2, 280);
 export const cardHeigth = cardWidth;
 
 export const Container = styled.View`
@@ -60,7 +60,7 @@ export const ActionButton = styled.TouchableOpacity`
 
   border-width: 2px;
   border-radius: 10px;
-  margin: 2px;
+  margin: 4px;
   justify-content: center;
   align-items: center;
   background: #fff;

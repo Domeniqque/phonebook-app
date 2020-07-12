@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Platform, NativeModules } from 'react-native';
 import I18n, { TranslateOptions } from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 

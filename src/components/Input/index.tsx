@@ -81,7 +81,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   }, [fieldName, registerField]);
 
   return (
-    <>
+    <View style={{ paddingBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
       <Container isFocused={isFocused} isErrored={!!error}>
@@ -106,7 +106,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       </Container>
 
       {error && <TextError>{error}</TextError>}
-    </>
+    </View>
   );
 };
 
