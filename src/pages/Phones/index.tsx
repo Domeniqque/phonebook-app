@@ -202,7 +202,7 @@ const Phones: React.FC = () => {
       )}
 
       <FabButton onPress={() => navigation.navigate('CreatePhone')}>
-        <Icon name="plus" size={24} color="#fff" />
+        <Icon name="plus" size={36} color="#fff" />
       </FabButton>
     </Container>
   );
