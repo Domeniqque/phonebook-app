@@ -59,9 +59,8 @@ const Show: React.FC = () => {
       InteractionManager.runAfterInteractions(() => {
         setStatus(phone?.id, status)
           .then(() => {
-            success();
-
             navigation.navigate('Phones');
+            success();
           })
           .catch(error => {
             alert({
@@ -89,8 +88,8 @@ const Show: React.FC = () => {
 
         destroy(phone?.id)
           .then(() => {
-            success();
             navigation.navigate('Phones');
+            success();
           })
           .catch(error => crashlytics().recordError(error));
       },

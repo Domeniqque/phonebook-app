@@ -26,6 +26,7 @@ export const PhoneListItem = styled(RectButton)`
 
 export const PhoneListItemNumber = styled.Text`
   font-size: 21px;
+  margin-left: 5px;
 `;
 
 export const FabButton = styled.TouchableOpacity`

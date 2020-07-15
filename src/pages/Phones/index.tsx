@@ -56,6 +56,7 @@ const Phones: React.FC = () => {
 
     function loadPhones(): void {
       crashlytics().log('Listando telefones');
+      setGroupedPhones([] as PhoneResultGrouped[]);
 
       InteractionManager.runAfterInteractions(async () => {
         const phoneRawList = await findByStatus(status);
@@ -126,7 +127,7 @@ const Phones: React.FC = () => {
 
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
-          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 20 }}
+          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 30 }}
         >
           {renderPlaceholderItems()}
         </Placeholder>
