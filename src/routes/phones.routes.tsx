@@ -33,10 +33,11 @@ const PhonesRoutes: React.FC = () => {
             style={{ paddingLeft: 16 }}
           />
         ),
+        headerStatusBarHeight: 60,
         headerStyle: {
           shadowColor: 'transparent',
           elevation: 0,
-          height: 80,
+          // height: 80,
         },
         headerTitleStyle: {
           textAlign: 'center',

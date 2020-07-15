@@ -174,7 +174,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
     });
   }, []);
 
-  const destroy = useCallback(async (id: string) => {
+  const destroy = useCallback(async (id: string): Promise<void> => {
     const realm = await getRealm();
 
     realm.write(() => {
