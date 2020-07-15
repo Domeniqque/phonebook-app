@@ -1,11 +1,20 @@
 import React, { useCallback } from 'react';
+import { Linking } from 'react-native';
 
 import Select from '../../components/Select';
 import { useLocale } from '../../hooks/locale';
 import countries from '../../locale/countries';
 import { CountryData } from '../../locale';
 
-import { Container, Title, Content } from './styles';
+import {
+  Container,
+  Title,
+  Content,
+  Links,
+  LinksTitle,
+  LinkButton,
+  LinkButtonText,
+} from './styles';
 
 const Settings: React.FC = () => {
   const {
@@ -46,6 +55,25 @@ const Settings: React.FC = () => {
           defaultValue={language}
           onSelect={item => changeLanguage(item.value)}
         />
+
+        <Links>
+          <LinksTitle>LINKS</LinksTitle>
+          <LinkButton
+            onPress={() => {
+              Linking.openURL('https://phonepreaching.vercel.app/privacy');
+            }}
+          >
+            <LinkButtonText>{trans('settings.privacy')}</LinkButtonText>
+          </LinkButton>
+
+          <LinkButton
+            onPress={() => {
+              Linking.openURL('https://phonepreaching.vercel.app');
+            }}
+          >
+            <LinkButtonText>{trans('settings.site')}</LinkButtonText>
+          </LinkButton>
+        </Links>
       </Content>
     </Container>
   );

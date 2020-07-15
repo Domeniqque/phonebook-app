@@ -50,6 +50,8 @@ export default {
       placeholder: 'Select',
     },
     searchPlaceholder: 'Search',
+    privacy: 'Privacy Policy',
+    site: 'Developer Site',
   },
   phoneFilter: {
     new: 'New',

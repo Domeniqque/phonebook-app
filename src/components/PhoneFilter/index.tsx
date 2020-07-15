@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { View, StyleProp, ViewStyle } from 'react-native';
 
-import { View } from 'react-native';
 import { PhoneStatus } from '../../hooks/phone';
 import { useLocale } from '../../hooks/locale';
 
@@ -10,9 +10,14 @@ import { Container, FilterList, FilterItem, FilterItemText } from './styles';
 interface PhoneFilter {
   onStatusChange(status: PhoneStatus): void;
   loading?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
-const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
+const PhoneFilter: React.FC<PhoneFilter> = ({
+  style,
+  onStatusChange,
+  loading,
+}) => {
   const [selected, setSelected] = useState<PhoneStatus>(PhoneStatus.New);
 
   const { trans } = useLocale();
@@ -29,7 +34,11 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
     return (
       <Placeholder Animation={Fade}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <PlaceholderLine height={24} width={20} style={{ marginRight: 10 }} />
+          <PlaceholderLine
+            height={24}
+            width={20}
+            style={{ marginRight: 10, marginLeft: 16 }}
+          />
           <PlaceholderLine height={24} width={30} style={{ marginRight: 10 }} />
           <PlaceholderLine height={24} width={24} style={{ marginRight: 10 }} />
           <PlaceholderLine height={24} width={32} style={{ marginRight: 10 }} />
@@ -40,11 +49,12 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
   }
 
   return (
-    <Container>
+    <Container style={style}>
       <FilterList>
         <FilterItem
           onPress={() => handleSelect(PhoneStatus.New)}
           selected={PhoneStatus.New === selected}
+          style={{ marginLeft: 16 }}
         >
           <FilterItemText selected={PhoneStatus.New === selected}>
             {trans('phoneFilter.new')}
@@ -81,6 +91,7 @@ const PhoneFilter: React.FC<PhoneFilter> = ({ onStatusChange, loading }) => {
         <FilterItem
           onPress={() => handleSelect(PhoneStatus.Removed)}
           selected={PhoneStatus.Removed === selected}
+          style={{ marginRight: 16 }}
         >
           <FilterItemText selected={PhoneStatus.Removed === selected}>
             {trans('phoneFilter.removed')}
