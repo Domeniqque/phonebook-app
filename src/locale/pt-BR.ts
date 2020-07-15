@@ -51,6 +51,8 @@ export default {
       placeholder: 'Selecione',
     },
     searchPlaceholder: 'Buscar',
+    privacy: 'Política de Privacidade',
+    site: 'Site do Desenvolvedor',
   },
   phoneFilter: {
     new: 'Novos',

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { Platform } from 'react-native';
 
 interface FilterProps {
   selected?: boolean;
@@ -19,13 +20,19 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
   border: transparent;
   border-width: 2px;
   border-radius: 17px;
-  height: 34px;
-  padding: 4px 14px;
+  min-height: 34px;
+  padding: 4px 14px 6px;
+  border: #000;
+  margin: 0px 4px 0;
+
+  ${Platform.OS === 'ios' &&
+  css`
+    margin-top: 20px;
+  `}
 
   ${props =>
     props.selected &&
     css`
-      border: #000;
       background: #000;
     `}
 `;

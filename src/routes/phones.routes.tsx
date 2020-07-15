@@ -24,6 +24,7 @@ const PhonesRoutes: React.FC = () => {
       screenOptions={{
         headerTintColor: '#000',
         headerBackTitleVisible: false,
+        gestureDirection: 'horizontal',
         headerBackImage: ({ tintColor }) => (
           <Icon
             name="arrow-left"
@@ -35,6 +36,7 @@ const PhonesRoutes: React.FC = () => {
         headerStyle: {
           shadowColor: 'transparent',
           elevation: 0,
+          height: 80,
         },
         headerTitleStyle: {
           textAlign: 'center',

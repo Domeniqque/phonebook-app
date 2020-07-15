@@ -126,7 +126,7 @@ const Phones: React.FC = () => {
 
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
-          style={{ marginTop: 30 }}
+          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 20 }}
         >
           {renderPlaceholderItems()}
         </Placeholder>
@@ -163,7 +163,7 @@ const Phones: React.FC = () => {
 
       {status !== PhoneStatus.New && groupedPhones ? (
         <SectionList
-          style={{ marginTop: 20 }}
+          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 20 }}
           sections={groupedPhones}
           keyExtractor={item => item?.id || uuid()}
           renderItem={({ item }) => (

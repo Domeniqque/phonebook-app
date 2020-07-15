@@ -54,15 +54,16 @@ export const PickerHeader = styled.View`
 export const PickerClose = styled.TouchableOpacity`
   position: absolute;
   padding: 14px;
-  top: 10px;
+  top: 8px;
   right: 0px;
 `;
 
 export const PickerTitle = styled.Text`
   font-weight: bold;
   font-size: 28px;
+  margin-left: 10px;
   margin-top: 26px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 `;
 
 export const Filter = styled.View`

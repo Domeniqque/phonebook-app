@@ -6,19 +6,18 @@ import { PhoneNumber } from '../../hooks/phone';
 
 export const Container = styled.View`
   flex: 1;
-  padding: 20px 16px;
   background: #fff;
   position: relative;
 `;
 
 export const PhoneList = styled(FlatList as new () => FlatList<PhoneNumber>)`
   margin-top: 16px;
+  padding: 0 16px;
 `;
 
 export const PhoneListItem = styled(RectButton)`
   height: 70px;
   width: 100%;
-  padding: 0 10px;
 
   flex-direction: row;
   justify-content: space-between;
@@ -60,6 +59,7 @@ export const SectionHeader = styled.Text`
 export const EmptyContentContainer = styled.View`
   justify-content: center;
   align-items: center;
+  padding-top: 20px;
   flex: 1;
 `;
 export const CenteredAddButton = styled.TouchableOpacity`
