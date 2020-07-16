@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Feather';
+import { Platform } from 'react-native';
 
 import Phones from '../pages/Phones';
 import CreatePhone from '../pages/Phones/Create';
@@ -33,7 +34,7 @@ const PhonesRoutes: React.FC = () => {
             style={{ paddingLeft: 16 }}
           />
         ),
-        headerStatusBarHeight: 60,
+        headerStatusBarHeight: Platform.OS === 'ios' ? undefined : 10,
         headerStyle: {
           shadowColor: 'transparent',
           elevation: 0,
