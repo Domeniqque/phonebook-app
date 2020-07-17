@@ -127,7 +127,7 @@ const Phones: React.FC = () => {
 
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
-          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 30 }}
+          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 15 }}
         >
           {renderPlaceholderItems()}
         </Placeholder>

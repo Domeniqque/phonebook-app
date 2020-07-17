@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { InterestedProps } from '../schemas/InterestedSchema';
 import { PhoneProps } from '../schemas/PhoneSchema';
@@ -15,8 +15,13 @@ interface InterestedFormData {
   gender: string;
 }
 
+export type InterestedListResult = Realm.Results<
+  InterestedProps & Realm.Object
+>;
+
 interface InterestedContextData {
   addInterested(data: InterestedFormData): Promise<void>;
+  getAll(): Promise<InterestedListResult>;
 }
 
 const InterestedContext = createContext<InterestedContextData>(
@@ -70,8 +75,17 @@ export const InterestedProvider: React.FC = ({ children }) => {
     });
   }, []);
 
+  const getAll = useCallback(async () => {
+    const realm = await getRealm();
+
+    return realm
+      .objects<InterestedProps>('Interested')
+      .filtered('active = 1')
+      .sorted('name');
+  }, []);
+
   return (
-    <InterestedContext.Provider value={{ addInterested }}>
+    <InterestedContext.Provider value={{ addInterested, getAll }}>
       {children}
     </InterestedContext.Provider>
   );
