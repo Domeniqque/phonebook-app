@@ -54,6 +54,8 @@ export const PhoneProvider: React.FC = ({ children }) => {
     crashlytics().log(`Usando findByStatus ${status}`);
     const realm = await getRealm();
 
+    console.log(realm.path);
+
     const sortSql =
       status === PhoneStatus.New
         ? 'SORT(nationalValue ASC)'

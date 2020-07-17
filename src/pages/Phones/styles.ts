@@ -11,7 +11,7 @@ export const Container = styled.View`
 `;
 
 export const PhoneList = styled(FlatList as new () => FlatList<PhoneNumber>)`
-  margin-top: 16px;
+  margin-top: 5px;
   padding: 0 16px;
 `;
 
@@ -27,20 +27,6 @@ export const PhoneListItem = styled(RectButton)`
 export const PhoneListItemNumber = styled.Text`
   font-size: 21px;
   margin-left: 5px;
-`;
-
-export const FabButton = styled.TouchableOpacity`
-  height: 56px;
-  width: 56px;
-  background: #000;
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  border-radius: 29px;
-  justify-content: center;
-  align-items: center;
-  elevation: 6;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
 `;
 
 export const Divisor = styled.View`

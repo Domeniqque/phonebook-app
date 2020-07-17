@@ -1,6 +1,7 @@
 export default {
   tabs: {
     numbers: 'PHONES',
+    interested: 'INTERESTED',
     settings: 'SETTINGS',
   },
   phones: {
@@ -33,6 +34,24 @@ export default {
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
       updatedAt: 'Updated on',
+    },
+  },
+  interested: {
+    title: 'Interested',
+    create: {
+      title: 'Add Interested',
+      nameLabel: 'Name',
+      genderLabel: 'Gender',
+      genderPlaceholder: 'Select',
+      lifeStageLabel: 'This person is',
+      lifeStagePlaceholder: 'Select',
+      addressLabel: 'Address',
+      addressPlaceholder: 'City, State, etc.',
+      phoneNumberLabel: 'Phone Number (required)',
+      buttonText: 'Add Interested',
+    },
+    validation: {
+      phoneNumber: 'Phone number is required',
     },
   },
   settings: {
@@ -71,5 +90,15 @@ export default {
     title: "Please i'm sorry! 😢",
     text:
       'There was an unexpected error. What do you think of closing the application and trying again? \n\nIf you still did not succeed, contact me.',
+  },
+  gender: {
+    M: 'Male',
+    F: 'Female',
+  },
+  lifeStages: {
+    child: 'Child',
+    young: 'Young',
+    adult: 'Adult',
+    elderly: 'Elderly',
   },
 };
