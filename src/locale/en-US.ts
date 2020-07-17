@@ -50,6 +50,9 @@ export default {
       phoneNumberLabel: 'Phone Number (required)',
       buttonText: 'Add Interested',
     },
+    show: {
+      title: 'Show',
+    },
     validation: {
       phoneNumber: 'Phone number is required',
     },

@@ -51,6 +51,9 @@ export default {
       phoneNumberLabel: 'Telefone (obrigatório)',
       buttonText: 'Adicionar interessado',
     },
+    show: {
+      title: 'Visualizar',
+    },
     validation: {
       phoneNumber: 'Informe um telefone',
     },

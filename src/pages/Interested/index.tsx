@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import FabButton from '../../components/FabButton';
+import InlinePhones from '../../components/InlinePhones';
 import { useInterested, InterestedListResult } from '../../hooks/interested';
 
 import {
@@ -10,7 +11,7 @@ import {
   InterestedList,
   InterestedItem,
   InterestedItemHeader,
-  InterestedItemText,
+  InterestedItemName,
   Divisor,
 } from './styles';
 
@@ -44,7 +45,8 @@ const Interested: React.FC = () => {
             }}
           >
             <InterestedItemHeader>
-              <InterestedItemText>{item.name}</InterestedItemText>
+              <InterestedItemName>{item.name}</InterestedItemName>
+              <InlinePhones interestedId={item.id} />
             </InterestedItemHeader>
 
             <Icon name="chevron-right" size={28} />

@@ -5,14 +5,14 @@ import { Platform } from 'react-native';
 
 import Interested from '../pages/Interested';
 import CreateInterested from '../pages/Interested/Create';
-// import ShowPhone from '../pages/Phones/Show';
+import ShowInterested from '../pages/Interested/Show';
 
 import { useLocale } from '../hooks/locale';
 
 export type InterestedStackProps = {
   Interested: undefined;
   CreateInterested: undefined;
-  // ShowInterested: { id: string };
+  ShowInterested: { id: string };
 };
 
 const Stack = createStackNavigator<InterestedStackProps>();
@@ -63,11 +63,11 @@ const InterestedRoutes: React.FC = () => {
         }}
       />
 
-      {/* <Stack.Screen
-        name="ShowPhone"
-        component={ShowPhone}
-        options={{ title: trans('phones.show.title') }}
-      /> */}
+      <Stack.Screen
+        name="ShowInterested"
+        component={ShowInterested}
+        options={{ title: trans('interested.show.title') }}
+      />
     </Stack.Navigator>
   );
 };
