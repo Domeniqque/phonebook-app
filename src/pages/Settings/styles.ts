@@ -20,14 +20,14 @@ export const Content = styled.View`
 
 export const Links = styled.View`
   flex: 1;
-  margin: 60px 10px 10px;
+  margin: 80px 10px 10px;
   padding: 10px 0;
   border-top-color: rgba(0, 0, 0, 0.05);
   border-top-width: 1px;
 `;
 
 export const LinksTitle = styled.Text`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   margin: 10px 0 20px;
 `;
@@ -37,6 +37,6 @@ export const LinkButton = styled.TouchableOpacity`
 `;
 
 export const LinkButtonText = styled.Text`
-  font-size: 22px;
+  font-size: 18px;
   color: #0070f3;
 `;

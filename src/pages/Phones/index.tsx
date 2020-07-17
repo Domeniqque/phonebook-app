@@ -10,6 +10,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import uuid from '../../utils/uuid';
 
 import PhoneFilter from '../../components/PhoneFilter';
+import FabButton from '../../components/FabButton';
 import {
   usePhone,
   PhoneResults,
@@ -23,7 +24,6 @@ import {
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
-  FabButton,
   Divisor,
   SectionHeader,
   CenteredAddButton,
@@ -164,7 +164,7 @@ const Phones: React.FC = () => {
 
       {status !== PhoneStatus.New && groupedPhones ? (
         <SectionList
-          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 20 }}
+          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 25 }}
           sections={groupedPhones}
           keyExtractor={item => item?.id || uuid()}
           renderItem={({ item }) => (
@@ -202,9 +202,7 @@ const Phones: React.FC = () => {
         />
       )}
 
-      <FabButton onPress={() => navigation.navigate('CreatePhone')}>
-        <Icon name="plus" size={36} color="#fff" />
-      </FabButton>
+      <FabButton onPress={() => navigation.navigate('CreatePhone')} />
     </Container>
   );
 };

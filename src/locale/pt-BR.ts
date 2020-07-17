@@ -1,6 +1,7 @@
 export default {
   tabs: {
     numbers: 'TELEFONES',
+    interested: 'INTERESSADOS',
     settings: 'AJUSTES',
   },
   phones: {
@@ -34,6 +35,24 @@ export default {
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
       updatedAt: 'Atualizado no',
+    },
+  },
+  interested: {
+    title: 'Interessados',
+    create: {
+      title: 'Adicionar Interessado',
+      nameLabel: 'Nome',
+      genderLabel: 'Gênero',
+      genderPlaceholder: 'Selecione',
+      lifeStageLabel: 'Esta pessoa é',
+      lifeStagePlaceholder: 'Selecione',
+      addressLabel: 'Endereço',
+      addressPlaceholder: 'Cidade, Estado, etc.',
+      phoneNumberLabel: 'Telefone (obrigatório)',
+      buttonText: 'Adicionar interessado',
+    },
+    validation: {
+      phoneNumber: 'Informe um telefone',
     },
   },
   settings: {
@@ -72,5 +91,15 @@ export default {
     title: 'Por favor, nos desculpe! 😢',
     text:
       'Houve erro inesperado. O que acha de fechar o aplicativo e tentar novamente? \n\nSe mesmo assim não conseguiu, entre em contato!',
+  },
+  gender: {
+    M: 'Masculino',
+    F: 'Feminino',
+  },
+  lifeStages: {
+    child: 'Criança',
+    young: 'Jovem',
+    adult: 'Adulto',
+    elderly: 'Idoso',
   },
 };

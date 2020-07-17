@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import { Modal, InteractionManager } from 'react-native';
+import { Modal } from 'react-native';
 import { Form } from '@unform/mobile';
 
 import Input from '../Input';

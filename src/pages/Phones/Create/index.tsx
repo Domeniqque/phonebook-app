@@ -19,8 +19,7 @@ import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
 
 import { Container, Tip, TipText } from './styles';
-import exampleLocales from '../../../locale/examples.mobile';
-import getNumberInstance from '../../../utils/getNumberInstance';
+import getLocalePhonePlaceholder from '../../../utils/getLocalePhonePlaceholder';
 
 interface CreateNumbersData {
   firstNumber: string;
@@ -40,12 +39,9 @@ const Create: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const placeholder = useMemo(() => {
-    const phoneExample = exampleLocales[country.value];
-    const phoneExampleInstance = getNumberInstance(phoneExample, country.value);
-
-    return phoneExampleInstance?.formatNational();
-  }, [country.value]);
+  const placeholder = useMemo(() => getLocalePhonePlaceholder(country.value), [
+    country.value,
+  ]);
 
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {

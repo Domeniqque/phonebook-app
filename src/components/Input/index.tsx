@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useImperativeHandle,
   forwardRef,
+  useMemo,
 } from 'react';
 import { TextInputProps, View } from 'react-native';
 
@@ -80,18 +81,20 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     });
   }, [fieldName, registerField]);
 
+  const iconColor = useMemo(() => {
+    if (isFocused || isFilled) return '#000';
+
+    if (error) return '#c53030';
+
+    return '#757575';
+  }, [isFocused, isFilled, error]);
+
   return (
     <View style={{ paddingBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
       <Container isFocused={isFocused} isErrored={!!error}>
-        {icon && (
-          <Icon
-            name={icon}
-            size={20}
-            color={isFocused || isFilled ? '#000' : '#757575'}
-          />
-        )}
+        {icon && <Icon name={icon} size={20} color={iconColor} />}
 
         <TextInput
           ref={inputElementRef}
