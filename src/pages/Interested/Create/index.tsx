@@ -31,7 +31,11 @@ const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { trans, country } = useLocale();
   const { alert, success } = useAlert();
+<<<<<<< HEAD
   const { addInterested, genderTypes, lifeStageTypes } = useInterested();
+=======
+  const { addInterested } = useInterested();
+>>>>>>> cadastro de interessados
   const navigation = useNavigation();
 
   const phonePlaceholder = useMemo(
