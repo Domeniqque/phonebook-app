@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import React, { createContext, useCallback, useContext } from 'react';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { InterestedProps } from '../schemas/InterestedSchema';
 import { PhoneProps } from '../schemas/PhoneSchema';
@@ -32,6 +33,8 @@ export const InterestedProvider: React.FC = ({ children }) => {
   const addInterested = useCallback(async (data: InterestedFormData): Promise<
     void
   > => {
+    crashlytics().log(`Cadastrando interessados`);
+
     const realm = await getRealm();
 
     const { phoneNumber, name, address, gender, lifeStage } = data;

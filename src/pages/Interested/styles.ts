@@ -26,11 +26,16 @@ export const InterestedItem = styled(RectButton)`
 
 export const InterestedItemHeader = styled.View`
   flex: 1;
+  margin-left: 5px;
 `;
 
-export const InterestedItemText = styled.Text`
+export const InterestedItemName = styled.Text`
   font-size: 21px;
-  margin-left: 5px;
+`;
+
+export const InterestedItemPhone = styled.Text`
+  font-size: 14px;
+  margin-top: 4px;
 `;
 
 export const Divisor = styled.View`
