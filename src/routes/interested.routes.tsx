@@ -5,16 +5,24 @@ import { Platform } from 'react-native';
 
 import Interested from '../pages/Interested';
 import CreateInterested from '../pages/Interested/Create';
+<<<<<<< HEAD
 import ShowInterested from '../pages/Interested/Show';
 import EditInterested from '../pages/Interested/Edit';
+=======
+// import ShowPhone from '../pages/Phones/Show';
+>>>>>>> cadastro de interessados
 
 import { useLocale } from '../hooks/locale';
 
 export type InterestedStackProps = {
   Interested: undefined;
   CreateInterested: undefined;
+<<<<<<< HEAD
   ShowInterested: { id: string };
   EditInterested: { id: string };
+=======
+  // ShowInterested: { id: string };
+>>>>>>> cadastro de interessados
 };
 
 const Stack = createStackNavigator<InterestedStackProps>();
@@ -40,6 +48,10 @@ const InterestedRoutes: React.FC = () => {
         headerStyle: {
           shadowColor: 'transparent',
           elevation: 0,
+<<<<<<< HEAD
+=======
+          // height: 80,
+>>>>>>> cadastro de interessados
         },
         headerTitleStyle: {
           textAlign: 'center',
@@ -64,6 +76,7 @@ const InterestedRoutes: React.FC = () => {
         }}
       />
 
+<<<<<<< HEAD
       <Stack.Screen
         name="ShowInterested"
         component={ShowInterested}
@@ -75,6 +88,13 @@ const InterestedRoutes: React.FC = () => {
         component={EditInterested}
         options={{ title: trans('interested.edit.title') }}
       />
+=======
+      {/* <Stack.Screen
+        name="ShowPhone"
+        component={ShowPhone}
+        options={{ title: trans('phones.show.title') }}
+      /> */}
+>>>>>>> cadastro de interessados
     </Stack.Navigator>
   );
 };
