@@ -69,7 +69,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
   }, []);
 
   const findById = useCallback(async (id: string) => {
-    crashlytics().log('Usando findById');
+    crashlytics().log('Usando findById de phones');
 
     const realm = await getRealm();
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);

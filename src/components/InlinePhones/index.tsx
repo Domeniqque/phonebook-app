@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
-import { LayoutAnimation } from 'react-native';
 import getRealm from '../../services/realm';
 import { PhoneNumber } from '../../hooks/phone';
 

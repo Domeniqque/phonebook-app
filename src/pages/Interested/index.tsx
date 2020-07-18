@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import FabButton from '../../components/FabButton';
 import InlinePhones from '../../components/InlinePhones';
@@ -16,21 +17,40 @@ import {
 } from './styles';
 
 const Interested: React.FC = () => {
-  const navigation = useNavigation();
-  const { getAll } = useInterested();
+  const [loading, setLoading] = useState(true);
   const [interested, setInterested] = useState<InterestedListResult>(
     {} as InterestedListResult,
   );
+
+  const navigation = useNavigation();
+  const { getAll } = useInterested();
 
   useEffect(() => {
     async function loadInterested(): Promise<void> {
       const data = await getAll();
 
       setInterested(data);
+      setLoading(false);
     }
 
     loadInterested();
   }, [getAll]);
+
+  const renderPlaceholderItems = useCallback(() => {
+    const items = [];
+
+    for (let index = 0; index < 8; index++) {
+      items.push(<PlaceholderLine height={30} key={`${index}-interested`} />);
+    }
+
+    return items;
+  }, []);
+
+  if (loading) {
+    return (
+      <Placeholder Animation={Fade}>{renderPlaceholderItems()}</Placeholder>
+    );
+  }
 
   return (
     <Container>

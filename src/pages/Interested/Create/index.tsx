@@ -31,7 +31,7 @@ const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { trans, country } = useLocale();
   const { alert, success } = useAlert();
-  const { addInterested } = useInterested();
+  const { addInterested, genderTypes, lifeStageTypes } = useInterested();
   const navigation = useNavigation();
 
   const phonePlaceholder = useMemo(
@@ -80,25 +80,7 @@ const Create: React.FC = () => {
         }
       }
     },
-    [trans, alert, gender, lifeStage, addInterested],
-  );
-
-  const genderTypes = useMemo(
-    () => [
-      { label: trans('gender.M'), value: 'M' },
-      { label: trans('gender.F'), value: 'F' },
-    ],
-    [trans],
-  );
-
-  const lifeStageTypes = useMemo(
-    () => [
-      { label: trans('lifeStages.child'), value: 'child' },
-      { label: trans('lifeStages.young'), value: 'young' },
-      { label: trans('lifeStages.adult'), value: 'adult' },
-      { label: trans('lifeStages.elderly'), value: 'elderly' },
-    ],
-    [trans],
+    [trans, alert, gender, lifeStage, addInterested, success, navigation],
   );
 
   return (
