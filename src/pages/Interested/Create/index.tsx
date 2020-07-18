@@ -60,14 +60,17 @@ const Create: React.FC = () => {
           phoneNumber: phoneNumberRef.current?.getPhoneInstance(),
         };
 
+        success();
+
         await addInterested(data);
 
         navigation.navigate('Interested');
-        success();
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
         else {
+          crashlytics().recordError(err);
+
           alert({
             title: trans('defaultError.title'),
             text: trans('defaultError.text'),
@@ -75,8 +78,6 @@ const Create: React.FC = () => {
           });
 
           console.error(err);
-
-          crashlytics().recordError(err);
         }
       }
     },

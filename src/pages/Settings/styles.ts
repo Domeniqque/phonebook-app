@@ -8,7 +8,7 @@ export const Container = styled.SafeAreaView`
 export const Title = styled.Text`
   font-weight: bold;
   font-size: 24px;
-  margin-top: 24px;
+  margin-top: 10px;
   text-align: center;
 `;
 

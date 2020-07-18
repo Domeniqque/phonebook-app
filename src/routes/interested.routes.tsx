@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import Interested from '../pages/Interested';
 import CreateInterested from '../pages/Interested/Create';
 import ShowInterested from '../pages/Interested/Show';
+import EditInterested from '../pages/Interested/Edit';
 
 import { useLocale } from '../hooks/locale';
 
@@ -13,6 +14,7 @@ export type InterestedStackProps = {
   Interested: undefined;
   CreateInterested: undefined;
   ShowInterested: { id: string };
+  EditInterested: { id: string };
 };
 
 const Stack = createStackNavigator<InterestedStackProps>();
@@ -38,7 +40,6 @@ const InterestedRoutes: React.FC = () => {
         headerStyle: {
           shadowColor: 'transparent',
           elevation: 0,
-          // height: 80,
         },
         headerTitleStyle: {
           textAlign: 'center',
@@ -67,6 +68,12 @@ const InterestedRoutes: React.FC = () => {
         name="ShowInterested"
         component={ShowInterested}
         options={{ title: trans('interested.show.title') }}
+      />
+
+      <Stack.Screen
+        name="EditInterested"
+        component={EditInterested}
+        options={{ title: trans('interested.edit.title') }}
       />
     </Stack.Navigator>
   );

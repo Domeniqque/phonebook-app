@@ -51,7 +51,14 @@ export default {
       buttonText: 'Add Interested',
     },
     show: {
-      title: 'Show',
+      title: 'Details',
+      deleteTitle: 'Delete this interested?',
+      deleteOk: 'YES, DELETE',
+      deleteCancel: 'CANCEL',
+    },
+    edit: {
+      title: 'Edit Interested',
+      buttonText: 'Save Changes',
     },
     validation: {
       phoneNumber: 'Phone number is required',
