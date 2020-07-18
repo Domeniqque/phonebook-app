@@ -6,23 +6,31 @@ export const Container = styled.View`
   padding: 16px;
 `;
 
-export const Section = styled.View`
+export const SectionDetails = styled.View`
   margin: 14px 0;
-`;
-
-export const SectionItem = styled.View`
   flex-direction: row;
-  align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between;
 `;
 
-export const SectionItemLabel = styled.Text`
-  font-size: 18px;
+export const SectionBio = styled.View`
+  justify-content: center;
+`;
+
+export const SectionBioName = styled.Text`
+  font-size: 26px;
   font-weight: bold;
 `;
 
-export const SectionItemValue = styled.Text`
-  flex: 1;
-  font-size: 18px;
-  margin-left: 10px;
+export const SectionBioComplement = styled.Text`
+  font-size: 20px;
+  margin: 4px 0;
+`;
+
+export const EditBioButton = styled.TouchableOpacity`
+  margin: auto 0;
+`;
+
+export const DeleteButton = styled.TouchableOpacity`
+  margin-right: 6px;
+  padding: 10px 12px;
 `;

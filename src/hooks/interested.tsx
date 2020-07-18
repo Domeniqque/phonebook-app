@@ -27,8 +27,8 @@ interface InterestedContextData {
   addInterested(data: InterestedFormData): Promise<void>;
   getAll(): Promise<InterestedListResult>;
   findById(id: string): Promise<InterestedResult>;
-  genderTypes: { label: any; value: string }[];
-  lifeStageTypes: { label: any; value: string }[];
+  genderTypes: { label: string; value: string }[];
+  lifeStageTypes: { label: string; value: string }[];
 }
 
 const InterestedContext = createContext<InterestedContextData>(
@@ -72,10 +72,12 @@ export const InterestedProvider: React.FC = ({ children }) => {
           .objects<PhoneProps>('Phones')
           .filtered(`nationalValue = "${nationalFormat}"`);
 
-        if (equivalentPhones.length >= 1) {
+        if (equivalentPhones.length > 0 && !equivalentPhones[0].interested_id) {
           const phone = equivalentPhones[0];
 
           phone.interested_id = interested.id;
+          phone.status = PhoneStatus.Received;
+          phone.updated_at = new Date();
         } else {
           const phoneNumberData = {
             id: uuid(),
@@ -105,18 +107,18 @@ export const InterestedProvider: React.FC = ({ children }) => {
 
   const genderTypes = useMemo(
     () => [
-      { label: trans('gender.M'), value: 'M' },
-      { label: trans('gender.F'), value: 'F' },
+      { label: trans('gender.M') as string, value: 'M' },
+      { label: trans('gender.F') as string, value: 'F' },
     ],
     [trans],
   );
 
   const lifeStageTypes = useMemo(
     () => [
-      { label: trans('lifeStages.child'), value: 'child' },
-      { label: trans('lifeStages.young'), value: 'young' },
-      { label: trans('lifeStages.adult'), value: 'adult' },
-      { label: trans('lifeStages.elderly'), value: 'elderly' },
+      { label: trans('lifeStages.child') as string, value: 'child' },
+      { label: trans('lifeStages.young') as string, value: 'young' },
+      { label: trans('lifeStages.adult') as string, value: 'adult' },
+      { label: trans('lifeStages.elderly') as string, value: 'elderly' },
     ],
     [trans],
   );

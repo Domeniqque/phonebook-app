@@ -34,7 +34,11 @@ const Interested: React.FC = () => {
     }
 
     loadInterested();
-  }, [getAll]);
+
+    const unsubscribe = navigation.addListener('focus', loadInterested);
+
+    return unsubscribe;
+  }, [getAll, navigation]);
 
   const renderPlaceholderItems = useCallback(() => {
     const items = [];

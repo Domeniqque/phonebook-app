@@ -52,7 +52,14 @@ export default {
       buttonText: 'Adicionar interessado',
     },
     show: {
-      title: 'Visualizar',
+      title: 'Detalhes',
+      deleteTitle: 'Excluir este interessado?',
+      deleteOk: 'SIM, EXCLUIR',
+      deleteCancel: 'CANCELAR',
+    },
+    edit: {
+      title: 'Editar Interessado',
+      buttonText: 'Salvar Alterações',
     },
     validation: {
       phoneNumber: 'Informe um telefone',
