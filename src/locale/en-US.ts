@@ -55,6 +55,8 @@ export default {
       deleteTitle: 'Delete this interested?',
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
+      call: 'Touch to call',
+      btnAddPhone: 'add phone',
     },
     edit: {
       title: 'Edit Interested',
@@ -62,7 +64,12 @@ export default {
     },
     validation: {
       phoneNumber: 'Phone number is required',
+      invalidPhone: 'This phone is not valid',
     },
+  },
+  interestedPhones: {
+    modalTitle: 'Add Phone',
+    addButton: 'Save',
   },
   settings: {
     title: 'Settings',

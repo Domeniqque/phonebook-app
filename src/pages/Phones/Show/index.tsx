@@ -81,6 +81,7 @@ const Show: React.FC = () => {
 
     alert({
       title: trans('phones.show.deleteTitle'),
+      text: phone.nationalValue,
       confirmText: trans('phones.show.deleteOk'),
       cancelText: trans('phones.show.deleteCancel'),
       onConfirm: () => {

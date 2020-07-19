@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { useNavigation } from '@react-navigation/native';
 
 import getRealm from '../../services/realm';
 import { PhoneNumber } from '../../hooks/phone';
@@ -13,6 +14,8 @@ interface InlineProps {
 const InlinePhones: React.FC<InlineProps> = ({ interestedId }) => {
   const [phones, setPhones] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function loadPhones(): Promise<void> {
@@ -29,7 +32,11 @@ const InlinePhones: React.FC<InlineProps> = ({ interestedId }) => {
     }
 
     loadPhones();
-  }, [interestedId]);
+
+    const unsubscribe = navigation.addListener('focus', loadPhones);
+
+    return unsubscribe;
+  }, [interestedId, navigation]);
 
   if (loading) {
     return (
