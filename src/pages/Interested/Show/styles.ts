@@ -28,6 +28,7 @@ export const SectionBioComplement = styled.Text`
 
 export const EditBioButton = styled.TouchableOpacity`
   margin: auto 0;
+  padding: 10px;
 `;
 
 export const DeleteButton = styled.TouchableOpacity`

@@ -5,11 +5,11 @@ import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import { useLocale } from '../../../hooks/locale';
-import Select from '../../../components/Select';
 import { InterestedStackProps } from '../../../routes/interested.routes';
 import { useInterested, InterestedResult } from '../../../hooks/interested';
 import { useAlert } from '../../../hooks/alert';
 import getRealm from '../../../services/realm';
+import InterestedPhones from '../../../components/InterestedPhones';
 
 import {
   Container,
@@ -132,11 +132,16 @@ const Show: React.FC = () => {
                 navigation.navigate('EditInterested', { id: interested?.id });
               }}
             >
-              <Icon name="edit-2" size={25} color="#000" />
+              <Icon name="edit-2" size={20} color="#000" />
             </EditBioButton>
           </>
         )}
       </SectionDetails>
+
+      <InterestedPhones
+        interestedId={interested?.id}
+        interestedName={interested?.name}
+      />
     </Container>
   );
 };

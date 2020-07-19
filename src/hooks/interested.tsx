@@ -27,6 +27,11 @@ interface InterestedContextData {
   addInterested(data: InterestedFormData): Promise<void>;
   getAll(): Promise<InterestedListResult>;
   findById(id: string): Promise<InterestedResult>;
+  addInterestedPhone(
+    phone: PhoneNumberInstance,
+    interestedId: string,
+    realm?: Realm,
+  ): Promise<void>;
   genderTypes: { label: string; value: string }[];
   lifeStageTypes: { label: string; value: string }[];
 }
@@ -46,55 +51,74 @@ export const InterestedProvider: React.FC = ({ children }) => {
     return realm.objectForPrimaryKey<InterestedProps>('Interested', id);
   }, []);
 
-  const addInterested = useCallback(async (data: InterestedFormData): Promise<
-    void
-  > => {
-    crashlytics().log(`Cadastrando interessados`);
+  const addInterestedPhone = useCallback(
+    async (
+      phoneNumber: PhoneNumberInstance,
+      interestedId: string,
+      realmInstance?: Realm,
+    ) => {
+      const realm = realmInstance || (await getRealm());
 
-    const realm = await getRealm();
+      realm.write(() => {
+        if (phoneNumber) {
+          const nationalFormat = phoneNumber.formatNational();
 
-    const { phoneNumber, name, address, gender, lifeStage } = data;
+          const equivalentPhones = realm
+            .objects<PhoneProps>('Phones')
+            .filtered(`nationalValue = "${nationalFormat}"`);
 
-    realm.write(() => {
-      const interested = realm.create<InterestedProps>('Interested', {
-        id: uuid(),
-        name,
-        address,
-        gender,
-        lifeStage,
-        created_at: new Date(),
-      });
+          if (
+            equivalentPhones.length > 0 &&
+            !equivalentPhones[0].interested_id
+          ) {
+            const phone = equivalentPhones[0];
 
-      if (phoneNumber) {
-        const nationalFormat = phoneNumber.formatNational();
+            phone.interested_id = interestedId;
+            phone.status = PhoneStatus.Received;
+            phone.updated_at = new Date();
+          } else {
+            const phoneNumberData = {
+              id: uuid(),
+              nationalValue: nationalFormat,
+              iterableValue: 0,
+              countryCode: phoneNumber.country,
+              status: PhoneStatus.Received,
+              active: false,
+              updated_at: new Date(),
+              interested_id: interestedId,
+            };
 
-        const equivalentPhones = realm
-          .objects<PhoneProps>('Phones')
-          .filtered(`nationalValue = "${nationalFormat}"`);
-
-        if (equivalentPhones.length > 0 && !equivalentPhones[0].interested_id) {
-          const phone = equivalentPhones[0];
-
-          phone.interested_id = interested.id;
-          phone.status = PhoneStatus.Received;
-          phone.updated_at = new Date();
-        } else {
-          const phoneNumberData = {
-            id: uuid(),
-            nationalValue: nationalFormat,
-            iterableValue: 0,
-            countryCode: phoneNumber.country,
-            status: PhoneStatus.Received,
-            active: false,
-            updated_at: new Date(),
-            interested_id: interested.id,
-          };
-
-          realm.create<PhoneProps>('Phones', phoneNumberData);
+            realm.create<PhoneProps>('Phones', phoneNumberData);
+          }
         }
-      }
-    });
-  }, []);
+      });
+    },
+    [],
+  );
+
+  const addInterested = useCallback(
+    async (data: InterestedFormData): Promise<void> => {
+      crashlytics().log(`Cadastrando interessados`);
+
+      const realm = await getRealm();
+
+      const { phoneNumber, name, address, gender, lifeStage } = data;
+
+      realm.write(() => {
+        const interested = realm.create<InterestedProps>('Interested', {
+          id: uuid(),
+          name,
+          address,
+          gender,
+          lifeStage,
+          created_at: new Date(),
+        });
+
+        addInterestedPhone(phoneNumber, interested.id, realm);
+      });
+    },
+    [addInterestedPhone],
+  );
 
   const getAll = useCallback(async () => {
     const realm = await getRealm();
@@ -125,7 +149,14 @@ export const InterestedProvider: React.FC = ({ children }) => {
 
   return (
     <InterestedContext.Provider
-      value={{ addInterested, getAll, findById, genderTypes, lifeStageTypes }}
+      value={{
+        addInterested,
+        getAll,
+        findById,
+        addInterestedPhone,
+        genderTypes,
+        lifeStageTypes,
+      }}
     >
       {children}
     </InterestedContext.Provider>

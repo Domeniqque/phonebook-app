@@ -16,7 +16,7 @@ export const InterestedList = styled(
 )``;
 
 export const InterestedItem = styled(RectButton)`
-  height: 70px;
+  min-height: 70px;
   width: 100%;
 
   flex-direction: row;

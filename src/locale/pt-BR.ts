@@ -56,6 +56,8 @@ export default {
       deleteTitle: 'Excluir este interessado?',
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
+      call: 'Toque para chamar',
+      btnAddPhone: 'adicionar',
     },
     edit: {
       title: 'Editar Interessado',
@@ -64,6 +66,11 @@ export default {
     validation: {
       phoneNumber: 'Informe um telefone',
     },
+  },
+  interestedPhones: {
+    modalTitle: 'Adicionar telefone',
+    addButton: 'Salvar',
+    invalidPhone: 'Este telefone não é válido',
   },
   settings: {
     title: 'Ajustes',
