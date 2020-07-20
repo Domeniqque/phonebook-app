@@ -4,13 +4,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { roundToNearestMinutes } from 'date-fns/fp';
 import { useLocale } from '../../../hooks/locale';
 import { InterestedStackProps } from '../../../routes/interested.routes';
 import { useInterested, InterestedResult } from '../../../hooks/interested';
 import { useAlert } from '../../../hooks/alert';
 import getRealm from '../../../services/realm';
 import InterestedPhones from '../../../components/InterestedPhones';
+import InterestedComments from '../../../components/InterestedComments';
 
 import {
   Container,
@@ -146,6 +146,11 @@ const Show: React.FC = () => {
       </SectionDetails>
 
       <InterestedPhones
+        interestedId={interested?.id}
+        interestedName={interested?.name}
+      />
+
+      <InterestedComments
         interestedId={interested?.id}
         interestedName={interested?.name}
       />

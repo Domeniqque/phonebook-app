@@ -18,6 +18,7 @@ export const SectionBio = styled.View`
 
 export const SectionBioName = styled.Text`
   font-size: 26px;
+  margin-bottom: 10px;
   font-weight: bold;
 `;
 
@@ -28,7 +29,6 @@ export const SectionBioComplement = styled.Text`
 `;
 
 export const EditBioButton = styled.TouchableOpacity`
-  margin: auto 0;
   padding: 10px;
 `;
 

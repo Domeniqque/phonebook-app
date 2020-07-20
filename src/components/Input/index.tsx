@@ -19,6 +19,7 @@ interface InputProps extends TextInputProps {
   icon?: string;
   formatValue?(rawValue: string): string;
   onChangeText?(value: string): void;
+  height?: number;
 }
 
 interface InputValueReference {
@@ -30,7 +31,7 @@ interface InputRef {
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, label, icon, formatValue, onChangeText, ...rest },
+  { name, label, icon, formatValue, onChangeText, height, ...rest },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -93,7 +94,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     <View style={{ paddingBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
-      <Container isFocused={isFocused} isErrored={!!error}>
+      <Container isFocused={isFocused} isErrored={!!error} height={height}>
         {icon && <Icon name={icon} size={20} color={iconColor} />}
 
         <TextInput
@@ -103,6 +104,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           onFocus={handleInputFocus}
           defaultValue={defaultValue}
           placeholderTextColor="#757575"
+          height={height ? Math.floor(height - 20) : 64}
           {...rest}
           onChangeText={handleChangeText}
         />
