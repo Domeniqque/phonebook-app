@@ -57,6 +57,7 @@ export default {
       deleteCancel: 'CANCEL',
       call: 'Touch to call',
       btnAddPhone: 'add phone',
+      unnamed: 'Unnamed',
     },
     edit: {
       title: 'Edit Interested',

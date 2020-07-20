@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import crashlytics from '@react-native-firebase/crashlytics';
 
+import { roundToNearestMinutes } from 'date-fns/fp';
 import { useLocale } from '../../../hooks/locale';
 import { InterestedStackProps } from '../../../routes/interested.routes';
 import { useInterested, InterestedResult } from '../../../hooks/interested';
@@ -101,13 +102,17 @@ const Show: React.FC = () => {
   }, [navigation, handleDeleteInterested]);
 
   const interestedComplement = useMemo(() => {
-    const data = [
-      trans(`gender.${interested?.gender}`),
-      trans(`lifeStages.${interested?.lifeStage}`),
-      interested?.address,
-    ];
+    const gender = interested?.gender
+      ? trans(`gender.${interested?.gender}`)
+      : '';
 
-    return data.join(', ');
+    const lifeStages = interested?.lifeStage
+      ? trans(`lifeStages.${interested?.lifeStage}`)
+      : '';
+
+    const data = [gender, lifeStages, interested?.address];
+
+    return data.filter(a => a).join(', ');
   }, [interested?.gender, interested?.address, interested?.lifeStage, trans]);
 
   return (
@@ -121,7 +126,9 @@ const Show: React.FC = () => {
         ) : (
           <>
             <SectionBio>
-              <SectionBioName>{interested?.name}</SectionBioName>
+              <SectionBioName>
+                {interested?.name || trans('interested.show.unnamed')}
+              </SectionBioName>
               <SectionBioComplement>
                 {interestedComplement}
               </SectionBioComplement>

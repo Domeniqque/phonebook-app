@@ -6,6 +6,7 @@ import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import FabButton from '../../components/FabButton';
 import InlinePhones from '../../components/InlinePhones';
 import { useInterested, InterestedListResult } from '../../hooks/interested';
+import { useLocale } from '../../hooks/locale';
 
 import {
   Container,
@@ -21,6 +22,8 @@ const Interested: React.FC = () => {
   const [interested, setInterested] = useState<InterestedListResult>(
     {} as InterestedListResult,
   );
+
+  const { trans } = useLocale();
 
   const navigation = useNavigation();
   const { getAll } = useInterested();
@@ -69,7 +72,9 @@ const Interested: React.FC = () => {
             }}
           >
             <InterestedItemHeader>
-              <InterestedItemName>{item.name}</InterestedItemName>
+              <InterestedItemName>
+                {item?.name || trans('interested.show.unnamed')}
+              </InterestedItemName>
               <InlinePhones interestedId={item.id} />
             </InterestedItemHeader>
 
