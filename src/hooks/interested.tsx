@@ -10,11 +10,11 @@ import { PhoneStatus } from './phone';
 import { useLocale } from './locale';
 
 interface InterestedFormData {
-  name: string;
-  address: string;
+  name?: string;
+  address?: string;
   phoneNumber: PhoneNumberInstance;
-  lifeStage: string;
-  gender: string;
+  lifeStage?: string;
+  gender?: string;
 }
 
 export type InterestedListResult = Realm.Results<
@@ -57,9 +57,7 @@ export const InterestedProvider: React.FC = ({ children }) => {
       interestedId: string,
       realmInstance?: Realm,
     ) => {
-      const realm = realmInstance || (await getRealm());
-
-      realm.write(() => {
+      const create = (realm: Realm): void => {
         if (phoneNumber) {
           const nationalFormat = phoneNumber.formatNational();
 
@@ -91,7 +89,17 @@ export const InterestedProvider: React.FC = ({ children }) => {
             realm.create<PhoneProps>('Phones', phoneNumberData);
           }
         }
-      });
+      };
+
+      if (realmInstance) {
+        create(realmInstance);
+      } else {
+        const realm = await getRealm();
+
+        realm.write(() => {
+          create(realm);
+        });
+      }
     },
     [],
   );
@@ -102,19 +110,17 @@ export const InterestedProvider: React.FC = ({ children }) => {
 
       const realm = await getRealm();
 
-      const { phoneNumber, name, address, gender, lifeStage } = data;
-
       realm.write(() => {
         const interested = realm.create<InterestedProps>('Interested', {
           id: uuid(),
-          name,
-          address,
-          gender,
-          lifeStage,
+          name: data.name ?? '',
+          address: data.address ?? '',
+          gender: data.gender ?? '',
+          lifeStage: data.lifeStage ?? '',
           created_at: new Date(),
         });
 
-        addInterestedPhone(phoneNumber, interested.id, realm);
+        addInterestedPhone(data.phoneNumber, interested.id, realm);
       });
     },
     [addInterestedPhone],
