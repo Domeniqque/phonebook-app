@@ -383,6 +383,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
+  - RNDateTimePicker (2.6.0):
+    - React
   - RNFBApp (8.2.0):
     - Firebase/CoreOnly (~> 6.27.0)
     - React
@@ -459,6 +461,7 @@ DEPENDENCIES:
   - RealmJS (from `../node_modules/realm`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -559,6 +562,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBCrashlytics:
@@ -632,6 +637,7 @@ SPEC CHECKSUMS:
   RealmJS: fa482f7607e70a17abfc5e7817cfca1042186b62
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNFBCrashlytics: 88de72c2476b5868a892d9523b89b86c527c540e
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38

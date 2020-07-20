@@ -1,10 +1,8 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  background: #f6f6f6;
   border-radius: 16px;
-  padding: 16px;
-  margin: 10px 0;
+  margin: 20px 0 10px;
 `;
 
 export const PhonesNumbersHeader = styled.View`
@@ -27,7 +25,7 @@ export const PhoneNumbersAddText = styled.Text`
 `;
 
 export const PhonesNumbersTitle = styled.Text`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 `;
 

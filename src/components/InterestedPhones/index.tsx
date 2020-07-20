@@ -1,4 +1,4 @@
-import { Modal, SafeAreaView } from 'react-native';
+import { NativeModules, Linking } from 'react-native';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Form } from '@unform/mobile';
 import Icon from 'react-native-vector-icons/Feather';
@@ -15,6 +15,7 @@ import { PhoneProps } from '../../schemas/PhoneSchema';
 import getValidationErrors from '../../utils/getValidationErrors';
 import PhoneInput, { PhoneInputRef } from '../PhoneInput';
 import Button from '../Button';
+import FullModal from '../FullModal';
 
 import {
   Container,
@@ -27,12 +28,12 @@ import {
   PhoneNumberItemBtn,
   PhoneNumberItemText,
   PhoneNumberItemDelete,
-  AddContent,
-  AddHeader,
-  AddTitle,
-  AddSubtitle,
-  AddCloseButton,
 } from './styles';
+
+const { PlatformConstants } = NativeModules;
+const deviceType = PlatformConstants.interfaceIdiom;
+
+const isMobilePhone = deviceType !== 'pad';
 
 interface InterestedProps {
   interestedId: string | undefined;
@@ -135,42 +136,37 @@ const InterestedPhones: React.FC<InterestedProps> = ({
     [destroy, alert, success, trans],
   );
 
+  const handleCallToPhone = useCallback((nationalValue: string) => {
+    if (!isMobilePhone) return;
+    crashlytics().log(`Abrindo o número ${nationalValue} na chamada`);
+
+    Linking.openURL(`tel:${nationalValue}`);
+  }, []);
+
   if (addMode) {
     return (
-      <Modal transparent={false} visible>
-        <SafeAreaView>
-          <AddContent>
-            <AddHeader>
-              <AddTitle>{trans('interestedPhones.modalTitle')}</AddTitle>
-              <AddSubtitle>{interestedName}</AddSubtitle>
-            </AddHeader>
+      <FullModal
+        title={trans('interestedPhones.modalTitle')}
+        onClose={() => setAddMode(false)}
+        subtitle={interestedName}
+        visible={addMode}
+      >
+        <Form ref={formRef} onSubmit={handleAddPhone} style={{ marginTop: 20 }}>
+          <PhoneInput
+            ref={phoneNumberRef}
+            name="phoneNumber"
+            countryCode={country.value}
+            autoFocus
+            keyboardType="number-pad"
+          />
 
-            <AddCloseButton onPress={() => setAddMode(false)}>
-              <Icon name="x" size={36} color="#000" />
-            </AddCloseButton>
-
-            <Form
-              ref={formRef}
-              onSubmit={handleAddPhone}
-              style={{ marginTop: 20 }}
-            >
-              <PhoneInput
-                ref={phoneNumberRef}
-                name="phoneNumber"
-                countryCode={country.value}
-                autoFocus
-                keyboardType="number-pad"
-              />
-
-              <Button
-                icon="plus"
-                text={trans('interestedPhones.addButton')}
-                onPress={() => formRef.current?.submitForm()}
-              />
-            </Form>
-          </AddContent>
-        </SafeAreaView>
-      </Modal>
+          <Button
+            icon="plus"
+            text={trans('interestedPhones.addButton')}
+            onPress={() => formRef.current?.submitForm()}
+          />
+        </Form>
+      </FullModal>
     );
   }
 
@@ -190,7 +186,9 @@ const InterestedPhones: React.FC<InterestedProps> = ({
         {phones &&
           phones.map(item => (
             <PhoneNumberItem key={item.id}>
-              <PhoneNumberItemBtn>
+              <PhoneNumberItemBtn
+                onPress={() => handleCallToPhone(item.nationalValue)}
+              >
                 <PhoneNumberItemText>{item.nationalValue}</PhoneNumberItemText>
               </PhoneNumberItemBtn>
 

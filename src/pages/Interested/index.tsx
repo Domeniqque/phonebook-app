@@ -55,7 +55,9 @@ const Interested: React.FC = () => {
 
   if (loading) {
     return (
-      <Placeholder Animation={Fade}>{renderPlaceholderItems()}</Placeholder>
+      <Container>
+        <Placeholder Animation={Fade}>{renderPlaceholderItems()}</Placeholder>
+      </Container>
     );
   }
 
