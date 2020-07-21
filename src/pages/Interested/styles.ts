@@ -43,3 +43,10 @@ export const Divisor = styled.View`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.05);
 `;
+
+export const EmptyContentContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  flex: 1;
+`;

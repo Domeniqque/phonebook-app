@@ -10,7 +10,7 @@ import { useInterested, InterestedResult } from '../../../hooks/interested';
 import { useAlert } from '../../../hooks/alert';
 import getRealm from '../../../services/realm';
 import InterestedPhones from '../../../components/InterestedPhones';
-import InterestedComments from '../../../components/InterestedComments';
+import InterestedNotes from '../../../components/InterestedNotes';
 
 import {
   Container,
@@ -150,7 +150,7 @@ const Show: React.FC = () => {
         interestedName={interested?.name}
       />
 
-      <InterestedComments
+      <InterestedNotes
         interestedId={interested?.id}
         interestedName={interested?.name}
       />

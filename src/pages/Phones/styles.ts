@@ -49,16 +49,3 @@ export const EmptyContentContainer = styled.View`
   padding-top: 20px;
   flex: 1;
 `;
-export const CenteredAddButton = styled.TouchableOpacity`
-  flex-direction: row;
-  border: #000;
-  padding: 10px 16px;
-  border-radius: 30px;
-  justify-content: center;
-  align-items: center;
-`;
-export const CenteredAddButtonText = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  margin-left: 10px;
-`;

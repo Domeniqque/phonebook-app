@@ -3,8 +3,8 @@ import { InterestedProps } from './InterestedSchema';
 export interface NoteProps {
   text: string;
   pinned: boolean;
-  created_at: Date;
-  interested: InterestedProps;
+  date: Date;
+  interested?: InterestedProps;
 }
 
 export default class NoteSchema {
@@ -13,7 +13,7 @@ export default class NoteSchema {
     properties: {
       text: 'string',
       pinned: 'bool',
-      created_at: { type: 'date', indexed: true },
+      date: { type: 'date', indexed: true },
       interested: {
         type: 'linkingObjects',
         objectType: 'Interested',
