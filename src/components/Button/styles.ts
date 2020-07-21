@@ -1,29 +1,41 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
 interface ButtonProps {
-  isDisabled: boolean;
+  isDisabled?: boolean;
+  outlined: boolean;
 }
 
 export const ButtonContainer = styled(RectButton)<ButtonProps>`
-  height: 66px;
-  width: 100%;
-  border-width: 1px;
-  border-color: #000;
+  height: 50px;
+  border: #000;
   background: #000;
-  margin: 10px 0;
-
   flex-direction: row;
+  padding: 10px 50px;
+  border-radius: 25px;
   justify-content: center;
   align-items: center;
-  border-radius: 33px;
+  margin: 20px auto;
 
   opacity: ${props => (props.isDisabled ? 0.7 : 1)};
+
+  ${props =>
+    props.outlined &&
+    css`
+      background: #fff;
+    `}
 `;
 
-export const ButtonText = styled.Text`
+export const ButtonText = styled.Text<ButtonProps>`
   color: #fff;
-  font-size: 20px;
-  margin-left: 8px;
-  margin-bottom: 2px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 10px;
+  text-transform: uppercase;
+
+  ${props =>
+    props.outlined &&
+    css`
+      color: #000;
+    `}
 `;

@@ -14,19 +14,18 @@ import {
   SelectButton,
   SelectButtonText,
   ModalTimePicker,
-  ModalClose,
-  ModalCloseTitle,
 } from './styles';
 
 interface DatePickerProp {
   label?: string;
+  onSelect(date: Date): void;
 }
 
-const DatePicker: React.FC<DatePickerProp> = ({ label }) => {
+const DatePicker: React.FC<DatePickerProp> = ({ label, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(new Date());
 
-  const { trans, language, country } = useLocale();
+  const { language, country } = useLocale();
 
   useEffect(() => {
     if (modalVisible) Keyboard.dismiss();
@@ -34,9 +33,11 @@ const DatePicker: React.FC<DatePickerProp> = ({ label }) => {
 
   const handleDateChange = useCallback(
     (e: Event, dateValue?: Date | undefined) => {
-      if (dateValue) setDate(dateValue);
+      if (!dateValue) return;
+      setDate(dateValue);
+      onSelect(dateValue);
     },
-    [],
+    [onSelect],
   );
 
   const displayDate = useMemo(() => {
@@ -45,8 +46,6 @@ const DatePicker: React.FC<DatePickerProp> = ({ label }) => {
     const dateFormated = format(date, 'cccc, dd MMM yyyy', {
       locale: dateLocale,
     });
-
-    console.log(country);
 
     return dateFormated;
   }, [date, language]);

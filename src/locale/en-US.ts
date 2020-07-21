@@ -38,6 +38,7 @@ export default {
   },
   interested: {
     title: 'Interested',
+    empty: 'ADD INTERESTED',
     create: {
       title: 'Add Interested',
       nameLabel: 'Name',
@@ -49,6 +50,12 @@ export default {
       addressPlaceholder: 'City, State, etc.',
       phoneNumberLabel: 'Phone Number (required)',
       buttonText: 'Add Interested',
+    },
+    notes: {
+      title: 'Notes',
+      addTitle: 'Add Notes',
+      btnAdd: 'add notes',
+      btnSave: 'Save note',
     },
     show: {
       title: 'Details',
@@ -66,6 +73,7 @@ export default {
     validation: {
       phoneNumber: 'Phone number is required',
       invalidPhone: 'This phone is not valid',
+      note: 'Type a note',
     },
   },
   interestedPhones: {

@@ -5,6 +5,7 @@ import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import FabButton from '../../components/FabButton';
 import InlinePhones from '../../components/InlinePhones';
+import Button from '../../components/Button';
 import { useInterested, InterestedListResult } from '../../hooks/interested';
 import { useLocale } from '../../hooks/locale';
 
@@ -15,6 +16,7 @@ import {
   InterestedItemHeader,
   InterestedItemName,
   Divisor,
+  EmptyContentContainer,
 } from './styles';
 
 const Interested: React.FC = () => {
@@ -57,6 +59,21 @@ const Interested: React.FC = () => {
     return (
       <Container>
         <Placeholder Animation={Fade}>{renderPlaceholderItems()}</Placeholder>
+      </Container>
+    );
+  }
+
+  if (interested.length === 0) {
+    return (
+      <Container>
+        <EmptyContentContainer>
+          <Button
+            text={trans('interested.empty')}
+            onPress={() => navigation.navigate('CreateInterested')}
+            icon="plus"
+            outlined
+          />
+        </EmptyContentContainer>
       </Container>
     );
   }

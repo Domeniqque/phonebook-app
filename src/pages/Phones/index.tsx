@@ -9,6 +9,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import crashlytics from '@react-native-firebase/crashlytics';
 import uuid from '../../utils/uuid';
 
+import Button from '../../components/Button';
 import PhoneFilter from '../../components/PhoneFilter';
 import FabButton from '../../components/FabButton';
 import {
@@ -144,12 +145,12 @@ const Phones: React.FC = () => {
         />
 
         <EmptyContentContainer>
-          <CenteredAddButton onPress={() => navigation.navigate('CreatePhone')}>
-            <Icon name="plus" size={24} color="#000" />
-            <CenteredAddButtonText>
-              {trans('phones.emptyContentButton')}
-            </CenteredAddButtonText>
-          </CenteredAddButton>
+          <Button
+            text={trans('phones.emptyContentButton')}
+            onPress={() => navigation.navigate('CreatePhone')}
+            icon="plus"
+            outlined
+          />
         </EmptyContentContainer>
       </Container>
     );
