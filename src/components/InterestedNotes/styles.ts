@@ -25,3 +25,31 @@ export const AddButton = styled.TouchableOpacity`
 export const AddButtonText = styled.Text`
   font-size: 14px;
 `;
+
+export const Content = styled.View`
+  margin: 20px 0;
+  width: 100%;
+`;
+
+export const NoteItem = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 0;
+  max-width: 100%;
+`;
+
+export const NoteText = styled.Text`
+  font-size: 20px;
+  padding-bottom: 10px;
+  padding-top: 6px;
+  width: 85%;
+`;
+
+export const NoteDate = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+`;
+
+export const DeleteNote = styled.TouchableOpacity`
+  padding: 10px;
+`;
