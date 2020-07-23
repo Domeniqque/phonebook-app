@@ -11,6 +11,8 @@ import { startI18nLaguage } from './locale';
 
 import './exception';
 
+crashlytics().setCrashlyticsCollectionEnabled(true);
+
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
