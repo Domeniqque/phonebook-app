@@ -17,7 +17,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* appphonebookTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* appphonebookTests.m */; };
-		8D6E623E24BCA989002772D8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D6E623D24BCA989002772D8 /* GoogleService-Info.plist */; };
+		8DE9C72924C9969100DC5BAA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9C72824C9969000DC5BAA /* GoogleService-Info.plist */; };
 		AD8E65C0CA8D3610287F0220 /* libPods-appphonebook-appphonebookTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFDAB0D428C79409829F4D1 /* libPods-appphonebook-appphonebookTests.a */; };
 		B1B4A3DB694F6A0E03EF133D /* libPods-appphonebook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59A451D48D9D9666503284DA /* libPods-appphonebook.a */; };
 		DE3B5C4D25C118C1BC7472B2 /* libPods-appphonebook-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCA8D82CADD95067FBCABFC7 /* libPods-appphonebook-tvOSTests.a */; };
@@ -62,7 +62,7 @@
 		717FDD72457278905DB6AB70 /* Pods-appphonebook-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appphonebook-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-appphonebook-tvOSTests/Pods-appphonebook-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		78345320B352D4FD0BE9BFE9 /* Pods-appphonebook-appphonebookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appphonebook-appphonebookTests.release.xcconfig"; path = "Target Support Files/Pods-appphonebook-appphonebookTests/Pods-appphonebook-appphonebookTests.release.xcconfig"; sourceTree = "<group>"; };
 		8AFDAB0D428C79409829F4D1 /* libPods-appphonebook-appphonebookTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-appphonebook-appphonebookTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D6E623D24BCA989002772D8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8DE9C72824C9969000DC5BAA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BCA8D82CADD95067FBCABFC7 /* libPods-appphonebook-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-appphonebook-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3CCE0AA5FD70E6D88B077FB /* libPods-appphonebook-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-appphonebook-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4C67461E5F5AB8595D85794 /* Pods-appphonebook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appphonebook.debug.xcconfig"; path = "Target Support Files/Pods-appphonebook/Pods-appphonebook.debug.xcconfig"; sourceTree = "<group>"; };
@@ -176,7 +176,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8D6E623D24BCA989002772D8 /* GoogleService-Info.plist */,
+				8DE9C72824C9969000DC5BAA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* appphonebook */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* appphonebookTests */,
@@ -347,7 +347,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				8D6E623E24BCA989002772D8 /* GoogleService-Info.plist in Resources */,
+				8DE9C72924C9969100DC5BAA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
