@@ -8,10 +8,13 @@ import { format } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { ptBR, enUS } from 'date-fns/locale';
 
+import { CountryCode } from 'libphonenumber-js';
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
+import getPhoneURI from '../../../utils/getPhoneURI';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
+
 import {
   Container,
   Header,
@@ -44,11 +47,13 @@ const Show: React.FC = () => {
   const { trans, language } = useLocale();
 
   const handleCallToPhone = useCallback(() => {
-    if (!isMobilePhone) return;
-    crashlytics().log(`Abrindo o número ${phone?.nationalValue} na chamada`);
+    if (isMobilePhone && phone) {
+      const { nationalValue, countryCode, iterableValue } = phone;
+      const link = getPhoneURI({ nationalValue, countryCode, iterableValue });
 
-    Linking.openURL(`tel:${phone?.nationalValue}`);
-  }, [phone?.nationalValue]);
+      Linking.openURL(link);
+    }
+  }, [phone]);
 
   const handlePhoneStatus = useCallback(
     async (status: PhoneStatus) => {

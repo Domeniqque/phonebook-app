@@ -34,7 +34,7 @@ export default {
       deleteTitle: 'Excluir este número?',
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
-      updatedAt: 'Atualizado no',
+      updatedAt: 'atualizado',
     },
   },
   interested: {
