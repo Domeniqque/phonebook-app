@@ -102,7 +102,13 @@ const Interested: React.FC = () => {
         )}
       />
 
-      <FabButton onPress={() => navigation.navigate('CreateInterested')} />
+      <FabButton
+        onPress={() => {
+          navigation.navigate('CreateInterested', {
+            nationalPhone: '',
+          });
+        }}
+      />
     </Container>
   );
 };

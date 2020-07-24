@@ -26,10 +26,11 @@ export const Backdrop = styled.View<BackdropProps>`
 
 export const Content = styled.View`
   max-width: 90%;
+  width: 320px;
   margin: 20px;
   background-color: #fff;
   border-radius: 20px;
-  padding: 25px 12px;
+  padding: 25px 16px;
   align-items: center;
   z-index: 5000;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);

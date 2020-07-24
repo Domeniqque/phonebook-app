@@ -145,16 +145,16 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
       }
 
       alert({
-        title: 'Deseja excluir esta nota?',
+        title: trans('interested.notes.titleDelete'),
         text: text.length < 110 ? text : `${text.substr(0, 110)}...`,
-        confirmText: 'Sim, excluir',
-        cancelText: 'Cancelar',
+        confirmText: trans('interested.notes.confirmDelete'),
+        cancelText: trans('interested.notes.cancelDelete'),
         onConfirm: (): void => {
           destroy();
         },
       });
     },
-    [success, alert],
+    [success, alert, trans],
   );
 
   const formatDate = useCallback(

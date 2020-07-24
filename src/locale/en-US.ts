@@ -33,7 +33,10 @@ export default {
       deleteTitle: 'Delete this number?',
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
-      updatedAt: 'updated',
+      updatedAt: 'updated on',
+      addInterested: 'Do you want to add an interested party?',
+      addInterestedConfirm: 'yes',
+      addInterestedCancel: 'no',
     },
   },
   interested: {
@@ -56,6 +59,9 @@ export default {
       addTitle: 'Add Notes',
       btnAdd: 'add notes',
       btnSave: 'Save note',
+      titleDelete: 'Delete this note?',
+      confirmDelete: 'YES, DELETE',
+      cancelDelete: 'CANCEL',
     },
     show: {
       title: 'Details',

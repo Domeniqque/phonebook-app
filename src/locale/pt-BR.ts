@@ -34,7 +34,10 @@ export default {
       deleteTitle: 'Excluir este número?',
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
-      updatedAt: 'tualizado',
+      updatedAt: 'atualizado ',
+      addInterested: 'Deseja adicionar um interessado?',
+      addInterestedConfirm: 'Sim',
+      addInterestedCancel: 'Não',
     },
   },
   interested: {
@@ -57,6 +60,9 @@ export default {
       addTitle: 'Adicionar Notas',
       btnAdd: 'add notes',
       btnSave: 'Salvar nota',
+      titleDelete: 'Deseja excluir esta nota?',
+      confirmDelete: 'Sim, excluir',
+      cancelDelete: 'CANCELAR',
     },
     show: {
       title: 'Detalhes',
