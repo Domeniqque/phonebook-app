@@ -45,6 +45,10 @@ export const NoteText = styled.Text`
   width: 85%;
 `;
 
+export const NoteContent = styled.View`
+  flex: 1;
+`;
+
 export const NoteDate = styled.Text`
   font-size: 14px;
   font-weight: bold;

@@ -56,9 +56,9 @@ const Show: React.FC = () => {
     const destroy = async (): Promise<void> => {
       if (!interested?.id) return;
 
-      success();
       const realm = await getRealm();
 
+      success();
       navigation.navigate('Interested');
 
       realm.write(() => {
@@ -77,19 +77,18 @@ const Show: React.FC = () => {
 
     alert({
       title: trans('interested.show.deleteTitle'),
-      text: interested?.name,
+      text: 'Isso não poderá ser desfeito',
       confirmText: trans('interested.show.deleteOk'),
       cancelText: trans('interested.show.deleteCancel'),
       onConfirm: () => {
         crashlytics().log('Deletando um número');
 
         destroy().catch(error => {
-          console.log(error);
           crashlytics().recordError(error);
         });
       },
     });
-  }, [interested?.id, interested?.name, navigation, alert, trans, success]);
+  }, [interested?.id, navigation, alert, trans, success]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -120,7 +119,7 @@ const Show: React.FC = () => {
       <SectionDetails>
         {loading ? (
           <Placeholder Animation={Fade}>
-            <PlaceholderLine height={25} width={60} />
+            <PlaceholderLine height={20} width={60} />
             <PlaceholderLine height={14} width={40} />
           </Placeholder>
         ) : (

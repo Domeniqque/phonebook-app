@@ -1,12 +1,15 @@
+/* eslint-disable import/no-duplicates */
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import crashlytics from '@react-native-firebase/crashlytics';
 import Icon from 'react-native-vector-icons/Feather';
+import { ptBR, enUS } from 'date-fns/locale';
+import { format } from 'date-fns';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import FullModal from '../FullModal';
-
 import Input from '../Input';
 import Button from '../Button';
 import DatePicker from '../DatePicker';
@@ -28,6 +31,7 @@ import {
   NoteItem,
   NoteText,
   NoteDate,
+  NoteContent,
   DeleteNote,
 } from './styles';
 
@@ -38,11 +42,7 @@ interface InterestedNotesProps {
 
 type NoteResult = Realm.Results<NoteProps & Realm.Object>;
 
-async function loadNotes(
-  interestedId: string | undefined,
-): Promise<NoteResult> {
-  if (!interestedId) return {} as NoteResult;
-
+async function loadNotes(interestedId: string): Promise<NoteResult> {
   const realm = await getRealm();
 
   const data = realm
@@ -59,15 +59,21 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
 }) => {
   const [addMode, setAddMode] = useState(false);
   const [date, setDate] = useState<Date>(new Date());
-  const [notes, setNotes] = useState<NoteResult>({} as NoteResult);
+  const [notes, setNotes] = useState<NoteResult>();
+  const [loading, setLoading] = useState(true);
 
   const formRef = useRef<FormHandles>(null);
 
-  const { trans } = useLocale();
+  const { trans, language } = useLocale();
   const { alert, success } = useAlert();
 
   useEffect(() => {
-    loadNotes(interestedId).then(setNotes);
+    if (!interestedId) return;
+
+    loadNotes(interestedId).then(data => {
+      setNotes(data as NoteResult);
+      setLoading(false);
+    });
   }, [interestedId]);
 
   const handleSaveNote = useCallback(
@@ -86,9 +92,9 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
 
         const realm = await getRealm();
 
-        realm.write(async () => {
-          success();
+        success();
 
+        realm.write(async () => {
           const interested = realm.objectForPrimaryKey<InterestedProps>(
             'Interested',
             interestedId,
@@ -151,6 +157,18 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
     [success, alert],
   );
 
+  const formatDate = useCallback(
+    (noteDate: Date) => {
+      const dateLocale = language === 'pt_BR' ? ptBR : enUS;
+
+      return format(noteDate, 'cccc, dd MMM yyyy', {
+        locale: dateLocale,
+      });
+    },
+    [language],
+  );
+
+  // Form Create
   if (addMode) {
     return (
       <FullModal
@@ -191,15 +209,26 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
       </Header>
 
       <Content>
-        {notes &&
+        {loading ? (
+          <Placeholder Animation={Fade}>
+            <PlaceholderLine height={12} width={35} />
+            <PlaceholderLine height={18} width={86} />
+            <PlaceholderLine height={18} width={70} />
+          </Placeholder>
+        ) : (
+          notes &&
           notes.map(note => (
             <NoteItem key={note.id}>
-              <NoteText>{note.text}</NoteText>
+              <NoteContent>
+                <NoteDate>{formatDate(note.date)}</NoteDate>
+                <NoteText>{note.text}</NoteText>
+              </NoteContent>
               <DeleteNote onPress={() => handleDeleteNote(note.id, note.text)}>
                 <Icon name="trash" size={20} color="#000" />
               </DeleteNote>
             </NoteItem>
-          ))}
+          ))
+        )}
       </Content>
     </Container>
   );
