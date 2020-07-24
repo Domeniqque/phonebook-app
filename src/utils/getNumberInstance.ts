@@ -1,4 +1,4 @@
-import { AsYouType, CountryCode, PhoneNumber } from 'libphonenumber-js';
+import { AsYouType, CountryCode, PhoneNumber } from 'libphonenumber-js/max';
 
 export default function getNumberInstance(
   number: string,
