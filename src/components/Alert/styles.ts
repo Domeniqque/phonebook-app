@@ -25,6 +25,7 @@ export const Backdrop = styled.View<BackdropProps>`
 `;
 
 export const Content = styled.View`
+  max-width: 90%;
   margin: 20px;
   background-color: #fff;
   border-radius: 20px;

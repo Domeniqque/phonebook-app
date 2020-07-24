@@ -132,7 +132,7 @@ export const InterestedProvider: React.FC = ({ children }) => {
     return realm
       .objects<InterestedProps>('Interested')
       .filtered('active = 1')
-      .sorted('name');
+      .sorted('name', true);
   }, []);
 
   const genderTypes = useMemo(

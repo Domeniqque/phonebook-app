@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import { PhoneResults, usePhone } from '../../hooks/phone';
 import { useInterested } from '../../hooks/interested';
@@ -46,6 +47,7 @@ const InterestedPhones: React.FC<InterestedProps> = ({
 }) => {
   const [phones, setPhones] = useState<PhoneResults>();
   const [addMode, setAddMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const phoneNumberRef = useRef<PhoneInputRef>(null);
   const formRef = useRef<FormHandles>(null);
@@ -66,6 +68,7 @@ const InterestedPhones: React.FC<InterestedProps> = ({
         .filtered(`interested_id = "${interestedId}"`);
 
       setPhones(phonesData);
+      setLoading(false);
     }
 
     loadPhones();
@@ -183,7 +186,12 @@ const InterestedPhones: React.FC<InterestedProps> = ({
       </PhonesNumbersHeader>
 
       <PhonesNumbersContainer>
-        {phones &&
+        {loading ? (
+          <Placeholder Animation={Fade}>
+            <PlaceholderLine height={18} width={60} />
+          </Placeholder>
+        ) : (
+          phones &&
           phones.map(item => (
             <PhoneNumberItem key={item.id}>
               <PhoneNumberItemBtn
@@ -196,7 +204,8 @@ const InterestedPhones: React.FC<InterestedProps> = ({
                 <Icon name="trash" size={20} color="#000" />
               </PhoneNumberItemDelete>
             </PhoneNumberItem>
-          ))}
+          ))
+        )}
       </PhonesNumbersContainer>
     </Container>
   );

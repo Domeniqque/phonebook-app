@@ -40,7 +40,7 @@ export const AlertProvider: React.FC = ({ children }) => {
       setUseCheckmark(false);
     };
 
-    setTimeout(close, time || 1200);
+    setTimeout(close, time || 1000);
 
     return () => close();
   }, []);

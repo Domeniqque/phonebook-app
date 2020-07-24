@@ -21,9 +21,10 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
   border-width: 2px;
   border-radius: 17px;
   min-height: 34px;
-  padding: 4px 14px 6px;
-  border: #000;
+  padding: 4px 14px 4px;
+  border-color: #f6f6f6;
   margin: 0px 4px 0;
+  background: #fff;
 
   ${Platform.OS === 'ios' &&
   css`
@@ -34,6 +35,7 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
     props.selected &&
     css`
       background: #000;
+      border-color: #000;
     `}
 `;
 
