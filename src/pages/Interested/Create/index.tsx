@@ -1,9 +1,15 @@
-import React, { useCallback, useRef, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useAlert } from '../../../hooks/alert';
@@ -14,6 +20,7 @@ import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
 import Select from '../../../components/Select';
 import Button from '../../../components/Button';
 import getValidationErrors from '../../../utils/getValidationErrors';
+import { InterestedStackProps } from '../../../routes/interested.routes';
 import getLocalePhonePlaceholder from '../../../utils/getLocalePhonePlaceholder';
 
 import { Container } from './styles';
@@ -26,6 +33,11 @@ interface InterestedFormData {
   gender: string;
 }
 
+type InterestedScreenProps = RouteProp<
+  InterestedStackProps,
+  'CreateInterested'
+>;
+
 const Create: React.FC = () => {
   const phoneNumberRef = useRef<PhoneInputRef>(null);
   const formRef = useRef<FormHandles>(null);
@@ -37,6 +49,8 @@ const Create: React.FC = () => {
   const { addInterested } = useInterested();
 >>>>>>> cadastro de interessados
   const navigation = useNavigation();
+
+  const { params } = useRoute<InterestedScreenProps>();
 
   const phonePlaceholder = useMemo(
     () => getLocalePhonePlaceholder(country.value),
@@ -96,6 +110,7 @@ const Create: React.FC = () => {
       >
         <Form
           ref={formRef}
+          initialData={{ phoneNumber: params?.nationalPhone || '' }}
           onSubmit={handleCreateInterested}
           style={{ marginTop: 20 }}
         >

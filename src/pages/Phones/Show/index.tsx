@@ -64,8 +64,34 @@ const Show: React.FC = () => {
       InteractionManager.runAfterInteractions(() => {
         setStatus(phone?.id, status)
           .then(() => {
-            navigation.navigate('Phones');
-            success();
+            if (status === PhoneStatus.Received) {
+              alert({
+                title: trans('phones.show.addInterested'),
+                confirmText: trans('phones.show.addInterestedConfirm'),
+                cancelText:  trans('phones.show.addInterestedCancel'),
+                onConfirm: () => {
+                  navigation.navigate('Interested', {
+                    screen: 'IndexInterested',
+                  });
+
+                  setTimeout(() => {
+                    navigation.navigate('Interested', {
+                      screen: 'CreateInterested',
+                      params: {
+                        nationalPhone: phone.nationalValue,
+                      },
+                    })
+                  }, 20);
+
+                },
+                onCancel: () => {
+                  navigation.navigate('Phones');
+                }
+              })
+            } else {
+              success();
+              navigation.navigate('Phones');
+            }
           })
           .catch(error => {
             alert({
