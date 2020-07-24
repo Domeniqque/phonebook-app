@@ -1,12 +1,10 @@
-import { PhoneNumber } from 'libphonenumber-js';
+import { PhoneNumber } from 'libphonenumber-js/max';
+
+import trim from './trimPhone';
 
 interface PhoneParsed {
   areaCode: string;
   number: number;
-}
-
-function trim(number: string): string {
-  return number.replace(/(\s|-|\+|\(|\))/g, '');
 }
 
 export function parsePhone(phoneNumber: PhoneNumber | string): PhoneParsed {
