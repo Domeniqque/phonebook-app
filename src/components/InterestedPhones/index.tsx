@@ -94,8 +94,8 @@ const InterestedPhones: React.FC<InterestedProps> = ({
         await schema.validate({ phoneNumber }, { abortEarly: false });
 
         if (phoneNumberRef.current && interestedId) {
-          setAddMode(false);
           success();
+          setAddMode(false);
 
           await addInterestedPhone(phoneInstance, interestedId);
 

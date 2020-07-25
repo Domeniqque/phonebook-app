@@ -69,6 +69,7 @@ export default {
       deleteTitle: 'Excluir este interessado?',
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
+      deleteConfimText: 'Isso não poderá ser desfeito',
       call: 'Toque para chamar',
       btnAddPhone: 'adicionar',
       unnamed: 'Sem nome',

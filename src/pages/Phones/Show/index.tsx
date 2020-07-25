@@ -70,6 +70,8 @@ const Show: React.FC = () => {
                 confirmText: trans('phones.show.addInterestedConfirm'),
                 cancelText:  trans('phones.show.addInterestedCancel'),
                 onConfirm: () => {
+                  navigation.navigate('Phones');
+
                   navigation.navigate('Interested', {
                     screen: 'IndexInterested',
                   });

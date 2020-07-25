@@ -60,6 +60,10 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     [formatValue, onChangeText],
   );
 
+  useEffect(() => {
+    if (defaultValue) handleChangeText(defaultValue);
+  }, [defaultValue, handleChangeText]);
+
   useImperativeHandle(ref, () => ({
     focus() {
       inputElementRef.current.focus();

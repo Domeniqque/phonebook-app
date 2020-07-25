@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   padding: 20px 16px;
   position: relative;
   height: 100%;
 `;
 
-export const Content = styled.View``;
+export const Content = styled.ScrollView``;
 
 export const Header = styled.View`
   margin-top: 10px;

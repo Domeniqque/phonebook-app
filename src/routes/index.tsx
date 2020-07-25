@@ -16,6 +16,9 @@ const PhonesRoutes: React.FC = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
+        labelStyle: {
+          fontSize: 8,
+        },
         activeTintColor: '#000',
         inactiveTintColor: '#ccc',
         keyboardHidesTabBar: true,

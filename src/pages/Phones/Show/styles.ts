@@ -87,7 +87,7 @@ export const DeleteButton = styled.TouchableOpacity`
 
 export const LastUpdate = styled.Text`
   position: absolute;
-  bottom: 25px;
+  bottom: 10px;
   font-size: 14px;
   color: #333;
 `;
