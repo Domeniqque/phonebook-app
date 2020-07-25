@@ -59,7 +59,7 @@ const Show: React.FC = () => {
       const realm = await getRealm();
 
       success();
-      navigation.navigate('Interested');
+      navigation.navigate('IndexInterested');
 
       realm.write(() => {
         const interestedData = realm
@@ -70,14 +70,14 @@ const Show: React.FC = () => {
           .objects('Phones')
           .filtered(`interested_id = "${interested.id}"`);
 
-        realm.delete(interestedData);
         realm.delete(interestedPhones);
+        realm.delete(interestedData);
       });
     };
 
     alert({
       title: trans('interested.show.deleteTitle'),
-      text: 'Isso não poderá ser desfeito',
+      text: trans('interested.show.deleteConfimText'),
       confirmText: trans('interested.show.deleteOk'),
       cancelText: trans('interested.show.deleteCancel'),
       onConfirm: () => {
@@ -146,12 +146,12 @@ const Show: React.FC = () => {
 
       <InterestedPhones
         interestedId={interested?.id}
-        interestedName={interested?.name}
+        interestedName={interested?.name || trans('interested.show.unnamed')}
       />
 
       <InterestedNotes
         interestedId={interested?.id}
-        interestedName={interested?.name}
+        interestedName={interested?.name || trans('interested.show.unnamed')}
       />
     </Container>
   );

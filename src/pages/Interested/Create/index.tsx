@@ -82,7 +82,7 @@ const Create: React.FC = () => {
 
         await addInterested(data);
 
-        navigation.navigate('Interested');
+        navigation.navigate('IndexInterested');
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
