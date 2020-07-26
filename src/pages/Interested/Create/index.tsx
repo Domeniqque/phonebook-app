@@ -78,11 +78,11 @@ const Create: React.FC = () => {
           phoneNumber: phoneNumberRef.current?.getPhoneInstance(),
         };
 
+        const id = await addInterested(data);
+
         success();
 
-        await addInterested(data);
-
-        navigation.navigate('IndexInterested');
+        navigation.navigate('ShowInterested', { id });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
@@ -112,7 +112,7 @@ const Create: React.FC = () => {
           ref={formRef}
           initialData={{ phoneNumber: params?.nationalPhone || '' }}
           onSubmit={handleCreateInterested}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 20, marginBottom: 30 }}
         >
           <Input
             name="name"

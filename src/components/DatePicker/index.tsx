@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Keyboard, LayoutAnimation } from 'react-native';
+import { Keyboard, LayoutAnimation, Platform } from 'react-native';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 
@@ -34,6 +34,7 @@ const DatePicker: React.FC<DatePickerProp> = ({ label, onSelect }) => {
   const handleDateChange = useCallback(
     (e: Event, dateValue?: Date | undefined) => {
       if (!dateValue) return;
+      setModalVisible(Platform.OS === 'ios');
       setDate(dateValue);
       onSelect(dateValue);
     },
@@ -72,16 +73,24 @@ const DatePicker: React.FC<DatePickerProp> = ({ label, onSelect }) => {
         </SelectButton>
       </Container>
 
-      {modalVisible && (
-        <ModalTimePicker>
+      {modalVisible &&
+        (Platform.OS === 'ios' ? (
+          <ModalTimePicker>
+            <DateTimePicker
+              value={date}
+              mode="date"
+              onChange={handleDateChange}
+              locale={pickerLocale}
+            />
+          </ModalTimePicker>
+        ) : (
           <DateTimePicker
             value={date}
             mode="date"
             onChange={handleDateChange}
             locale={pickerLocale}
           />
-        </ModalTimePicker>
-      )}
+        ))}
     </>
   );
 };

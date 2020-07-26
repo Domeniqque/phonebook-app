@@ -32,6 +32,8 @@ const Interested: React.FC = () => {
 
   useEffect(() => {
     async function loadInterested(): Promise<void> {
+      setLoading(true);
+      setInterested({} as InterestedListResult);
       const data = await getAll();
 
       setInterested(data);

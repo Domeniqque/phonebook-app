@@ -6,13 +6,14 @@ interface ButtonProps {
   outlined: boolean;
 }
 
-export const ButtonContainer = styled(RectButton)<ButtonProps>`
+export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   height: 50px;
   border: #000;
   background: #000;
   flex-direction: row;
   padding: 10px 50px;
   border-radius: 25px;
+  border-width: 2px;
   justify-content: center;
   align-items: center;
   margin: 20px auto;
