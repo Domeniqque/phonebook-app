@@ -24,7 +24,7 @@ export type InterestedListResult = Realm.Results<
 export type InterestedResult = (InterestedProps & Realm.Object) | undefined;
 
 interface InterestedContextData {
-  addInterested(data: InterestedFormData): Promise<void>;
+  addInterested(data: InterestedFormData): Promise<string>;
   getAll(): Promise<InterestedListResult>;
   findById(id: string): Promise<InterestedResult>;
   addInterestedPhone(
@@ -105,14 +105,15 @@ export const InterestedProvider: React.FC = ({ children }) => {
   );
 
   const addInterested = useCallback(
-    async (data: InterestedFormData): Promise<void> => {
+    async (data: InterestedFormData): Promise<string> => {
       crashlytics().log(`Cadastrando interessados`);
 
       const realm = await getRealm();
+      const id = uuid();
 
       realm.write(() => {
         const interested = realm.create<InterestedProps>('Interested', {
-          id: uuid(),
+          id,
           name: data.name ?? '',
           address: data.address ?? '',
           gender: data.gender ?? '',
@@ -122,6 +123,8 @@ export const InterestedProvider: React.FC = ({ children }) => {
 
         addInterestedPhone(data.phoneNumber, interested.id, realm);
       });
+
+      return id;
     },
     [addInterestedPhone],
   );

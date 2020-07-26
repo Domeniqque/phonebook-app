@@ -59,9 +59,10 @@ const Show: React.FC = () => {
       const realm = await getRealm();
 
       success();
-      navigation.navigate('IndexInterested');
 
       realm.write(() => {
+        navigation.navigate('IndexInterested');
+
         const interestedData = realm
           .objects('Interested')
           .filtered(`id = "${interested.id}"`);
