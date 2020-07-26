@@ -71,7 +71,7 @@ export default {
       deleteConfimText: "It can't be undone",
       call: 'Touch to call',
       btnAddPhone: 'add phone',
-      unnamed: 'Unnamed',
+      unnamed: '[unnamed]',
     },
     edit: {
       title: 'Edit Interested',

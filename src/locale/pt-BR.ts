@@ -72,7 +72,7 @@ export default {
       deleteConfimText: 'Isso não poderá ser desfeito',
       call: 'Toque para chamar',
       btnAddPhone: 'adicionar',
-      unnamed: 'Sem nome',
+      unnamed: '[sem nome]',
     },
     edit: {
       title: 'Editar Interessado',
