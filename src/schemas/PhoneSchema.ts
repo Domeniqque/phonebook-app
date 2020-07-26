@@ -1,5 +1,4 @@
 import { PhoneStatus } from '../hooks/phone';
-import { InterestedProps } from './InterestedSchema';
 
 export interface PhoneProps {
   id: string;
