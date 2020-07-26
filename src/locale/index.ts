@@ -59,6 +59,8 @@ I18n.translations = {
   pt_BR: pt,
 };
 
+I18n.defaultLocale = 'en_US';
+
 // Função responsável por verificar se o idioma atual do divice está sendo suportado, caso não ele irá setar como 'en_US'
 export const setLanguageToI18n = async (language: string): Promise<void> => {
   const translateNormalize = normalizeTranslate[language];
@@ -72,7 +74,7 @@ export const setLanguageToI18n = async (language: string): Promise<void> => {
     I18n.locale = translateNormalize;
     await AsyncStorage.setItem(LANG_STORAGE_KEY, translateNormalize);
   } else {
-    I18n.defaultLocale = 'en_US';
+    I18n.locale = 'en_US';
     await AsyncStorage.setItem(LANG_STORAGE_KEY, 'en_US');
   }
 };
