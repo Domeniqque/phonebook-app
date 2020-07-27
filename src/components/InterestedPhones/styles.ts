@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   border-radius: 16px;
-  margin: 20px 0 10px;
+  margin: 30px 0;
 `;
 
 export const PhonesNumbersHeader = styled.View`

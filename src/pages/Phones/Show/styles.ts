@@ -70,8 +70,9 @@ export const ActionButton = styled.TouchableOpacity`
 `;
 
 export const ActionButtonText = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   margin-top: 14px;
+  text-transform: lowercase;
 `;
 
 export const ActionTitle = styled.Text`

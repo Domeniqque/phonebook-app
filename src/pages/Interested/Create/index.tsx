@@ -1,15 +1,14 @@
-import React, {
-  useCallback,
-  useRef,
-  useMemo,
-  useState,
-  useEffect,
-} from 'react';
+import React, { useCallback, useRef, useMemo, useState } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  StackActions,
+} from '@react-navigation/native';
 
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useAlert } from '../../../hooks/alert';
@@ -43,11 +42,7 @@ const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { trans, country } = useLocale();
   const { alert, success } = useAlert();
-<<<<<<< HEAD
   const { addInterested, genderTypes, lifeStageTypes } = useInterested();
-=======
-  const { addInterested } = useInterested();
->>>>>>> cadastro de interessados
   const navigation = useNavigation();
 
   const { params } = useRoute<InterestedScreenProps>();
@@ -82,7 +77,11 @@ const Create: React.FC = () => {
 
         success();
 
-        navigation.navigate('ShowInterested', { id });
+        navigation.dispatch(StackActions.pop(1));
+
+        navigation.navigate('ShowInterested', {
+          id,
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
           formRef.current?.setErrors(getValidationErrors(err));
@@ -131,7 +130,7 @@ const Create: React.FC = () => {
           <PhoneInput
             ref={phoneNumberRef}
             name="phoneNumber"
-            countryCode={country.value}
+            countryCode={params?.countryCode || country.value}
             placeholder={phonePlaceholder}
             label={trans('interested.create.phoneNumberLabel')}
           />
