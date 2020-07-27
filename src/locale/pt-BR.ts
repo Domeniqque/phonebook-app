@@ -112,14 +112,14 @@ export default {
     received: 'Atendidos',
     missed: 'Não atendidos',
     notExist: 'Não existem',
-    removed: 'Removidos',
+    removed: 'Não ligar mais',
   },
   phoneStatus: {
     new: 'Novo',
     received: 'Atendido',
     missed: 'Não atendido',
     notExist: 'Não existe',
-    removed: 'Removido',
+    removed: 'Não ligar mais',
   },
   defaultError: {
     title: 'Por favor, nos desculpe! 😢',

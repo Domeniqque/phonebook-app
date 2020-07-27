@@ -34,9 +34,10 @@ const DatePicker: React.FC<DatePickerProp> = ({ label, onSelect }) => {
   const handleDateChange = useCallback(
     (e: Event, dateValue?: Date | undefined) => {
       if (!dateValue) return;
-      setModalVisible(Platform.OS === 'ios');
       setDate(dateValue);
       onSelect(dateValue);
+
+      console.log({ dateValue });
     },
     [onSelect],
   );

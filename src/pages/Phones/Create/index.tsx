@@ -94,20 +94,20 @@ const Create: React.FC = () => {
   );
 
   return (
-    <Container>
-      {loading && <Loading />}
-      <Tip>
-        <TipText>{trans('phones.create.tip')}</TipText>
-      </Tip>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <Container>
+        {loading && <Loading />}
+        <Tip>
+          <TipText>{trans('phones.create.tip')}</TipText>
+        </Tip>
 
-      <Form
-        ref={formRef}
-        onSubmit={handleCreateNumbers}
-        style={{ marginTop: 20 }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
+        <Form
+          ref={formRef}
+          onSubmit={handleCreateNumbers}
+          style={{ marginTop: 20 }}
         >
           <PhoneInput
             ref={firstNumberRef}
@@ -136,9 +136,9 @@ const Create: React.FC = () => {
             style={{ marginTop: 8 }}
             onPress={() => formRef.current?.submitForm()}
           />
-        </KeyboardAvoidingView>
-      </Form>
-    </Container>
+        </Form>
+      </Container>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -34,7 +34,7 @@ export default {
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
       updatedAt: 'updated on',
-      addInterested: 'Do you want to add an interested party?',
+      addInterested: 'Do you want to add an interested person?',
       addInterestedConfirm: 'yes',
       addInterestedCancel: 'no',
     },

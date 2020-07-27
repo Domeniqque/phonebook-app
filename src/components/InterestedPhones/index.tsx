@@ -1,4 +1,4 @@
-import { NativeModules, Linking } from 'react-native';
+import { NativeModules, Linking, LayoutAnimation } from 'react-native';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Form } from '@unform/mobile';
 import Icon from 'react-native-vector-icons/Feather';
@@ -7,7 +7,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
-import { PhoneResults, usePhone } from '../../hooks/phone';
+import { PhoneResults, usePhone, PhoneNumber } from '../../hooks/phone';
 import { useInterested } from '../../hooks/interested';
 import { useAlert } from '../../hooks/alert';
 import { useLocale } from '../../hooks/locale';
@@ -17,6 +17,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import PhoneInput, { PhoneInputRef } from '../PhoneInput';
 import Button from '../Button';
 import FullModal from '../FullModal';
+import getPhoneURI from '../../utils/getPhoneURI';
 
 import {
   Container,
@@ -139,11 +140,13 @@ const InterestedPhones: React.FC<InterestedProps> = ({
     [destroy, alert, success, trans],
   );
 
-  const handleCallToPhone = useCallback((nationalValue: string) => {
-    if (!isMobilePhone) return;
-    crashlytics().log(`Abrindo o número ${nationalValue} na chamada`);
+  const handleCallToPhone = useCallback((phone: PhoneNumber) => {
+    if (isMobilePhone && phone) {
+      const { nationalValue, countryCode, iterableValue } = phone;
+      const link = getPhoneURI({ nationalValue, countryCode, iterableValue });
 
-    Linking.openURL(`tel:${nationalValue}`);
+      Linking.openURL(link);
+    }
   }, []);
 
   if (addMode) {
@@ -179,7 +182,12 @@ const InterestedPhones: React.FC<InterestedProps> = ({
         <PhonesNumbersTitle>{trans('interested.show.call')}</PhonesNumbersTitle>
 
         <PhoneNumbersAdd>
-          <PhoneNumbersAddText onPress={() => setAddMode(true)}>
+          <PhoneNumbersAddText
+            onPress={() => {
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+              setAddMode(true);
+            }}
+          >
             {trans('interested.show.btnAddPhone')}
           </PhoneNumbersAddText>
         </PhoneNumbersAdd>
@@ -194,9 +202,7 @@ const InterestedPhones: React.FC<InterestedProps> = ({
           phones &&
           phones.map(item => (
             <PhoneNumberItem key={item.id}>
-              <PhoneNumberItemBtn
-                onPress={() => handleCallToPhone(item.nationalValue)}
-              >
+              <PhoneNumberItemBtn onPress={() => handleCallToPhone(item)}>
                 <PhoneNumberItemText>{item.nationalValue}</PhoneNumberItemText>
               </PhoneNumberItemBtn>
 

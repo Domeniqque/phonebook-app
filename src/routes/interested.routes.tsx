@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Feather';
 import { Platform } from 'react-native';
+import { CountryCode } from 'libphonenumber-js';
 
 import Interested from '../pages/Interested';
 import CreateInterested from '../pages/Interested/Create';
@@ -12,7 +13,7 @@ import { useLocale } from '../hooks/locale';
 
 export type InterestedStackProps = {
   IndexInterested: undefined;
-  CreateInterested: { nationalPhone?: string };
+  CreateInterested: { nationalPhone?: string; countryCode?: CountryCode };
   ShowInterested: { id: string };
   EditInterested: { id: string };
 };

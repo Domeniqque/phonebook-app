@@ -45,18 +45,19 @@ export const Title = styled.Text`
 
 export const Text = styled.Text`
   font-size: 18px;
+  margin-bottom: 25px;
 `;
 
 export const ButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 25px;
+  justify-content: space-around;
 `;
 
 export const RoundedButton = styled.TouchableOpacity`
   background: #000;
   padding: 12px 20px;
-  margin: 0 20px;
+  margin: 0 10px;
   border-radius: 20px;
 `;
 
