@@ -1,17 +1,5 @@
-import React, {
-  useCallback,
-  useRef,
-  useState,
-  useMemo,
-  useEffect,
-} from 'react';
-import {
-  InteractionManager,
-  Platform,
-  KeyboardAvoidingView,
-  LayoutAnimation,
-  View,
-} from 'react-native';
+import React, { useCallback, useRef, useState, useMemo } from 'react';
+import { InteractionManager, LayoutAnimation } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
@@ -170,96 +158,86 @@ const Create: React.FC = () => {
         <TipText>{trans('phones.create.tip')}</TipText>
       </Tip>
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <Form
+        ref={formRef}
+        onSubmit={handleCreateNumbers}
         style={{ flex: 1 }}
+        initialData={{ quantity: '1' }}
       >
-        <View style={{ flex: 1, marginTop: 10 }}>
-          <Form
-            ref={formRef}
-            onSubmit={handleCreateNumbers}
-            style={{ flex: 1 }}
-            initialData={{ quantity: '1' }}
+        <PhoneInput
+          ref={firstNumberRef}
+          label={trans('phones.create.label.first')}
+          name="firstNumber"
+          countryCode={country.value}
+          returnKeyType="next"
+          onSubmitEditing={() => lastNumberRef.current?.focus()}
+          placeholder={placeholder}
+          onChangeText={setFirstNumber}
+          accessibilityLabel="Type your first phone number"
+          autoFocus
+        />
+
+        <ToggleModeLabel>{trans('phones.create.label.addBy')}</ToggleModeLabel>
+
+        <ToggleMode>
+          <ToggleModeBtn
+            selected={addMode === AddMode.LAST_NUMBER}
+            onPress={toggleAddMode}
           >
-            <PhoneInput
-              ref={firstNumberRef}
-              label={trans('phones.create.label.first')}
-              name="firstNumber"
-              countryCode={country.value}
-              returnKeyType="next"
-              onSubmitEditing={() => lastNumberRef.current?.focus()}
-              placeholder={placeholder}
-              onChangeText={setFirstNumber}
+            <ToggleModeText selected={addMode === AddMode.LAST_NUMBER}>
+              {trans('phones.create.label.btnLast')}
+            </ToggleModeText>
+          </ToggleModeBtn>
+          <ToggleModeBtn
+            onPress={toggleAddMode}
+            selected={addMode === AddMode.QUANTITY}
+          >
+            <ToggleModeText selected={addMode === AddMode.QUANTITY}>
+              {trans('phones.create.label.btnQtd')}
+            </ToggleModeText>
+          </ToggleModeBtn>
+        </ToggleMode>
+
+        {addMode === AddMode.QUANTITY ? (
+          <>
+            <Input
+              ref={quantityRef}
+              name="quantity"
+              keyboardType="number-pad"
+              label={trans('phones.create.label.qtd')}
+              maxLength={4}
+              selectTextOnFocus={false}
+              onChangeText={generateLastNumber}
               accessibilityLabel="Type your first phone number"
-              autoFocus
             />
 
-            <ToggleModeLabel>
-              {trans('phones.create.label.addBy')}
-            </ToggleModeLabel>
-
-            <ToggleMode>
-              <ToggleModeBtn
-                selected={addMode === AddMode.LAST_NUMBER}
-                onPress={toggleAddMode}
-              >
-                <ToggleModeText selected={addMode === AddMode.LAST_NUMBER}>
-                  {trans('phones.create.label.btnLast')}
-                </ToggleModeText>
-              </ToggleModeBtn>
-              <ToggleModeBtn
-                onPress={toggleAddMode}
-                selected={addMode === AddMode.QUANTITY}
-              >
-                <ToggleModeText selected={addMode === AddMode.QUANTITY}>
-                  {trans('phones.create.label.btnQtd')}
-                </ToggleModeText>
-              </ToggleModeBtn>
-            </ToggleMode>
-
-            {addMode === AddMode.QUANTITY ? (
-              <>
-                <Input
-                  ref={quantityRef}
-                  name="quantity"
-                  keyboardType="number-pad"
-                  label={trans('phones.create.label.qtd')}
-                  maxLength={4}
-                  selectTextOnFocus={false}
-                  onChangeText={generateLastNumber}
-                  accessibilityLabel="Type your first phone number"
-                  autoFocus
-                />
-
-                {lastNumber && (
-                  <LastNumberPreview>
-                    {`${trans(
-                      'phones.create.label.lastNumberPreview',
-                    )} ${lastNumber?.formatNational()}`}
-                  </LastNumberPreview>
-                )}
-              </>
-            ) : (
-              <PhoneInput
-                ref={lastNumberRef}
-                label={trans('phones.create.label.last')}
-                name="lastNumber"
-                returnKeyType="next"
-                countryCode={country.value}
-                onSubmitEditing={() => formRef.current?.submitForm()}
-                placeholder={placeholder}
-              />
+            {lastNumber && (
+              <LastNumberPreview>
+                {`${trans(
+                  'phones.create.label.lastNumberPreview',
+                )} ${lastNumber?.formatNational()}`}
+              </LastNumberPreview>
             )}
+          </>
+        ) : (
+          <PhoneInput
+            ref={lastNumberRef}
+            label={trans('phones.create.label.last')}
+            name="lastNumber"
+            returnKeyType="next"
+            countryCode={country.value}
+            onSubmitEditing={() => formRef.current?.submitForm()}
+            placeholder={placeholder}
+          />
+        )}
 
-            <Button
-              text={trans('phones.create.button')}
-              icon="save"
-              style={{ marginTop: 8 }}
-              onPress={() => formRef.current?.submitForm()}
-            />
-          </Form>
-        </View>
-      </KeyboardAvoidingView>
+        <Button
+          text={trans('phones.create.button')}
+          icon="save"
+          style={{ marginTop: 10 }}
+          onPress={() => formRef.current?.submitForm()}
+        />
+      </Form>
     </Container>
   );
 };

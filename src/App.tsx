@@ -1,7 +1,14 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import { StatusBar, Platform, UIManager, View } from 'react-native';
+import {
+  StatusBar,
+  Platform,
+  UIManager,
+  View,
+  KeyboardAvoidingView,
+  SafeAreaView,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 
@@ -40,13 +47,18 @@ const App: React.FC = () => {
   if (starting) return <View />;
 
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor="#000" />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor="#000" />
 
-      <AppProvider>
-        <Routes />
-      </AppProvider>
-    </NavigationContainer>
+        <AppProvider>
+          <Routes />
+        </AppProvider>
+      </NavigationContainer>
+    </KeyboardAvoidingView>
   );
 };
 
