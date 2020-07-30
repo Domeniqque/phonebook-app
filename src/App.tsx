@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { StatusBar, Platform, UIManager } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import { StatusBar, Platform, UIManager, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import Routes from './routes';
 import AppProvider from './hooks';
-import Loading from './components/Loading';
 import { startI18nLaguage } from './locale';
 
 import './exception';
@@ -21,28 +21,31 @@ if (
 }
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(true);
 
   useEffect(() => {
-    startI18nLaguage()
-      .then(lang => {
-        crashlytics().log(`App mounted. Language: "${lang}"`);
-        setLoading(false);
-      })
-      .catch(err => crashlytics().recordError(err));
+    crashlytics().log('Starting application');
+
+    async function loadLanguage(): Promise<void> {
+      const lang = await startI18nLaguage();
+      crashlytics().log(`App mounted. Language: "${lang}"`);
+
+      SplashScreen.hide();
+      setStarting(false);
+    }
+
+    loadLanguage();
   }, []);
+
+  if (starting) return <View />;
 
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" backgroundColor="#000" />
 
-      {loading ? (
-        <Loading />
-      ) : (
-        <AppProvider>
-          <Routes />
-        </AppProvider>
-      )}
+      <AppProvider>
+        <Routes />
+      </AppProvider>
     </NavigationContainer>
   );
 };
