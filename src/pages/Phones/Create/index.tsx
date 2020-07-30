@@ -22,7 +22,6 @@ import { PhoneNumber } from 'libphonenumber-js';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
 import Button from '../../../components/Button';
-import Loading from '../../../components/Loading';
 import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
@@ -59,7 +58,6 @@ const Create: React.FC = () => {
   const lastNumberRef = useRef<PhoneInputRef>(null);
   const quantityRef = useRef<InputRef>(null);
 
-  const [loading, setLoading] = useState(false);
   const [addMode, setAddMode] = useState<AddMode>(AddMode.LAST_NUMBER);
   const [firstNumber, setFirstNumber] = useState('');
   const [lastNumber, setLastNumber] = useState<PhoneNumber | undefined>();
@@ -79,7 +77,6 @@ const Create: React.FC = () => {
       crashlytics().log('Criando uma lista de números');
 
       formRef.current?.setErrors({});
-      setLoading(true);
 
       try {
         const schema = Yup.object({
@@ -118,8 +115,6 @@ const Create: React.FC = () => {
               navigation.navigate('Phones');
             },
           });
-
-          setLoading(false);
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
@@ -133,8 +128,6 @@ const Create: React.FC = () => {
 
           crashlytics().recordError(err);
         }
-
-        setLoading(false);
       }
     },
     [addSequence, navigation, success, alert, trans, addMode, lastNumber],
@@ -173,7 +166,6 @@ const Create: React.FC = () => {
 
   return (
     <Container>
-      {loading && <Loading />}
       <Tip>
         <TipText>{trans('phones.create.tip')}</TipText>
       </Tip>

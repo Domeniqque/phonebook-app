@@ -1,6 +1,5 @@
 import React, { createContext, useState, useCallback, useContext } from 'react';
 
-import { LayoutAnimation } from 'react-native';
 import Alert from '../components/Alert';
 
 interface AlertProps {
@@ -25,7 +24,6 @@ export const AlertProvider: React.FC = ({ children }) => {
   const [useCheckmark, setUseCheckmark] = useState(false);
 
   const alert = useCallback((data: AlertProps) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setAlertProps(data);
     setOpened(true);
   }, []);
@@ -35,7 +33,6 @@ export const AlertProvider: React.FC = ({ children }) => {
     setOpened(true);
 
     const close = (): void => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
       setOpened(false);
       setUseCheckmark(false);
     };
@@ -46,7 +43,6 @@ export const AlertProvider: React.FC = ({ children }) => {
   }, []);
 
   const handleCancel = useCallback(() => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     const { onCancel } = alertProps;
     if (onCancel) onCancel();
     setOpened(false);
