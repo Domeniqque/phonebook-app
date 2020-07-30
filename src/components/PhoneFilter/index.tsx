@@ -37,7 +37,7 @@ const PhoneFilter: React.FC<PhoneFilter> = ({
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingTop: 20,
+            paddingTop: 10,
             marginBottom: 0,
           }}
         >

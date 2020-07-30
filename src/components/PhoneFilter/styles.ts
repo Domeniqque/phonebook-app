@@ -41,6 +41,7 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
 
 export const FilterItemText = styled.Text<FilterTextProps>`
   font-size: 18px;
+  text-transform: lowercase;
 
   ${props =>
     props.selected &&

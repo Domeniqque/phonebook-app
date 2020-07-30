@@ -9,7 +9,10 @@ interface PhoneParsed {
 
 export function parsePhone(phoneNumber: PhoneNumber | string): PhoneParsed {
   const fullNumber =
-    (phoneNumber as PhoneNumber)?.formatNational() ?? phoneNumber;
+    typeof phoneNumber === 'string'
+      ? phoneNumber
+      : (phoneNumber as PhoneNumber)?.formatNational();
+
   const rawNumber = fullNumber.replace('-', ' ') || '';
 
   let number = rawNumber;

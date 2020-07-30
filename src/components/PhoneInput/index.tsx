@@ -26,6 +26,7 @@ interface PhoneInputProps extends TextInputProps {
   name: string;
   label?: string;
   countryCode: CountryCode;
+  disabled?: boolean;
 }
 
 const PhoneInput: React.RefForwardingComponent<

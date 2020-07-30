@@ -27,7 +27,6 @@ export const HeaderAction = styled.TouchableOpacity`
 `;
 
 export const HeaderText = styled.Text`
-  margin-top: 30px;
   font-size: 30px;
   font-weight: bold;
 `;
@@ -44,6 +43,7 @@ export const PhoneStatusLabel = styled.Text`
   background: #f6f6f6;
   border-radius: 10px;
   overflow: hidden;
+  text-transform: lowercase;
 `;
 
 export const ActionContainer = styled.View`

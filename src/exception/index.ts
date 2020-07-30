@@ -26,11 +26,12 @@ const errorHandler = (e: Error, isFatal: boolean): void => {
   }
 };
 
-setJSExceptionHandler(errorHandler);
+setJSExceptionHandler(errorHandler, false);
 
 setNativeExceptionHandler(
   (errorString: string): void => {
-    crashlytics().recordError(new Error(errorString));
+    const error = new Error(errorString);
+    crashlytics().recordError(error);
   },
   true,
   true,

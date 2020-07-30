@@ -78,7 +78,7 @@ const Show: React.FC = () => {
                 params: {
                   nationalPhone: phone.nationalValue,
                   countryCode: phone.countryCode,
-                }
+                },
               });
             },
             onCancel: () => {

@@ -9,7 +9,11 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  InteractionManager,
+} from 'react-native';
 import FullModal from '../FullModal';
 import Input from '../Input';
 import Button from '../Button';
@@ -91,24 +95,25 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
 
         await schema.validate({ note }, { abortEarly: false });
 
-        const realm = await getRealm();
+        InteractionManager.runAfterInteractions(async () => {
+          const realm = await getRealm();
 
-        success();
+          realm.write(async () => {
+            const interested = realm.objectForPrimaryKey<InterestedProps>(
+              'Interested',
+              interestedId,
+            );
 
-        realm.write(async () => {
-          const interested = realm.objectForPrimaryKey<InterestedProps>(
-            'Interested',
-            interestedId,
-          );
+            interested?.notes.push({
+              id: uuid(),
+              text: note,
+              pinned: false,
+              date,
+            });
 
-          interested?.notes.push({
-            id: uuid(),
-            text: note,
-            pinned: false,
-            date,
+            success();
+            setAddMode(false);
           });
-
-          setAddMode(false);
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError)
@@ -133,7 +138,6 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
       async function destroy(): Promise<void> {
         const realm = await getRealm();
 
-        success();
         realm.write(() => {
           const note = realm
             .objects<NoteProps>('Note')
@@ -142,6 +146,8 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
           if (note) {
             realm.delete(note);
           }
+
+          success();
         });
       }
 
@@ -151,7 +157,7 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
         confirmText: trans('interested.notes.confirmDelete'),
         cancelText: trans('interested.notes.cancelDelete'),
         onConfirm: (): void => {
-          destroy();
+          InteractionManager.runAfterInteractions(destroy);
         },
       });
     },
@@ -192,6 +198,7 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
               autoFocus
               height={200}
               numberOfLines={30}
+              textAlignVertical="top"
               multiline
             />
 

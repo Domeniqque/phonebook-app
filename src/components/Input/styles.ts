@@ -5,10 +5,12 @@ interface ContainerProps {
   isFocused: boolean;
   isErrored: boolean;
   height?: number;
+  disabled?: boolean;
 }
 
 interface TextInputProps {
   height?: number;
+  disabled?: boolean;
 }
 
 export const Label = styled.Text`
@@ -39,6 +41,12 @@ export const Container = styled.View<ContainerProps>`
     css`
       border-color: #000;
     `}
+
+    ${props =>
+      props.disabled &&
+      css`
+        opacity: 0.8;
+      `}
 `;
 
 export const TextInput = styled.TextInput<TextInputProps>`
@@ -46,6 +54,12 @@ export const TextInput = styled.TextInput<TextInputProps>`
   color: #000;
   font-size: 20px;
   height: ${props => props.height}px;
+
+  ${props =>
+    props.disabled &&
+    css`
+      color: #666;
+    `}
 `;
 
 export const Icon = styled(FeatherIcon)`

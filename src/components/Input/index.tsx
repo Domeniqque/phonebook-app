@@ -20,18 +20,19 @@ interface InputProps extends TextInputProps {
   formatValue?(rawValue: string): string;
   onChangeText?(value: string): void;
   height?: number;
+  disabled?: boolean;
 }
 
 interface InputValueReference {
   value: string;
 }
 
-interface InputRef {
+export interface InputRef {
   focus(): void;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, label, icon, formatValue, onChangeText, height, ...rest },
+  { name, label, icon, formatValue, onChangeText, disabled, height, ...rest },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -98,7 +99,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     <View style={{ paddingBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
-      <Container isFocused={isFocused} isErrored={!!error} height={height}>
+      <Container
+        isFocused={isFocused}
+        isErrored={!!error}
+        height={height}
+        disabled={disabled}
+      >
         {icon && <Icon name={icon} size={20} color={iconColor} />}
 
         <TextInput
@@ -107,7 +113,10 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           keyboardAppearance="dark"
           onFocus={handleInputFocus}
           defaultValue={defaultValue}
+          editable={!disabled}
+          selectTextOnFocus={!disabled}
           placeholderTextColor="#757575"
+          disabled={disabled}
           height={height ? Math.floor(height - 20) : 64}
           {...rest}
           onChangeText={handleChangeText}

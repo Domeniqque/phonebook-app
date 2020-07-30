@@ -7,7 +7,7 @@ import { FabBtn } from './styles';
 const FabButton: React.FC<TouchableOpacityProps> = props => {
   return (
     <FabBtn {...props}>
-      <Icon name="plus" size={36} color="#fff" />
+      <Icon name="plus" size={34} color="#fff" />
     </FabBtn>
   );
 };
