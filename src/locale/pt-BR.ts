@@ -9,10 +9,16 @@ export default {
     emptyContentButton: 'ADICIONAR NÚMEROS',
     create: {
       title: 'Adicionar Telefones',
-      tip: 'Informe o código de área (DDD)',
+      tip:
+        '💡 Abaixo, informe os números com o código de área (DDD) da sua cidade',
       label: {
-        first: 'Primeiro telefone da lista',
-        last: 'Último telefone da lista',
+        first: 'Primeiro telefone',
+        last: 'Último telefone',
+        addBy: 'Adicionar por',
+        btnQtd: 'quantidade',
+        btnLast: 'último número',
+        qtd: 'Tamanho da lista',
+        lastNumberPreview: 'O último número será',
       },
       button: 'Adicionar Telefones',
       validation: {
@@ -26,6 +32,7 @@ export default {
         veryLargeQuestion: 'Deseja criar mesmo assim?',
         veryLargeOk: 'SIM, CADASTRAR',
         veryLargeCancel: 'NÃO',
+        quantity: 'Informe o tamanho da lista',
       },
     },
     show: {

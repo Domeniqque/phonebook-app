@@ -10,11 +10,11 @@ import {
   StackActions,
 } from '@react-navigation/native';
 
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
 import { useInterested } from '../../../hooks/interested';
-import Input from '../../../components/Input';
+import Input, { InputRef } from '../../../components/Input';
 import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
 import Select from '../../../components/Select';
 import Button from '../../../components/Button';
@@ -38,8 +38,11 @@ type InterestedScreenProps = RouteProp<
 >;
 
 const Create: React.FC = () => {
+  const nameRef = useRef<InputRef>(null);
+  const addressRef = useRef<InputRef>(null);
   const phoneNumberRef = useRef<PhoneInputRef>(null);
   const formRef = useRef<FormHandles>(null);
+
   const { trans, country } = useLocale();
   const { alert, success } = useAlert();
   const { addInterested, genderTypes, lifeStageTypes } = useInterested();
@@ -107,55 +110,63 @@ const Create: React.FC = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
-        <Form
-          ref={formRef}
-          initialData={{ phoneNumber: params?.nationalPhone || '' }}
-          onSubmit={handleCreateInterested}
-          style={{ marginTop: 20, marginBottom: 30 }}
-        >
-          <Input
-            name="name"
-            label={trans('interested.create.nameLabel')}
-            autoCorrect={false}
-            autoCompleteType="off"
-            autoFocus
-          />
+        <View style={{ flex: 1 }}>
+          <Form
+            ref={formRef}
+            initialData={{ phoneNumber: params?.nationalPhone || '' }}
+            onSubmit={handleCreateInterested}
+            style={{ marginTop: 20, marginBottom: 30, flex: 1 }}
+          >
+            <Input
+              ref={nameRef}
+              name="name"
+              label={trans('interested.create.nameLabel')}
+              autoCorrect={false}
+              autoCompleteType="off"
+              onSubmitEditing={() => addressRef.current?.focus()}
+              returnKeyType="next"
+              autoFocus
+            />
 
-          <Input
-            name="address"
-            label={trans('interested.create.addressLabel')}
-            placeholder={trans('interested.create.addressPlaceholder')}
-          />
+            <Input
+              ref={addressRef}
+              name="address"
+              label={trans('interested.create.addressLabel')}
+              placeholder={trans('interested.create.addressPlaceholder')}
+              onSubmitEditing={() => phoneNumberRef.current?.focus()}
+              returnKeyType="next"
+            />
 
-          <PhoneInput
-            ref={phoneNumberRef}
-            name="phoneNumber"
-            countryCode={params?.countryCode || country.value}
-            placeholder={phonePlaceholder}
-            label={trans('interested.create.phoneNumberLabel')}
-          />
+            <PhoneInput
+              ref={phoneNumberRef}
+              name="phoneNumber"
+              countryCode={params?.countryCode || country.value}
+              placeholder={phonePlaceholder}
+              label={trans('interested.create.phoneNumberLabel')}
+            />
 
-          <Select
-            label={trans('interested.create.lifeStageLabel')}
-            placeholder={trans('interested.create.lifeStagePlaceholder')}
-            values={lifeStageTypes}
-            onSelect={item => setLifeStage(item.value)}
-          />
+            <Select
+              label={trans('interested.create.lifeStageLabel')}
+              placeholder={trans('interested.create.lifeStagePlaceholder')}
+              values={lifeStageTypes}
+              onSelect={item => setLifeStage(item.value)}
+            />
 
-          <Select
-            label={trans('interested.create.genderLabel')}
-            placeholder={trans('interested.create.genderPlaceholder')}
-            values={genderTypes}
-            onSelect={item => setGender(item.value)}
-          />
+            <Select
+              label={trans('interested.create.genderLabel')}
+              placeholder={trans('interested.create.genderPlaceholder')}
+              values={genderTypes}
+              onSelect={item => setGender(item.value)}
+            />
 
-          <Button
-            icon="save"
-            style={{ marginTop: 20 }}
-            onPress={() => formRef.current?.submitForm()}
-            text={trans('interested.create.buttonText')}
-          />
-        </Form>
+            <Button
+              icon="save"
+              style={{ marginTop: 20 }}
+              onPress={() => formRef.current?.submitForm()}
+              text={trans('interested.create.buttonText')}
+            />
+          </Form>
+        </View>
       </KeyboardAvoidingView>
     </Container>
   );

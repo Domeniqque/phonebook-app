@@ -31,11 +31,11 @@ export const AlertProvider: React.FC = ({ children }) => {
   }, []);
 
   const success = useCallback((time: number) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setUseCheckmark(true);
     setOpened(true);
 
     const close = (): void => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
       setOpened(false);
       setUseCheckmark(false);
     };

@@ -9,10 +9,15 @@ export default {
     emptyContentButton: 'ADD PHONE LIST',
     create: {
       title: 'Add Phone List',
-      tip: 'Enter the area code (DDD)',
+      tip: '💡 Below, enter the numbers with the area code (DDD) of your city',
       label: {
-        first: 'First phone in the list',
-        last: 'Last phone in the list',
+        first: 'First number',
+        last: 'Last number',
+        addBy: 'Add by',
+        btnQtd: 'quantity',
+        btnLast: 'last number',
+        qtd: 'List size',
+        lastNumberPreview: 'The last number will be',
       },
       button: 'Add Phones',
       validation: {
@@ -25,6 +30,7 @@ export default {
         veryLargeQuestion: 'Do you want to create anyway?',
         veryLargeOk: 'YES, CREATE',
         veryLargeCancel: 'NO',
+        quantity: 'The quantity is required',
       },
     },
     show: {
@@ -109,15 +115,15 @@ export default {
     new: 'New',
     received: 'Answered calls',
     missed: 'Missed calls',
-    notExist: 'Does not exist',
-    removed: 'Removed',
+    notExist: 'Dont exist',
+    removed: 'Dont call',
   },
   phoneStatus: {
     new: 'New',
     received: 'Answered call',
     missed: 'Missed call',
-    notExist: 'Do not exist',
-    removed: 'Removed',
+    notExist: 'Dont exist',
+    removed: 'Dont call',
   },
   defaultError: {
     title: "Please i'm sorry! 😢",

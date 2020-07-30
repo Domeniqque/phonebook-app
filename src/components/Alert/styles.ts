@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components/native';
+import { Animated } from 'react-native';
 
 interface BackdropProps {
   transparent?: boolean;
 }
 
-export const Container = styled.View.attrs({
+export const Container = styled(Animated.View).attrs({
   contentContainerStyle: () => css`
     align-items: center;
     justify-content: center;

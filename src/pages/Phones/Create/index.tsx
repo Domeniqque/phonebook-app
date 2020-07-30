@@ -1,8 +1,16 @@
-import React, { useCallback, useRef, useState, useMemo } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 import {
   InteractionManager,
   Platform,
   KeyboardAvoidingView,
+  LayoutAnimation,
+  View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
@@ -10,6 +18,7 @@ import { Form } from '@unform/mobile';
 import crashlytics from '@react-native-firebase/crashlytics';
 import * as Yup from 'yup';
 
+import { PhoneNumber } from 'libphonenumber-js';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import PhoneInput, { PhoneInputRef } from '../../../components/PhoneInput';
 import Button from '../../../components/Button';
@@ -17,21 +26,43 @@ import Loading from '../../../components/Loading';
 import { usePhone } from '../../../hooks/phone';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
-
-import { Container, Tip, TipText } from './styles';
+import Input, { InputRef } from '../../../components/Input';
 import getLocalePhonePlaceholder from '../../../utils/getLocalePhonePlaceholder';
+import { parsePhone } from '../../../utils/parsePhoneNumber';
+import getNumberInstance from '../../../utils/getNumberInstance';
+
+import {
+  Container,
+  Tip,
+  TipText,
+  ToggleModeLabel,
+  ToggleMode,
+  ToggleModeBtn,
+  ToggleModeText,
+  LastNumberPreview,
+} from './styles';
 
 interface CreateNumbersData {
   firstNumber: string;
   lastNumber: string;
+  quantity?: string;
+}
+
+enum AddMode {
+  LAST_NUMBER,
+  QUANTITY,
 }
 
 const Create: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const firstNumberRef = useRef<PhoneInputRef>(null);
   const lastNumberRef = useRef<PhoneInputRef>(null);
+  const quantityRef = useRef<InputRef>(null);
 
   const [loading, setLoading] = useState(false);
+  const [addMode, setAddMode] = useState<AddMode>(AddMode.LAST_NUMBER);
+  const [firstNumber, setFirstNumber] = useState('');
+  const [lastNumber, setLastNumber] = useState<PhoneNumber | undefined>();
 
   const { addSequence } = usePhone();
   const { alert, success } = useAlert();
@@ -52,20 +83,36 @@ const Create: React.FC = () => {
 
       try {
         const schema = Yup.object({
+          quantityMode: Yup.boolean(),
           firstNumber: Yup.string().required(
             trans('phones.create.validation.firstNumberRequired'),
           ),
-          lastNumber: Yup.string().required(
-            trans('phones.create.validation.lastNumberRequired'),
-          ),
+          quantity: Yup.string().when('quantityMode', {
+            is: true,
+            then: Yup.string().required(
+              trans('phones.create.validation.quantity'),
+            ),
+          }),
+          lastNumber: Yup.string().when('quantityMode', {
+            is: false,
+            then: Yup.string().required(
+              trans('phones.create.validation.lastNumberRequired'),
+            ),
+          }),
         });
 
-        await schema.validate(formData, { abortEarly: false });
+        await schema.validate(
+          { ...formData, quantityMode: addMode === AddMode.QUANTITY },
+          { abortEarly: false },
+        );
 
         InteractionManager.runAfterInteractions(async () => {
           await addSequence({
             firstNumber: firstNumberRef.current?.getPhoneInstance(),
-            lastNumber: lastNumberRef.current?.getPhoneInstance(),
+            lastNumber:
+              addMode === AddMode.LAST_NUMBER
+                ? lastNumberRef.current?.getPhoneInstance()
+                : lastNumber,
             callOnSuccess: () => {
               success();
               navigation.navigate('Phones');
@@ -90,55 +137,138 @@ const Create: React.FC = () => {
         setLoading(false);
       }
     },
-    [addSequence, navigation, success, alert, trans],
+    [addSequence, navigation, success, alert, trans, addMode, lastNumber],
+  );
+
+  const toggleAddMode = useCallback(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    if (addMode === AddMode.LAST_NUMBER) {
+      setAddMode(AddMode.QUANTITY);
+      quantityRef.current?.focus();
+    } else {
+      setAddMode(AddMode.LAST_NUMBER);
+      lastNumberRef.current?.focus();
+    }
+  }, [addMode]);
+
+  const generateLastNumber = useCallback(
+    (quantity: string) => {
+      if (firstNumber) {
+        const { number, areaCode } = parsePhone(firstNumber);
+
+        const interator = number + Number(quantity) - 1;
+        const lastNumberIterator = interator >= number ? interator : number;
+
+        const numberInstance = getNumberInstance(
+          `${areaCode}${lastNumberIterator}`,
+          country.value,
+        );
+
+        setLastNumber(numberInstance);
+      }
+    },
+    [firstNumber, country.value],
   );
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <Container>
-        {loading && <Loading />}
-        <Tip>
-          <TipText>{trans('phones.create.tip')}</TipText>
-        </Tip>
+    <Container>
+      {loading && <Loading />}
+      <Tip>
+        <TipText>{trans('phones.create.tip')}</TipText>
+      </Tip>
 
-        <Form
-          ref={formRef}
-          onSubmit={handleCreateNumbers}
-          style={{ marginTop: 20 }}
-        >
-          <PhoneInput
-            ref={firstNumberRef}
-            label={trans('phones.create.label.first')}
-            name="firstNumber"
-            countryCode={country.value}
-            returnKeyType="next"
-            onSubmitEditing={() => lastNumberRef.current?.focus()}
-            placeholder={placeholder}
-            autoFocus
-          />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <View style={{ flex: 1, marginTop: 10 }}>
+          <Form
+            ref={formRef}
+            onSubmit={handleCreateNumbers}
+            style={{ flex: 1 }}
+            initialData={{ quantity: '1' }}
+          >
+            <PhoneInput
+              ref={firstNumberRef}
+              label={trans('phones.create.label.first')}
+              name="firstNumber"
+              countryCode={country.value}
+              returnKeyType="next"
+              onSubmitEditing={() => lastNumberRef.current?.focus()}
+              placeholder={placeholder}
+              onChangeText={setFirstNumber}
+              accessibilityLabel="Type your first phone number"
+              autoFocus
+            />
 
-          <PhoneInput
-            ref={lastNumberRef}
-            label={trans('phones.create.label.last')}
-            name="lastNumber"
-            returnKeyType="next"
-            countryCode={country.value}
-            onSubmitEditing={() => formRef.current?.submitForm()}
-            placeholder={placeholder}
-          />
+            <ToggleModeLabel>
+              {trans('phones.create.label.addBy')}
+            </ToggleModeLabel>
 
-          <Button
-            text={trans('phones.create.button')}
-            icon="save"
-            style={{ marginTop: 8 }}
-            onPress={() => formRef.current?.submitForm()}
-          />
-        </Form>
-      </Container>
-    </KeyboardAvoidingView>
+            <ToggleMode>
+              <ToggleModeBtn
+                selected={addMode === AddMode.LAST_NUMBER}
+                onPress={toggleAddMode}
+              >
+                <ToggleModeText selected={addMode === AddMode.LAST_NUMBER}>
+                  {trans('phones.create.label.btnLast')}
+                </ToggleModeText>
+              </ToggleModeBtn>
+              <ToggleModeBtn
+                onPress={toggleAddMode}
+                selected={addMode === AddMode.QUANTITY}
+              >
+                <ToggleModeText selected={addMode === AddMode.QUANTITY}>
+                  {trans('phones.create.label.btnQtd')}
+                </ToggleModeText>
+              </ToggleModeBtn>
+            </ToggleMode>
+
+            {addMode === AddMode.QUANTITY ? (
+              <>
+                <Input
+                  ref={quantityRef}
+                  name="quantity"
+                  keyboardType="number-pad"
+                  label={trans('phones.create.label.qtd')}
+                  maxLength={4}
+                  selectTextOnFocus={false}
+                  onChangeText={generateLastNumber}
+                  accessibilityLabel="Type your first phone number"
+                  autoFocus
+                />
+
+                {lastNumber && (
+                  <LastNumberPreview>
+                    {`${trans(
+                      'phones.create.label.lastNumberPreview',
+                    )} ${lastNumber?.formatNational()}`}
+                  </LastNumberPreview>
+                )}
+              </>
+            ) : (
+              <PhoneInput
+                ref={lastNumberRef}
+                label={trans('phones.create.label.last')}
+                name="lastNumber"
+                returnKeyType="next"
+                countryCode={country.value}
+                onSubmitEditing={() => formRef.current?.submitForm()}
+                placeholder={placeholder}
+              />
+            )}
+
+            <Button
+              text={trans('phones.create.button')}
+              icon="save"
+              style={{ marginTop: 8 }}
+              onPress={() => formRef.current?.submitForm()}
+            />
+          </Form>
+        </View>
+      </KeyboardAvoidingView>
+    </Container>
   );
 };
 
