@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useImperativeHandle,
   forwardRef,
+  useMemo,
 } from 'react';
 import { TextInputProps, View } from 'react-native';
 
@@ -18,18 +19,20 @@ interface InputProps extends TextInputProps {
   icon?: string;
   formatValue?(rawValue: string): string;
   onChangeText?(value: string): void;
+  height?: number;
+  disabled?: boolean;
 }
 
 interface InputValueReference {
   value: string;
 }
 
-interface InputRef {
+export interface InputRef {
   focus(): void;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, label, icon, formatValue, onChangeText, ...rest },
+  { name, label, icon, formatValue, onChangeText, disabled, height, ...rest },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -58,6 +61,10 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     [formatValue, onChangeText],
   );
 
+  useEffect(() => {
+    if (defaultValue) handleChangeText(defaultValue);
+  }, [defaultValue, handleChangeText]);
+
   useImperativeHandle(ref, () => ({
     focus() {
       inputElementRef.current.focus();
@@ -80,18 +87,25 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     });
   }, [fieldName, registerField]);
 
+  const iconColor = useMemo(() => {
+    if (isFocused || isFilled) return '#000';
+
+    if (error) return '#c53030';
+
+    return '#757575';
+  }, [isFocused, isFilled, error]);
+
   return (
     <View style={{ paddingBottom: 10 }}>
       {label && <Label>{label}</Label>}
 
-      <Container isFocused={isFocused} isErrored={!!error}>
-        {icon && (
-          <Icon
-            name={icon}
-            size={20}
-            color={isFocused || isFilled ? '#000' : '#757575'}
-          />
-        )}
+      <Container
+        isFocused={isFocused}
+        isErrored={!!error}
+        height={height}
+        disabled={disabled}
+      >
+        {icon && <Icon name={icon} size={20} color={iconColor} />}
 
         <TextInput
           ref={inputElementRef}
@@ -99,7 +113,11 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           keyboardAppearance="dark"
           onFocus={handleInputFocus}
           defaultValue={defaultValue}
+          editable={!disabled}
+          selectTextOnFocus={!disabled}
           placeholderTextColor="#757575"
+          disabled={disabled}
+          height={height ? Math.floor(height - 20) : 64}
           {...rest}
           onChangeText={handleChangeText}
         />

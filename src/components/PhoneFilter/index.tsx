@@ -33,7 +33,14 @@ const PhoneFilter: React.FC<PhoneFilter> = ({
   if (loading) {
     return (
       <Placeholder Animation={Fade}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingTop: 10,
+            marginBottom: 0,
+          }}
+        >
           <PlaceholderLine
             height={24}
             width={20}

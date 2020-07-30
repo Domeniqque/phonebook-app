@@ -5,6 +5,7 @@ import Select from '../../components/Select';
 import { useLocale } from '../../hooks/locale';
 import countries from '../../locale/countries';
 import { CountryData } from '../../locale';
+import { useAlert } from '../../hooks/alert';
 
 import {
   Container,
@@ -26,12 +27,15 @@ const Settings: React.FC = () => {
     trans,
   } = useLocale();
 
+  const { success } = useAlert();
+
   const handleChangeCountry = useCallback(
     (data: CountryData) => {
       changeCountry(data);
       changeLanguage(data.defaultLanguage);
+      success();
     },
-    [changeLanguage, changeCountry],
+    [changeLanguage, changeCountry, success],
   );
 
   return (
@@ -53,7 +57,10 @@ const Settings: React.FC = () => {
           placeholder={trans('settings.language.placeholder')}
           values={availableLanguages}
           defaultValue={language}
-          onSelect={item => changeLanguage(item.value)}
+          onSelect={item => {
+            changeLanguage(item.value);
+            success();
+          }}
         />
 
         <Links>

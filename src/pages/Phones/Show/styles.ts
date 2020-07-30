@@ -27,7 +27,6 @@ export const HeaderAction = styled.TouchableOpacity`
 `;
 
 export const HeaderText = styled.Text`
-  margin-top: 30px;
   font-size: 30px;
   font-weight: bold;
 `;
@@ -44,6 +43,7 @@ export const PhoneStatusLabel = styled.Text`
   background: #f6f6f6;
   border-radius: 10px;
   overflow: hidden;
+  text-transform: lowercase;
 `;
 
 export const ActionContainer = styled.View`
@@ -70,8 +70,9 @@ export const ActionButton = styled.TouchableOpacity`
 `;
 
 export const ActionButtonText = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
   margin-top: 14px;
+  text-transform: lowercase;
 `;
 
 export const ActionTitle = styled.Text`
@@ -87,7 +88,7 @@ export const DeleteButton = styled.TouchableOpacity`
 
 export const LastUpdate = styled.Text`
   position: absolute;
-  bottom: 25px;
+  bottom: 10px;
   font-size: 14px;
   color: #333;
 `;

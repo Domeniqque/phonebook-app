@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import { Modal, InteractionManager } from 'react-native';
+import { Modal } from 'react-native';
 import { Form } from '@unform/mobile';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
 import Input from '../Input';
 import { useAlert } from '../../hooks/alert';
@@ -36,6 +37,7 @@ interface SelectProps {
   filterable?: boolean;
   alertOnSelect?: boolean;
   onSelect?(selected: SelectItem): void;
+  loading?: boolean;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -46,6 +48,7 @@ const Select: React.FC<SelectProps> = ({
   filterable,
   onSelect,
   alertOnSelect = false,
+  loading = false,
 }) => {
   const [selectedValue, setSelectedValue] = useState<SelectItem>();
   const [selectVisible, setSelectVisible] = useState(false);
@@ -83,6 +86,22 @@ const Select: React.FC<SelectProps> = ({
     },
     [onSelect, success, alertOnSelect],
   );
+
+  if (loading) {
+    return (
+      <Container>
+        <Label>{label}</Label>
+
+        <Placeholder Animation={Fade}>
+          <PlaceholderLine
+            height={16}
+            width={34}
+            style={{ marginTop: 14, marginLeft: 10 }}
+          />
+        </Placeholder>
+      </Container>
+    );
+  }
 
   return (
     <>

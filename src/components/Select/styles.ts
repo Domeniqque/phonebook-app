@@ -8,14 +8,13 @@ export interface SelectItem {
 
 export const Container = styled.View`
   flex-direction: row;
-  padding: 10px;
   margin: 10px 0;
 `;
 
 export const Label = styled.Text`
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
-  padding-right: 12px;
+  margin: 10px 0;
 `;
 
 export const SelectButton = styled.TouchableOpacity`
@@ -26,7 +25,7 @@ export const SelectButton = styled.TouchableOpacity`
 `;
 
 export const SelectButtonText = styled.Text`
-  font-size: 22px;
+  font-size: 18px;
   margin-right: 12px;
 `;
 
@@ -60,7 +59,7 @@ export const PickerClose = styled.TouchableOpacity`
 
 export const PickerTitle = styled.Text`
   font-weight: bold;
-  font-size: 28px;
+  font-size: 24px;
   margin-left: 10px;
   margin-top: 26px;
   margin-bottom: 20px;

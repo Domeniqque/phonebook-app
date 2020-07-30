@@ -4,6 +4,13 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 interface ContainerProps {
   isFocused: boolean;
   isErrored: boolean;
+  height?: number;
+  disabled?: boolean;
+}
+
+interface TextInputProps {
+  height?: number;
+  disabled?: boolean;
 }
 
 export const Label = styled.Text`
@@ -14,7 +21,7 @@ export const Label = styled.Text`
 
 export const Container = styled.View<ContainerProps>`
   width: 100%;
-  height: 64px;
+  height: ${props => props.height || 64}px;
   padding: 0 16px;
   background: #eee;
   border-color: #eee;
@@ -34,12 +41,25 @@ export const Container = styled.View<ContainerProps>`
     css`
       border-color: #000;
     `}
+
+    ${props =>
+      props.disabled &&
+      css`
+        opacity: 0.8;
+      `}
 `;
 
-export const TextInput = styled.TextInput`
+export const TextInput = styled.TextInput<TextInputProps>`
   flex: 1;
   color: #000;
   font-size: 20px;
+  height: ${props => props.height}px;
+
+  ${props =>
+    props.disabled &&
+    css`
+      color: #666;
+    `}
 `;
 
 export const Icon = styled(FeatherIcon)`

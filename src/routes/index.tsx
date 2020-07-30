@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import { useLocale } from '../hooks/locale';
 
-// import Person from '../pages/Person';
-import PersonRoutes from './phones.routes';
+import PhoneRoutes from './phones.routes';
+import InterestedRoutes from './interested.routes';
 import Settings from '../pages/Settings';
 
 const Tab = createBottomTabNavigator();
@@ -16,6 +16,9 @@ const PhonesRoutes: React.FC = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
+        labelStyle: {
+          fontSize: 10,
+        },
         activeTintColor: '#000',
         inactiveTintColor: '#ccc',
         keyboardHidesTabBar: true,
@@ -27,11 +30,22 @@ const PhonesRoutes: React.FC = () => {
     >
       <Tab.Screen
         name="Phones"
-        component={PersonRoutes}
+        component={PhoneRoutes}
         options={{
           title: trans('tabs.numbers'),
           tabBarIcon: ({ color, size }) => {
             return <Icon name="list" size={size} color={color} />;
+          },
+        }}
+      />
+
+      <Tab.Screen
+        name="Interested"
+        component={InterestedRoutes}
+        options={{
+          title: trans('tabs.interested'),
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="users" size={size} color={color} />;
           },
         }}
       />
@@ -46,17 +60,6 @@ const PhonesRoutes: React.FC = () => {
           },
         }}
       />
-
-      {/* <Tab.Screen
-        name="Person"
-        component={Person}
-        options={{
-          title: 'INTERESSADOS',
-          tabBarIcon: ({ color, size }) => {
-            return <Icon name="users" size={size} color={color} />;
-          },
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };

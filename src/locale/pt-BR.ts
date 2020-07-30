@@ -1,6 +1,7 @@
 export default {
   tabs: {
     numbers: 'TELEFONES',
+    interested: 'INTERESSADOS',
     settings: 'AJUSTES',
   },
   phones: {
@@ -8,10 +9,16 @@ export default {
     emptyContentButton: 'ADICIONAR NÚMEROS',
     create: {
       title: 'Adicionar Telefones',
-      tip: 'Informe o código de área (DDD)',
+      tip:
+        '💡 Abaixo, informe os números com o código de área (DDD) da sua cidade',
       label: {
-        first: 'Primeiro telefone da lista',
-        last: 'Último telefone da lista',
+        first: 'Primeiro telefone',
+        last: 'Último telefone',
+        addBy: 'Adicionar por',
+        btnQtd: 'quantidade',
+        btnLast: 'último número',
+        qtd: 'Tamanho da lista',
+        lastNumberPreview: 'O último número será',
       },
       button: 'Adicionar Telefones',
       validation: {
@@ -25,6 +32,7 @@ export default {
         veryLargeQuestion: 'Deseja criar mesmo assim?',
         veryLargeOk: 'SIM, CADASTRAR',
         veryLargeCancel: 'NÃO',
+        quantity: 'Informe o tamanho da lista',
       },
     },
     show: {
@@ -33,8 +41,60 @@ export default {
       deleteTitle: 'Excluir este número?',
       deleteOk: 'SIM, EXCLUIR',
       deleteCancel: 'CANCELAR',
-      updatedAt: 'atualizado',
+      updatedAt: 'atualizado ',
+      addInterested: 'Deseja adicionar um interessado?',
+      addInterestedConfirm: 'Sim',
+      addInterestedCancel: 'Não',
     },
+  },
+  interested: {
+    title: 'Interessados',
+    empty: 'ADICIONAR INTERESSADO',
+    create: {
+      title: 'Adicionar Interessado',
+      nameLabel: 'Nome (optional)',
+      genderLabel: 'Gênero',
+      genderPlaceholder: 'Selecione',
+      lifeStageLabel: 'Esta pessoa é',
+      lifeStagePlaceholder: 'Selecione',
+      addressLabel: 'Endereço (optional)',
+      addressPlaceholder: 'Cidade, Estado, etc.',
+      phoneNumberLabel: 'Telefone (obrigatório)',
+      buttonText: 'Adicionar interessado',
+    },
+    notes: {
+      title: 'Notas',
+      addTitle: 'Adicionar Notas',
+      btnAdd: 'add notes',
+      btnSave: 'Salvar nota',
+      titleDelete: 'Deseja excluir esta nota?',
+      confirmDelete: 'Sim, excluir',
+      cancelDelete: 'CANCELAR',
+    },
+    show: {
+      title: 'Detalhes',
+      deleteTitle: 'Excluir este interessado?',
+      deleteOk: 'SIM, EXCLUIR',
+      deleteCancel: 'CANCELAR',
+      deleteConfimText: 'Isso não poderá ser desfeito',
+      call: 'Toque para chamar',
+      btnAddPhone: 'adicionar',
+      unnamed: '[sem nome]',
+    },
+    edit: {
+      title: 'Editar Interessado',
+      buttonText: 'Salvar Alterações',
+    },
+    validation: {
+      phoneNumber: 'Informe um telefone',
+      invalidPhone: 'Este telefone não é válido',
+      note: 'Escreva uma nota',
+    },
+  },
+  interestedPhones: {
+    modalTitle: 'Adicionar telefone',
+    addButton: 'Salvar',
+    invalidPhone: 'Este telefone não é válido',
   },
   settings: {
     title: 'Ajustes',
@@ -59,18 +119,28 @@ export default {
     received: 'Atendidos',
     missed: 'Não atendidos',
     notExist: 'Não existem',
-    removed: 'Removidos',
+    removed: 'Não ligar mais',
   },
   phoneStatus: {
     new: 'Novo',
     received: 'Atendido',
     missed: 'Não atendido',
     notExist: 'Não existe',
-    removed: 'Removido',
+    removed: 'Não ligar mais',
   },
   defaultError: {
     title: 'Por favor, nos desculpe! 😢',
     text:
       'Houve erro inesperado. O que acha de fechar o aplicativo e tentar novamente? \n\nSe mesmo assim não conseguiu, entre em contato!',
+  },
+  gender: {
+    M: 'Masculino',
+    F: 'Feminino',
+  },
+  lifeStages: {
+    child: 'Criança',
+    young: 'Jovem',
+    adult: 'Adulto',
+    elderly: 'Idoso',
   },
 };

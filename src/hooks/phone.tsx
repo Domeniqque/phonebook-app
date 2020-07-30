@@ -54,6 +54,8 @@ export const PhoneProvider: React.FC = ({ children }) => {
     crashlytics().log(`Usando findByStatus ${status}`);
     const realm = await getRealm();
 
+    console.log(realm.path);
+
     const sortSql =
       status === PhoneStatus.New
         ? 'SORT(nationalValue ASC)'
@@ -67,9 +69,12 @@ export const PhoneProvider: React.FC = ({ children }) => {
   }, []);
 
   const findById = useCallback(async (id: string) => {
-    crashlytics().log('Usando findById');
+    crashlytics().log('Usando findById de phones');
 
     const realm = await getRealm();
+
+    console.log(realm.path);
+
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
   }, []);
 
