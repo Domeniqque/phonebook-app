@@ -10,7 +10,7 @@ import {
   StackActions,
 } from '@react-navigation/native';
 
-import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
 import { useInterested } from '../../../hooks/interested';
@@ -106,68 +106,61 @@ const Create: React.FC = () => {
 
   return (
     <Container>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+      <Form
+        ref={formRef}
+        initialData={{ phoneNumber: params?.nationalPhone || '' }}
+        onSubmit={handleCreateInterested}
+        style={{ marginBottom: 30, flex: 1 }}
       >
-        <View style={{ flex: 1 }}>
-          <Form
-            ref={formRef}
-            initialData={{ phoneNumber: params?.nationalPhone || '' }}
-            onSubmit={handleCreateInterested}
-            style={{ marginTop: 20, marginBottom: 30, flex: 1 }}
-          >
-            <Input
-              ref={nameRef}
-              name="name"
-              label={trans('interested.create.nameLabel')}
-              autoCorrect={false}
-              autoCompleteType="off"
-              onSubmitEditing={() => addressRef.current?.focus()}
-              returnKeyType="next"
-              autoFocus
-            />
+        <Input
+          ref={nameRef}
+          name="name"
+          label={trans('interested.create.nameLabel')}
+          autoCorrect={false}
+          autoCompleteType="off"
+          onSubmitEditing={() => addressRef.current?.focus()}
+          returnKeyType="next"
+          autoFocus
+        />
 
-            <Input
-              ref={addressRef}
-              name="address"
-              label={trans('interested.create.addressLabel')}
-              placeholder={trans('interested.create.addressPlaceholder')}
-              onSubmitEditing={() => phoneNumberRef.current?.focus()}
-              returnKeyType="next"
-            />
+        <Input
+          ref={addressRef}
+          name="address"
+          label={trans('interested.create.addressLabel')}
+          placeholder={trans('interested.create.addressPlaceholder')}
+          onSubmitEditing={() => phoneNumberRef.current?.focus()}
+          returnKeyType="next"
+        />
 
-            <PhoneInput
-              ref={phoneNumberRef}
-              name="phoneNumber"
-              countryCode={params?.countryCode || country.value}
-              placeholder={phonePlaceholder}
-              label={trans('interested.create.phoneNumberLabel')}
-            />
+        <PhoneInput
+          ref={phoneNumberRef}
+          name="phoneNumber"
+          countryCode={params?.countryCode || country.value}
+          placeholder={phonePlaceholder}
+          label={trans('interested.create.phoneNumberLabel')}
+        />
 
-            <Select
-              label={trans('interested.create.lifeStageLabel')}
-              placeholder={trans('interested.create.lifeStagePlaceholder')}
-              values={lifeStageTypes}
-              onSelect={item => setLifeStage(item.value)}
-            />
+        <Select
+          label={trans('interested.create.lifeStageLabel')}
+          placeholder={trans('interested.create.lifeStagePlaceholder')}
+          values={lifeStageTypes}
+          onSelect={item => setLifeStage(item.value)}
+        />
 
-            <Select
-              label={trans('interested.create.genderLabel')}
-              placeholder={trans('interested.create.genderPlaceholder')}
-              values={genderTypes}
-              onSelect={item => setGender(item.value)}
-            />
+        <Select
+          label={trans('interested.create.genderLabel')}
+          placeholder={trans('interested.create.genderPlaceholder')}
+          values={genderTypes}
+          onSelect={item => setGender(item.value)}
+        />
 
-            <Button
-              icon="save"
-              style={{ marginTop: 20 }}
-              onPress={() => formRef.current?.submitForm()}
-              text={trans('interested.create.buttonText')}
-            />
-          </Form>
-        </View>
-      </KeyboardAvoidingView>
+        <Button
+          icon="save"
+          style={{ marginTop: 20 }}
+          onPress={() => formRef.current?.submitForm()}
+          text={trans('interested.create.buttonText')}
+        />
+      </Form>
     </Container>
   );
 };

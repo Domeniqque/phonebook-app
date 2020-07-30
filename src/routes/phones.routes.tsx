@@ -43,7 +43,7 @@ const PhonesRoutes: React.FC = () => {
         headerTitleStyle: {
           textAlign: 'center',
           alignSelf: 'center',
-          fontSize: 24,
+          fontSize: 20,
         },
       }}
     >

@@ -9,11 +9,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 
-import {
-  KeyboardAvoidingView,
-  Platform,
-  InteractionManager,
-} from 'react-native';
+import { InteractionManager } from 'react-native';
 import FullModal from '../FullModal';
 import Input from '../Input';
 import Button from '../Button';
@@ -184,33 +180,24 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
         onClose={() => setAddMode(false)}
         visible={addMode}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
-        >
-          <Form
-            ref={formRef}
-            onSubmit={handleSaveNote}
-            style={{ marginTop: 25 }}
-          >
-            <Input
-              name="note"
-              autoFocus
-              height={200}
-              numberOfLines={30}
-              textAlignVertical="top"
-              multiline
-            />
+        <Form ref={formRef} onSubmit={handleSaveNote} style={{ marginTop: 25 }}>
+          <Input
+            name="note"
+            autoFocus
+            height={120}
+            numberOfLines={30}
+            textAlignVertical="top"
+            multiline
+          />
 
-            <DatePicker onSelect={setDate} />
+          <DatePicker onSelect={setDate} />
 
-            <Button
-              onPress={() => formRef.current?.submitForm()}
-              icon="save"
-              text={trans('interested.notes.btnSave')}
-            />
-          </Form>
-        </KeyboardAvoidingView>
+          <Button
+            onPress={() => formRef.current?.submitForm()}
+            icon="save"
+            text={trans('interested.notes.btnSave')}
+          />
+        </Form>
       </FullModal>
     );
   }

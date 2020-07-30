@@ -6,7 +6,7 @@ interface ToggleBtnProps {
 
 export const Container = styled.ScrollView`
   flex: 1;
-  padding: 16px 16px 60px;
+  padding: 0 16px;
   background: #fff;
 `;
 
@@ -14,6 +14,7 @@ export const Tip = styled.View`
   border-left-color: #333;
   border-left-width: 4px;
   padding: 5px 15px;
+  margin: 16px 0;
   background: #f6f6f6;
 `;
 
