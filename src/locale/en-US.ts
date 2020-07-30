@@ -1,6 +1,7 @@
 export default {
   tabs: {
     numbers: 'PHONES',
+    interested: 'INTERESTED',
     settings: 'SETTINGS',
   },
   phones: {
@@ -8,10 +9,15 @@ export default {
     emptyContentButton: 'ADD PHONE LIST',
     create: {
       title: 'Add Phone List',
-      tip: 'Enter the area code (DDD)',
+      tip: '💡 Below, enter the numbers with the area code (DDD) of your city',
       label: {
-        first: 'First phone in the list',
-        last: 'Last phone in the list',
+        first: 'First number',
+        last: 'Last number',
+        addBy: 'Add by',
+        btnQtd: 'quantity',
+        btnLast: 'last number',
+        qtd: 'List size',
+        lastNumberPreview: 'The last number will be',
       },
       button: 'Add Phones',
       validation: {
@@ -24,6 +30,7 @@ export default {
         veryLargeQuestion: 'Do you want to create anyway?',
         veryLargeOk: 'YES, CREATE',
         veryLargeCancel: 'NO',
+        quantity: 'The quantity is required',
       },
     },
     show: {
@@ -32,8 +39,59 @@ export default {
       deleteTitle: 'Delete this number?',
       deleteOk: 'YES, DELETE',
       deleteCancel: 'CANCEL',
-      updatedAt: 'updated',
+      updatedAt: 'updated on',
+      addInterested: 'Do you want to add an interested person?',
+      addInterestedConfirm: 'yes',
+      addInterestedCancel: 'no',
     },
+  },
+  interested: {
+    title: 'Interested',
+    empty: 'ADD INTERESTED',
+    create: {
+      title: 'Add Interested',
+      nameLabel: 'Name (optional)',
+      genderLabel: 'Gender',
+      genderPlaceholder: 'Select',
+      lifeStageLabel: 'This person is',
+      lifeStagePlaceholder: 'Select',
+      addressLabel: 'Address (optional)',
+      addressPlaceholder: 'City, State, etc.',
+      phoneNumberLabel: 'Phone Number (required)',
+      buttonText: 'Add Interested',
+    },
+    notes: {
+      title: 'Notes',
+      addTitle: 'Add Notes',
+      btnAdd: 'add notes',
+      btnSave: 'Save note',
+      titleDelete: 'Delete this note?',
+      confirmDelete: 'YES, DELETE',
+      cancelDelete: 'CANCEL',
+    },
+    show: {
+      title: 'Details',
+      deleteTitle: 'Delete this interested?',
+      deleteOk: 'YES, DELETE',
+      deleteCancel: 'CANCEL',
+      deleteConfimText: "It can't be undone",
+      call: 'Touch to call',
+      btnAddPhone: 'add phone',
+      unnamed: '[unnamed]',
+    },
+    edit: {
+      title: 'Edit Interested',
+      buttonText: 'Save Changes',
+    },
+    validation: {
+      phoneNumber: 'Phone number is required',
+      invalidPhone: 'This phone is not valid',
+      note: 'Type a note',
+    },
+  },
+  interestedPhones: {
+    modalTitle: 'Add Phone',
+    addButton: 'Save',
   },
   settings: {
     title: 'Settings',
@@ -57,19 +115,29 @@ export default {
     new: 'New',
     received: 'Answered calls',
     missed: 'Missed calls',
-    notExist: 'Does not exist',
-    removed: 'Removed',
+    notExist: 'Dont exist',
+    removed: 'Dont call',
   },
   phoneStatus: {
     new: 'New',
     received: 'Answered call',
     missed: 'Missed call',
-    notExist: 'Do not exist',
-    removed: 'Removed',
+    notExist: 'Dont exist',
+    removed: 'Dont call',
   },
   defaultError: {
     title: "Please i'm sorry! 😢",
     text:
       'There was an unexpected error. What do you think of closing the application and trying again? \n\nIf you still did not succeed, contact me.',
+  },
+  gender: {
+    M: 'Male',
+    F: 'Female',
+  },
+  lifeStages: {
+    child: 'Child',
+    young: 'Young',
+    adult: 'Adult',
+    elderly: 'Elderly',
   },
 };

@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components/native';
+import { Animated } from 'react-native';
 
 interface BackdropProps {
   transparent?: boolean;
 }
 
-export const Container = styled.View.attrs({
+export const Container = styled(Animated.View).attrs({
   contentContainerStyle: () => css`
     align-items: center;
     justify-content: center;
@@ -25,13 +26,15 @@ export const Backdrop = styled.View<BackdropProps>`
 `;
 
 export const Content = styled.View`
-  margin: 20px;
+  max-width: 94%;
+  width: 340px;
+  margin: 10px 0;
   background-color: #fff;
   border-radius: 20px;
-  padding: 25px 12px;
+  padding: 25px 16px;
   align-items: center;
   z-index: 5000;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 `;
 
 export const Title = styled.Text`
@@ -43,18 +46,19 @@ export const Title = styled.Text`
 
 export const Text = styled.Text`
   font-size: 18px;
+  margin-bottom: 25px;
 `;
 
 export const ButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 25px;
+  justify-content: space-around;
 `;
 
 export const RoundedButton = styled.TouchableOpacity`
   background: #000;
   padding: 12px 20px;
-  margin: 0 20px;
+  margin: 0 10px;
   border-radius: 20px;
 `;
 

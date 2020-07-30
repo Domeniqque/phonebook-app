@@ -9,7 +9,9 @@ import { ptBR, enUS } from 'date-fns/locale';
 import crashlytics from '@react-native-firebase/crashlytics';
 import uuid from '../../utils/uuid';
 
+import Button from '../../components/Button';
 import PhoneFilter from '../../components/PhoneFilter';
+import FabButton from '../../components/FabButton';
 import {
   usePhone,
   PhoneResults,
@@ -23,7 +25,6 @@ import {
   PhoneList,
   PhoneListItem,
   PhoneListItemNumber,
-  FabButton,
   Divisor,
   SectionHeader,
   CenteredAddButton,
@@ -127,7 +128,7 @@ const Phones: React.FC = () => {
 
         <Placeholder
           Animation={props => <Fade {...props} duration={500} />}
-          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 30 }}
+          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 15 }}
         >
           {renderPlaceholderItems()}
         </Placeholder>
@@ -144,12 +145,12 @@ const Phones: React.FC = () => {
         />
 
         <EmptyContentContainer>
-          <CenteredAddButton onPress={() => navigation.navigate('CreatePhone')}>
-            <Icon name="plus" size={24} color="#000" />
-            <CenteredAddButtonText>
-              {trans('phones.emptyContentButton')}
-            </CenteredAddButtonText>
-          </CenteredAddButton>
+          <Button
+            text={trans('phones.emptyContentButton')}
+            onPress={() => navigation.navigate('CreatePhone')}
+            icon="plus"
+            outlined
+          />
         </EmptyContentContainer>
       </Container>
     );
@@ -164,7 +165,7 @@ const Phones: React.FC = () => {
 
       {status !== PhoneStatus.New && groupedPhones ? (
         <SectionList
-          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 20 }}
+          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 25 }}
           sections={groupedPhones}
           keyExtractor={item => item?.id || uuid()}
           renderItem={({ item }) => (
@@ -202,9 +203,7 @@ const Phones: React.FC = () => {
         />
       )}
 
-      <FabButton onPress={() => navigation.navigate('CreatePhone')}>
-        <Icon name="plus" size={36} color="#fff" />
-      </FabButton>
+      <FabButton onPress={() => navigation.navigate('CreatePhone')} />
     </Container>
   );
 };

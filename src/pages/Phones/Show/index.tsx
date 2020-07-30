@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Linking, InteractionManager, View, NativeModules } from 'react-native';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation, StackActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { format } from 'date-fns';
@@ -62,20 +62,33 @@ const Show: React.FC = () => {
       crashlytics().log('Alterando a situação de um número');
 
       InteractionManager.runAfterInteractions(() => {
-        setStatus(phone?.id, status)
-          .then(() => {
-            navigation.navigate('Phones');
-            success();
-          })
-          .catch(error => {
-            alert({
-              title: trans('defaultError.title'),
-              text: trans('defaultError.text'),
-              confirmText: 'OK',
-            });
+        setStatus(phone?.id, status);
 
-            crashlytics().recordError(error);
-          });
+        if (status === PhoneStatus.Received) {
+          alert({
+            title: trans('phones.show.addInterested'),
+            confirmText: trans('phones.show.addInterestedConfirm'),
+            cancelText:  trans('phones.show.addInterestedCancel'),
+            onConfirm: () => {
+              navigation.dispatch(StackActions.pop(1));
+
+              navigation.navigate('Interested', {
+                initial: false,
+                screen: 'CreateInterested',
+                params: {
+                  nationalPhone: phone.nationalValue,
+                  countryCode: phone.countryCode,
+                },
+              });
+            },
+            onCancel: () => {
+              navigation.navigate('Phones');
+            }
+          })
+        } else {
+          success();
+          navigation.navigate('Phones');
+        }
       });
     },
     [phone?.id, setStatus, navigation, success, alert, trans],
@@ -86,6 +99,7 @@ const Show: React.FC = () => {
 
     alert({
       title: trans('phones.show.deleteTitle'),
+      text: phone.nationalValue,
       confirmText: trans('phones.show.deleteOk'),
       cancelText: trans('phones.show.deleteCancel'),
       onConfirm: () => {
@@ -180,22 +194,22 @@ const Show: React.FC = () => {
 
       <ActionContainer>
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Received)}>
-          <Icon name="phone-incoming" size={36} />
+          <Icon name="phone-incoming" size={38} />
           <ActionButtonText>{trans('phoneStatus.received')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.NotExist)}>
-          <Icon name="phone-off" size={36} />
+          <Icon name="phone-off" size={38} />
           <ActionButtonText>{trans('phoneStatus.notExist')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Missed)}>
-          <Icon name="phone-missed" size={36} />
+          <Icon name="phone-missed" size={38} />
           <ActionButtonText>{trans('phoneStatus.missed')}</ActionButtonText>
         </ActionButton>
 
         <ActionButton onPress={() => handlePhoneStatus(PhoneStatus.Removed)}>
-          <Icon name="x" size={36} />
+          <Icon name="x" size={38} />
           <ActionButtonText>{trans('phoneStatus.removed')}</ActionButtonText>
         </ActionButton>
       </ActionContainer>

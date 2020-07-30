@@ -9,6 +9,7 @@ interface ButtonProps extends RectButtonProperties {
   text: string;
   icon?: string;
   isLoading?: boolean;
+  outlined?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   isLoading = false,
   onPress,
+  outlined = false,
   ...rest
 }) => {
   const handlePress = useCallback(
@@ -26,13 +28,20 @@ const Button: React.FC<ButtonProps> = ({
   );
 
   return (
-    <ButtonContainer isDisabled={isLoading} onPress={handlePress} {...rest}>
+    <ButtonContainer
+      isDisabled={isLoading}
+      outlined={outlined}
+      onPress={handlePress}
+      {...rest}
+    >
       {isLoading ? (
-        <ActivityIndicator size="small" color="#fff" />
+        <ActivityIndicator size="small" color={outlined ? '#000' : '#fff'} />
       ) : (
         <>
-          {icon && <Icon name={icon} size={24} color="#fff" />}
-          <ButtonText>{text}</ButtonText>
+          {icon && (
+            <Icon name={icon} size={24} color={outlined ? '#000' : '#fff'} />
+          )}
+          <ButtonText outlined={outlined}>{text}</ButtonText>
         </>
       )}
     </ButtonContainer>
