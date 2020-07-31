@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
+import isMobilePhone from '../../utils/isMobilePhone';
 
 interface FilterProps {
   selected?: boolean;
@@ -25,11 +26,24 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
   border-color: #f6f6f6;
   margin: 0px 4px 0;
   background: #fff;
+  justify-content: center;
+  align-items: center;
 
-  ${Platform.OS === 'ios' &&
-  css`
-    margin-top: 20px;
-  `}
+  ${
+    !isMobilePhone &&
+    css`
+      min-height: 40px;
+      padding: 4px 20px 4px;
+      border-radius: 20px;
+    `
+  }
+
+  ${
+    Platform.OS === 'ios' &&
+    css`
+      margin-top: 20px;
+    `
+  }
 
   ${props =>
     props.selected &&

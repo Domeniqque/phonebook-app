@@ -120,7 +120,6 @@ const Create: React.FC = () => {
           autoCompleteType="off"
           onSubmitEditing={() => addressRef.current?.focus()}
           returnKeyType="next"
-          autoFocus
         />
 
         <Input

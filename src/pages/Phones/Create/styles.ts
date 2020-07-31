@@ -38,20 +38,22 @@ export const ToggleMode = styled.View`
 export const ToggleModeBtn = styled.TouchableOpacity<ToggleBtnProps>`
   border: transparent;
   border-width: 2px;
-  border-radius: 17px;
+  border-radius: 20px;
   min-height: 34px;
-  padding: 4px 26px 4px;
+  padding: 8px 28px 8px;
   margin: 0px 4px 0;
-  border-color: #eee;
   background: #f6f6f6;
   margin-bottom: 20px;
 
   ${props =>
-    props.selected &&
-    css`
-      background: #000;
-      border-color: #000;
-    `}
+    props.selected
+      ? css`
+          background: #000;
+          border-color: #000;
+        `
+      : css`
+          box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+        `}
 `;
 
 export const ToggleModeText = styled.Text<ToggleBtnProps>`

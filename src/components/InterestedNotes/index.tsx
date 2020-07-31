@@ -90,6 +90,7 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
         });
 
         await schema.validate({ note }, { abortEarly: false });
+        success();
 
         InteractionManager.runAfterInteractions(async () => {
           const realm = await getRealm();
@@ -107,7 +108,6 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
               date,
             });
 
-            success();
             setAddMode(false);
           });
         });
@@ -180,12 +180,12 @@ const InterestedNotes: React.FC<InterestedNotesProps> = ({
         onClose={() => setAddMode(false)}
         visible={addMode}
       >
-        <Form ref={formRef} onSubmit={handleSaveNote} style={{ marginTop: 25 }}>
+        <Form ref={formRef} onSubmit={handleSaveNote} style={{ marginTop: 10 }}>
           <Input
             name="note"
             autoFocus
             height={120}
-            numberOfLines={30}
+            numberOfLines={60}
             textAlignVertical="top"
             multiline
           />

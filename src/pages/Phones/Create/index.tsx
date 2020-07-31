@@ -1,4 +1,10 @@
-import React, { useCallback, useRef, useState, useMemo } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 import { InteractionManager, LayoutAnimation } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
@@ -60,6 +66,10 @@ const Create: React.FC = () => {
     country.value,
   ]);
 
+  useEffect(() => {
+    setTimeout(() => firstNumberRef.current?.focus(), 300);
+  }, []);
+
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
       crashlytics().log('Criando uma lista de números');
@@ -91,8 +101,8 @@ const Create: React.FC = () => {
           { abortEarly: false },
         );
 
-        InteractionManager.runAfterInteractions(async () => {
-          await addSequence({
+        InteractionManager.runAfterInteractions(() => {
+          addSequence({
             firstNumber: firstNumberRef.current?.getPhoneInstance(),
             lastNumber:
               addMode === AddMode.LAST_NUMBER
@@ -122,14 +132,12 @@ const Create: React.FC = () => {
   );
 
   const toggleAddMode = useCallback(() => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-
     if (addMode === AddMode.LAST_NUMBER) {
       setAddMode(AddMode.QUANTITY);
-      quantityRef.current?.focus();
+      setTimeout(() => quantityRef.current?.focus(), 300);
     } else {
       setAddMode(AddMode.LAST_NUMBER);
-      lastNumberRef.current?.focus();
+      setTimeout(() => lastNumberRef.current?.focus(), 300);
     }
   }, [addMode]);
 
@@ -161,7 +169,7 @@ const Create: React.FC = () => {
       <Form
         ref={formRef}
         onSubmit={handleCreateNumbers}
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginBottom: 60 }}
         initialData={{ quantity: '1' }}
       >
         <PhoneInput
@@ -174,7 +182,6 @@ const Create: React.FC = () => {
           placeholder={placeholder}
           onChangeText={setFirstNumber}
           accessibilityLabel="Type your first phone number"
-          autoFocus
         />
 
         <ToggleModeLabel>{trans('phones.create.label.addBy')}</ToggleModeLabel>
@@ -209,6 +216,8 @@ const Create: React.FC = () => {
               selectTextOnFocus={false}
               onChangeText={generateLastNumber}
               accessibilityLabel="Type your first phone number"
+              returnKeyType="done"
+              onSubmitEditing={() => formRef.current?.submitForm()}
             />
 
             {lastNumber && (
@@ -224,8 +233,8 @@ const Create: React.FC = () => {
             ref={lastNumberRef}
             label={trans('phones.create.label.last')}
             name="lastNumber"
-            returnKeyType="next"
             countryCode={country.value}
+            returnKeyType="done"
             onSubmitEditing={() => formRef.current?.submitForm()}
             placeholder={placeholder}
           />
