@@ -41,7 +41,7 @@ export const FilterItem = styled.TouchableOpacity<FilterProps>`
   ${
     Platform.OS === 'ios' &&
     css`
-      margin-top: 20px;
+      margin-top: 5px;
     `
   }
 
