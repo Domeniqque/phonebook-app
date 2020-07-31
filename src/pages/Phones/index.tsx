@@ -27,8 +27,6 @@ import {
   PhoneListItemNumber,
   Divisor,
   SectionHeader,
-  CenteredAddButton,
-  CenteredAddButtonText,
   EmptyContentContainer,
 } from './styles';
 
@@ -55,63 +53,51 @@ const Phones: React.FC = () => {
   useEffect(() => {
     setPhoneLoading(true);
 
-    function loadPhones(): void {
+    async function loadPhones(): Promise<void> {
       crashlytics().log('Listando telefones');
       setGroupedPhones([] as PhoneResultGrouped[]);
 
-      InteractionManager.runAfterInteractions(async () => {
-        const phoneRawList = await findByStatus(status);
+      const phoneRawList = await findByStatus(status);
 
-        if (status !== PhoneStatus.New) {
-          const dateLocale = language === 'pt_BR' ? ptBR : enUS;
+      if (status !== PhoneStatus.New) {
+        const dateLocale = language === 'pt_BR' ? ptBR : enUS;
 
-          const map = new Map<string, PhoneResult[]>();
+        const map = new Map<string, PhoneResult[]>();
 
-          phoneRawList.forEach(item => {
-            const updatedAtKey = format(item.updated_at, 'ccc, dd MMM yyyy', {
-              locale: dateLocale,
-            });
-
-            const collection = map.get(updatedAtKey);
-
-            if (!collection) {
-              map.set(updatedAtKey, [item]);
-            } else {
-              collection.push(item);
-            }
+        phoneRawList.forEach(item => {
+          const updatedAtKey = format(item.updated_at, 'ccc, dd MMM yyyy', {
+            locale: dateLocale,
           });
 
-          const result = Array.from(map, ([title, data]) => ({
-            title,
-            data,
-          })) as PhoneResultGrouped[];
+          const collection = map.get(updatedAtKey);
 
-          setGroupedPhones(result);
-        } else {
-          setPhones(phoneRawList);
-        }
+          if (!collection) {
+            map.set(updatedAtKey, [item]);
+          } else {
+            collection.push(item);
+          }
+        });
 
-        setFilterLoading(false);
-        setPhoneLoading(false);
-      });
+        const result = Array.from(map, ([title, data]) => ({
+          title,
+          data,
+        })) as PhoneResultGrouped[];
+
+        setGroupedPhones(result);
+      } else {
+        setPhones(phoneRawList);
+      }
+
+      setFilterLoading(false);
+      setPhoneLoading(false);
     }
 
-    loadPhones();
-
-    const unsubscribe = navigation.addListener('focus', loadPhones);
-
-    return unsubscribe;
-  }, [navigation, findByStatus, status, language]);
-
-  const renderPlaceholderItems = useCallback(() => {
-    const items = [];
-
-    for (let index = 0; index < 9; index++) {
-      items.push(<PlaceholderLine height={30} key={`${index}-ph-phone`} />);
-    }
-
-    return items;
-  }, []);
+    loadPhones().catch(err => {
+      crashlytics().recordError(err);
+      setFilterLoading(false);
+      setPhoneLoading(false);
+    });
+  }, [findByStatus, status, language]);
 
   const handleChangeStatus = useCallback((data: PhoneStatus) => {
     setPhoneLoading(true);
@@ -127,10 +113,15 @@ const Phones: React.FC = () => {
         />
 
         <Placeholder
-          Animation={props => <Fade {...props} duration={500} />}
-          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 15 }}
+          style={{ paddingRight: 16, paddingLeft: 16, marginTop: 20 }}
         >
-          {renderPlaceholderItems()}
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
+          <PlaceholderLine height={25} />
         </Placeholder>
       </Container>
     );

@@ -13,7 +13,7 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonProps>`
   flex-direction: row;
   padding: 10px 25px;
   border-radius: 25px;
-  border-width: 2px;
+  border-width: 1px;
   justify-content: center;
   align-items: center;
   margin: 20px auto;

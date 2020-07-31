@@ -47,18 +47,17 @@ const App: React.FC = () => {
   if (starting) return <View />;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <NavigationContainer>
-        <StatusBar barStyle="dark-content" backgroundColor="#000" />
-
+    <NavigationContainer>
+      <StatusBar barStyle="dark-content" backgroundColor="#000" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
         <AppProvider>
           <Routes />
         </AppProvider>
-      </NavigationContainer>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </NavigationContainer>
   );
 };
 

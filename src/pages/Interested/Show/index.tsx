@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { useNavigation, RouteProp, useRoute } from '@react-navigation/native';
+import {
+  useNavigation,
+  RouteProp,
+  useRoute,
+  StackActions,
+} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -61,7 +66,7 @@ const Show: React.FC = () => {
       success();
 
       realm.write(() => {
-        navigation.navigate('IndexInterested');
+        navigation.dispatch(StackActions.pop(1));
 
         const interestedData = realm
           .objects('Interested')

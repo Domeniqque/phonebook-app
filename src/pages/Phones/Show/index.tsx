@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Linking, InteractionManager, View, NativeModules } from 'react-native';
+import { Linking, InteractionManager, View, NativeModules, LayoutAnimation } from 'react-native';
 import { useRoute, RouteProp, useNavigation, StackActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
@@ -8,12 +8,13 @@ import { format } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { ptBR, enUS } from 'date-fns/locale';
 
-import { CountryCode } from 'libphonenumber-js';
 import { PhoneStackProps } from '../../../routes/phones.routes';
 import { PhoneResult, usePhone, PhoneStatus } from '../../../hooks/phone';
 import getPhoneURI from '../../../utils/getPhoneURI';
+import isMobilePhone from '../../../utils/isMobilePhone';
 import { useAlert } from '../../../hooks/alert';
 import { useLocale } from '../../../hooks/locale';
+
 
 import {
   Container,
@@ -28,11 +29,6 @@ import {
   DeleteButton,
   LastUpdate,
 } from './styles';
-
-const { PlatformConstants } = NativeModules;
-const deviceType = PlatformConstants.interfaceIdiom;
-
-const isMobilePhone = deviceType !== 'pad';
 
 type ShowPhoneScreenProps = RouteProp<PhoneStackProps, 'ShowPhone'>;
 
@@ -61,9 +57,9 @@ const Show: React.FC = () => {
 
       crashlytics().log('Alterando a situação de um número');
 
-      InteractionManager.runAfterInteractions(() => {
-        setStatus(phone?.id, status);
+      setStatus(phone?.id, status);
 
+      InteractionManager.runAfterInteractions(() => {
         if (status === PhoneStatus.Received) {
           alert({
             title: trans('phones.show.addInterested'),
@@ -86,8 +82,8 @@ const Show: React.FC = () => {
             }
           })
         } else {
-          success();
           navigation.navigate('Phones');
+          // success(800);
         }
       });
     },
@@ -107,7 +103,7 @@ const Show: React.FC = () => {
 
         destroy(phone?.id)
           .then(() => {
-            navigation.navigate('Phones');
+            navigation.dispatch(StackActions.pop(1));
             success();
           })
           .catch(error => crashlytics().recordError(error));
