@@ -104,6 +104,8 @@ const Create: React.FC = () => {
     [trans, alert, gender, lifeStage, addInterested, success, navigation],
   );
 
+  console.log({ ...lifeStageTypes });
+
   return (
     <Container>
       <Form

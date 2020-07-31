@@ -62,14 +62,13 @@ export const PickerTitle = styled.Text`
   font-size: 24px;
   margin-left: 10px;
   margin-top: 26px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const Filter = styled.View`
   width: 100%;
   height: 64px;
   padding: 0 16px;
-  margin: 20px 0;
   background: #eee;
   border-color: #eee;
   margin-bottom: 8px;
@@ -88,7 +87,7 @@ export const FilterInput = styled.TextInput.attrs({
 `;
 
 export const PickerList = styled(FlatList as new () => FlatList<SelectItem>)`
-  margin-top: 16px;
+  /* margin-top: 10px; */
 `;
 
 export const PickerItem = styled.TouchableOpacity`

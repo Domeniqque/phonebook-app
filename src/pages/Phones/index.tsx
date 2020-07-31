@@ -156,7 +156,7 @@ const Phones: React.FC = () => {
 
       {status !== PhoneStatus.New && groupedPhones ? (
         <SectionList
-          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 25 }}
+          style={{ paddingRight: 16, paddingLeft: 16, paddingTop: 16 }}
           sections={groupedPhones}
           keyExtractor={item => item?.id || uuid()}
           renderItem={({ item }) => (

@@ -31,9 +31,9 @@ const Settings: React.FC = () => {
 
   const handleChangeCountry = useCallback(
     (data: CountryData) => {
+      success();
       changeCountry(data);
       changeLanguage(data.defaultLanguage);
-      success();
     },
     [changeLanguage, changeCountry, success],
   );
