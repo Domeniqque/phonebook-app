@@ -138,23 +138,17 @@ export const InterestedProvider: React.FC = ({ children }) => {
       .sorted('name', false);
   }, []);
 
-  const genderTypes = useMemo(
-    () => [
-      { label: trans('gender.M') as string, value: 'M' },
-      { label: trans('gender.F') as string, value: 'F' },
-    ],
-    [trans],
-  );
+  const genderTypes = [
+    { label: trans('gender.M') as string, value: 'M' },
+    { label: trans('gender.F') as string, value: 'F' },
+  ];
 
-  const lifeStageTypes = useMemo(
-    () => [
-      { label: trans('lifeStages.child') as string, value: 'child' },
-      { label: trans('lifeStages.young') as string, value: 'young' },
-      { label: trans('lifeStages.adult') as string, value: 'adult' },
-      { label: trans('lifeStages.elderly') as string, value: 'elderly' },
-    ],
-    [trans],
-  );
+  const lifeStageTypes = [
+    { label: trans('lifeStages.child') as string, value: 'child' },
+    { label: trans('lifeStages.young') as string, value: 'young' },
+    { label: trans('lifeStages.adult') as string, value: 'adult' },
+    { label: trans('lifeStages.elderly') as string, value: 'elderly' },
+  ];
 
   return (
     <InterestedContext.Provider
