@@ -66,10 +66,6 @@ const Create: React.FC = () => {
     country.value,
   ]);
 
-  useEffect(() => {
-    setTimeout(() => firstNumberRef.current?.focus(), 300);
-  }, []);
-
   const handleCreateNumbers = useCallback(
     async (formData: CreateNumbersData) => {
       crashlytics().log('Criando uma lista de números');
@@ -134,10 +130,10 @@ const Create: React.FC = () => {
   const toggleAddMode = useCallback(() => {
     if (addMode === AddMode.LAST_NUMBER) {
       setAddMode(AddMode.QUANTITY);
-      setTimeout(() => quantityRef.current?.focus(), 300);
+      setTimeout(() => quantityRef.current?.focus(), 100);
     } else {
       setAddMode(AddMode.LAST_NUMBER);
-      setTimeout(() => lastNumberRef.current?.focus(), 300);
+      setTimeout(() => lastNumberRef.current?.focus(), 100);
     }
   }, [addMode]);
 
@@ -161,7 +157,7 @@ const Create: React.FC = () => {
   );
 
   return (
-    <Container>
+    <Container keyboardShouldPersistTaps="always">
       <Tip>
         <TipText>{trans('phones.create.tip')}</TipText>
       </Tip>
@@ -195,6 +191,7 @@ const Create: React.FC = () => {
               {trans('phones.create.label.btnLast')}
             </ToggleModeText>
           </ToggleModeBtn>
+
           <ToggleModeBtn
             onPress={toggleAddMode}
             selected={addMode === AddMode.QUANTITY}

@@ -38,7 +38,7 @@ const FullModal: React.FC<FullModalProps> = ({
             <Icon name="x" size={36} color="#000" />
           </CloseButton>
 
-          <Content>{children}</Content>
+          <Content keyboardShouldPersistTaps="always">{children}</Content>
         </Container>
       </SafeAreaView>
     </Modal>

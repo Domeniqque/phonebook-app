@@ -98,7 +98,7 @@ const InterestedPhones: React.FC<InterestedProps> = ({
           success();
           setAddMode(false);
 
-          await addInterestedPhone(phoneInstance, interestedId);
+          addInterestedPhone(phoneInstance, interestedId);
 
           reset();
         }
