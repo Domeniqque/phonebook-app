@@ -1,4 +1,11 @@
 import styled, { css } from 'styled-components/native';
+import { Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+
+const customFontsize = Math.min(Math.floor(width * 0.04), 18);
+
+console.log(width, customFontsize);
 
 interface ToggleBtnProps {
   selected?: boolean;
@@ -33,6 +40,9 @@ export const ToggleModeLabel = styled.Text`
 
 export const ToggleMode = styled.View`
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 `;
 
 export const ToggleModeBtn = styled.TouchableOpacity<ToggleBtnProps>`
@@ -43,7 +53,9 @@ export const ToggleModeBtn = styled.TouchableOpacity<ToggleBtnProps>`
   padding: 8px 28px 8px;
   margin: 0px 4px 0;
   background: #f6f6f6;
-  margin-bottom: 20px;
+  flex: 1;
+  align-items: center;
+  max-width: 200px;
 
   ${props =>
     props.selected
@@ -57,7 +69,7 @@ export const ToggleModeBtn = styled.TouchableOpacity<ToggleBtnProps>`
 `;
 
 export const ToggleModeText = styled.Text<ToggleBtnProps>`
-  font-size: 18px;
+  font-size: ${customFontsize}px;
 
   ${props =>
     props.selected &&
@@ -67,7 +79,7 @@ export const ToggleModeText = styled.Text<ToggleBtnProps>`
 `;
 
 export const LastNumberPreview = styled.Text`
-  font-size: 14px;
+  font-size: ${customFontsize}px;
   color: #333;
   margin-bottom: 20px;
 `;

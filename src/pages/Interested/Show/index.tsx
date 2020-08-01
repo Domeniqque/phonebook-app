@@ -121,7 +121,7 @@ const Show: React.FC = () => {
   }, [interested?.gender, interested?.address, interested?.lifeStage, trans]);
 
   return (
-    <Container>
+    <Container keyboardShouldPersistTaps="always">
       <SectionDetails>
         {loading ? (
           <Placeholder Animation={Fade}>

@@ -20,7 +20,7 @@ export default {
         qtd: 'Tamanho da lista',
         lastNumberPreview: 'O último número será',
       },
-      button: 'Adicionar Telefones',
+      button: 'Criar Lista',
       validation: {
         isInvalidTitle: 'Verifique seus números',
         isInvalidText:

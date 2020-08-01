@@ -88,7 +88,7 @@ const Edit: React.FC = () => {
   ]);
 
   return (
-    <Container>
+    <Container keyboardShouldPersistTaps="always">
       <Form onSubmit={() => null} initialData={{ name, address }}>
         <Input
           name="name"

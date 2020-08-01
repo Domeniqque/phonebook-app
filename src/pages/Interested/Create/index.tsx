@@ -107,7 +107,7 @@ const Create: React.FC = () => {
   console.log({ ...lifeStageTypes });
 
   return (
-    <Container>
+    <Container keyboardShouldPersistTaps="always">
       <Form
         ref={formRef}
         initialData={{ phoneNumber: params?.nationalPhone || '' }}
