@@ -1,9 +1,9 @@
 /* eslint-disable import/no-duplicates */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { InteractionManager, SectionList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { SectionList } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
-import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
+import { Placeholder, PlaceholderLine } from 'rn-placeholder';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -50,10 +50,8 @@ const Phones: React.FC = () => {
   const { language, trans } = useLocale();
   const { findByStatus } = usePhone();
 
-  useEffect(() => {
-    setPhoneLoading(true);
-
-    async function loadPhones(): Promise<void> {
+  const loadPhones = useCallback(async () => {
+    try {
       crashlytics().log('Listando telefones');
       setGroupedPhones([] as PhoneResultGrouped[]);
 
@@ -90,19 +88,26 @@ const Phones: React.FC = () => {
 
       setFilterLoading(false);
       setPhoneLoading(false);
-    }
-
-    loadPhones().catch(err => {
+    } catch (err) {
       crashlytics().recordError(err);
       setFilterLoading(false);
       setPhoneLoading(false);
-    });
+    }
   }, [findByStatus, status, language]);
 
-  const handleChangeStatus = useCallback((data: PhoneStatus) => {
-    setPhoneLoading(true);
-    setStatus(data);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadPhones();
+    }, [loadPhones]),
+  );
+
+  const handleChangeStatus = useCallback(
+    (data: PhoneStatus) => {
+      setStatus(data);
+      loadPhones();
+    },
+    [loadPhones],
+  );
 
   if (phoneLoading) {
     return (
