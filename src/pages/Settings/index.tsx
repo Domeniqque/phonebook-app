@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
+import { useNavigation } from '@react-navigation/native';
 import Select from '../../components/Select';
 import { useLocale } from '../../hooks/locale';
 import countries from '../../locale/countries';
@@ -9,8 +11,10 @@ import { useAlert } from '../../hooks/alert';
 
 import {
   Container,
-  Title,
+  Divisor,
   Content,
+  BackupBtn,
+  BackupBtnText,
   Links,
   LinksTitle,
   LinkButton,
@@ -28,6 +32,7 @@ const Settings: React.FC = () => {
   } = useLocale();
 
   const { success } = useAlert();
+  const navigation = useNavigation();
 
   const handleChangeCountry = useCallback(
     (data: CountryData) => {
@@ -40,8 +45,6 @@ const Settings: React.FC = () => {
 
   return (
     <Container>
-      <Title>{trans('settings.title')}</Title>
-
       <Content>
         <Select
           label={trans('settings.country.label')}
@@ -51,6 +54,8 @@ const Settings: React.FC = () => {
           defaultValue={country.value}
           onSelect={handleChangeCountry}
         />
+
+        <Divisor />
 
         <Select
           label={trans('settings.language.label')}
@@ -62,6 +67,15 @@ const Settings: React.FC = () => {
             success();
           }}
         />
+
+        <Divisor />
+
+        <BackupBtn onPress={() => navigation.navigate('Backup')}>
+          <BackupBtnText>Backup</BackupBtnText>
+          <Icon name="chevron-right" size={20} style={{ paddingTop: 4 }} />
+        </BackupBtn>
+
+        <Divisor />
 
         <Links>
           <LinksTitle>LINKS</LinksTitle>

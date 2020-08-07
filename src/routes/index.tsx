@@ -6,7 +6,7 @@ import { useLocale } from '../hooks/locale';
 
 import PhoneRoutes from './phones.routes';
 import InterestedRoutes from './interested.routes';
-import Settings from '../pages/Settings';
+import Settings from './settings.routes';
 
 const Tab = createBottomTabNavigator();
 

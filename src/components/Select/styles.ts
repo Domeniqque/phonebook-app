@@ -54,15 +54,14 @@ export const PickerClose = styled.TouchableOpacity`
   position: absolute;
   padding: 14px;
   top: 8px;
-  right: 0px;
+  right: -15px;
 `;
 
 export const PickerTitle = styled.Text`
   font-weight: bold;
   font-size: 24px;
-  margin-left: 10px;
   margin-top: 26px;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 `;
 
 export const Filter = styled.View`
@@ -93,7 +92,6 @@ export const PickerList = styled(FlatList as new () => FlatList<SelectItem>)`
 export const PickerItem = styled.TouchableOpacity`
   height: 70px;
   width: 100%;
-  padding: 0 10px;
 
   flex-direction: row;
   justify-content: space-between;

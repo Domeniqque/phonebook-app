@@ -5,25 +5,32 @@ export const Container = styled.SafeAreaView`
   background: #fff;
 `;
 
-export const Title = styled.Text`
-  font-weight: bold;
-  font-size: 24px;
-  margin-top: 10px;
-  text-align: center;
-`;
-
 export const Content = styled.View`
   flex: 1;
-  padding: 10px 20px;
-  margin-top: 15px;
+  padding: 10px 16px;
+`;
+
+export const Divisor = styled.View`
+  height: 1px;
+  border-top-color: #eee;
+  border-top-width: 1px;
+`;
+
+export const BackupBtn = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 0;
+`;
+
+export const BackupBtnText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  margin: auto 0;
 `;
 
 export const Links = styled.View`
   flex: 1;
-  margin: 80px 10px 10px;
   padding: 10px 0;
-  border-top-color: rgba(0, 0, 0, 0.05);
-  border-top-width: 1px;
 `;
 
 export const LinksTitle = styled.Text`

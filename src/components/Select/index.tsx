@@ -137,7 +137,6 @@ const Select: React.FC<SelectProps> = ({
                 <Form onSubmit={() => null}>
                   <Input
                     name="filter"
-                    autoFocus
                     onChangeText={setFilter}
                     placeholder={trans('settings.searchPlaceholder')}
                   />

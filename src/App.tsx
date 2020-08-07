@@ -7,10 +7,10 @@ import {
   UIManager,
   View,
   KeyboardAvoidingView,
-  SafeAreaView,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
+import BackupJob from './components/BackupJob';
 
 import Routes from './routes';
 import AppProvider from './hooks';
@@ -55,6 +55,7 @@ const App: React.FC = () => {
       >
         <AppProvider>
           <Routes />
+          <BackupJob />
         </AppProvider>
       </KeyboardAvoidingView>
     </NavigationContainer>

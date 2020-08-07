@@ -53,12 +53,14 @@ export const ButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap-reverse;
 `;
 
 export const RoundedButton = styled.TouchableOpacity`
   background: #000;
   padding: 12px 20px;
   margin: 0 10px;
+  margin-top: 20px;
   border-radius: 20px;
 `;
 
