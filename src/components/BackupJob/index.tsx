@@ -1,47 +1,48 @@
 /* eslint-disable no-console */
-import React, { useEffect, useCallback } from 'react';
-import { View } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { parseISO, differenceInMinutes } from 'date-fns';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
+import { View, AppState, AppStateStatus } from 'react-native';
+import storage from '@react-native-firebase/storage';
+
 import { useCredential } from '../../hooks/credential';
 import getRealm from '../../services/realm';
 
-const LAST_BACKUP_KEY = '@PhonePreaching/LastBackup';
-const MINUTES_INTERVAL = 30;
-
-async function lastUpdateDistanceInMinutes(): Promise<number | undefined> {
-  const lastBackup = await AsyncStorage.getItem(LAST_BACKUP_KEY);
-
-  if (lastBackup) {
-    const date = parseISO(lastBackup);
-
-    return differenceInMinutes(date, new Date());
-  }
-
-  return undefined;
-}
-
 const BackupJob: React.FC = () => {
   const { signed } = useCredential();
+  const [isInactive, setIsInactive] = useState(false);
+
+  const fileRef = useMemo(() => {
+    const prefix = __DEV__ ? '/dev' : '/prod';
+
+    return storage().ref(`${prefix}/backup.realm`);
+  }, []);
+
+  const submitBackup = useCallback(async () => {
+    const updatedAt = new Date().toISOString();
+    console.log(` [${updatedAt}] submiting backup file`);
+
+    const realm = await getRealm();
+    realm.close();
+
+    await fileRef.putFile(realm.path);
+
+    console.log(` [${new Date().toISOString()}] backup submited`);
+  }, [fileRef]);
 
   useEffect(() => {
-    async function startJob(): Promise<void> {
-      const lastBackupMin = await lastUpdateDistanceInMinutes();
-
-      if (lastBackupMin === undefined || lastBackupMin >= MINUTES_INTERVAL) {
-        console.log(' [*] start backup job');
-        const realm = await getRealm();
-
-        const updatedAt = new Date().toISOString();
-
-        console.log({ lastBackupMin, updatedAt });
-      }
+    function handleAppStateChange(nextAppState: AppStateStatus): void {
+      setIsInactive(!!nextAppState.match(/inactive|background/));
     }
 
-    if (signed) {
-      startJob();
-    }
-  }, [signed]);
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (signed && isInactive) submitBackup();
+  }, [signed, isInactive, submitBackup]);
 
   return <View />;
 };

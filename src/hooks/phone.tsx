@@ -54,7 +54,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
     crashlytics().log(`Usando findByStatus ${status}`);
     const realm = await getRealm();
 
-    console.log(realm.path);
+    // console.log(realm.path);
 
     const sortSql =
       status === PhoneStatus.New
@@ -73,7 +73,7 @@ export const PhoneProvider: React.FC = ({ children }) => {
 
     const realm = await getRealm();
 
-    console.log(realm.path);
+    // console.log(realm.path);
 
     return realm.objectForPrimaryKey<PhoneNumber>('Phones', id);
   }, []);

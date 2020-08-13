@@ -13,6 +13,7 @@ import {
   statusCodes,
   User,
 } from '@react-native-community/google-signin';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 const webClientId =
   '137049518356-6cko05qapr6cd0i91qavbmr61nl311hs.apps.googleusercontent.com'; // android/app/google-services.json
@@ -30,8 +31,15 @@ const CredentialContext = createContext<CredentialContextData>(
 );
 
 export const CredentialProvider: React.FC = ({ children }) => {
-  const [credential, setCredential] = useState<User | null>(null);
+  const [credential, setCredential] = useState<FirebaseAuthTypes.User | null>(
+    null,
+  );
   const signed = useMemo(() => !!credential, [credential]);
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(user => setCredential(user));
+    return subscriber;
+  }, []);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -42,12 +50,21 @@ export const CredentialProvider: React.FC = ({ children }) => {
     async function getCurrentUser(): Promise<void> {
       try {
         const userInfo = await GoogleSignin.signInSilently();
-        setCredential(userInfo);
+
+        const googleCredential = auth.GoogleAuthProvider.credential(
+          userInfo.idToken,
+        );
+
+        const userCredential = await auth().signInWithCredential(
+          googleCredential,
+        );
+
+        setCredential(userCredential.user);
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_REQUIRED) {
           console.log(' [-] Signin required');
         } else {
-          console.error(error);
+          console.warn(error);
         }
       }
     }
@@ -60,9 +77,17 @@ export const CredentialProvider: React.FC = ({ children }) => {
       await GoogleSignin.hasPlayServices();
 
       const userInfo = await GoogleSignin.signIn();
-      setCredential(userInfo);
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        userInfo.idToken,
+      );
 
-      console.log(JSON.stringify(userInfo));
+      const userCredential = await auth().signInWithCredential(
+        googleCredential,
+      );
+
+      setCredential(userCredential.user);
+
+      console.log(JSON.stringify(userInfo.user));
     } catch (error) {
       switch (error.code) {
         case statusCodes.SIGN_IN_CANCELLED:
@@ -100,8 +125,8 @@ export const CredentialProvider: React.FC = ({ children }) => {
         signed,
         signIn,
         signOut,
-        userEmail: credential?.user.email || '',
-        userName: credential?.user.givenName || '',
+        userEmail: credential?.email || '',
+        userName: credential?.displayName || '',
       }}
     >
       {children}
