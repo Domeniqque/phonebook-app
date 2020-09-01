@@ -1,7 +1,12 @@
 /* eslint-disable import/no-duplicates */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { SectionList } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { SectionList, Share } from 'react-native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+  RouteProp,
+} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Placeholder, PlaceholderLine } from 'rn-placeholder';
 import { format } from 'date-fns';
@@ -19,6 +24,8 @@ import {
   PhoneResult,
 } from '../../hooks/phone';
 import { useLocale } from '../../hooks/locale';
+import { PhoneStackProps } from '../../routes/phones.routes';
+import { shareApp } from '../../utils/shareApp';
 
 import {
   Container,
@@ -28,12 +35,15 @@ import {
   Divisor,
   SectionHeader,
   EmptyContentContainer,
+  ShareButton,
 } from './styles';
 
 interface PhoneResultGrouped {
   title: string;
   data: PhoneResult[];
 }
+
+type PhoneIndexProps = RouteProp<PhoneStackProps, 'Phones'>;
 
 const Phones: React.FC = () => {
   const [phones, setPhones] = useState<PhoneResults>();
@@ -47,6 +57,7 @@ const Phones: React.FC = () => {
   ]);
 
   const navigation = useNavigation();
+  const { params } = useRoute<PhoneIndexProps>();
   const { language, trans } = useLocale();
   const { findByStatus } = usePhone();
 
@@ -100,6 +111,24 @@ const Phones: React.FC = () => {
       loadPhones();
     }, [loadPhones]),
   );
+
+  useEffect(() => {
+    const shareText = trans('shareAppText');
+
+    navigation.setOptions({
+      headerRight: () => (
+        <ShareButton onPress={() => shareApp(shareText)}>
+          <Icon name="share-2" size={25} color="#000" />
+        </ShareButton>
+      ),
+    });
+  }, [navigation, trans]);
+
+  useEffect(() => {
+    if (params?.shareApp) {
+      shareApp(trans('shareAppText'));
+    }
+  }, [params?.shareApp, trans]);
 
   const handleChangeStatus = useCallback(
     (data: PhoneStatus) => {

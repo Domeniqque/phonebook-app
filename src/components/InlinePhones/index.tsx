@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { useNavigation } from '@react-navigation/native';
 
 import getRealm from '../../services/realm';
@@ -13,7 +12,6 @@ interface InlineProps {
 
 const InlinePhones: React.FC<InlineProps> = ({ interestedId }) => {
   const [phones, setPhones] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
 
   const navigation = useNavigation();
 
@@ -28,7 +26,6 @@ const InlinePhones: React.FC<InlineProps> = ({ interestedId }) => {
       const inlineNumbers = data.map(p => p.nationalValue).join(', ');
 
       setPhones(inlineNumbers);
-      setLoading(false);
     }
 
     loadPhones();
@@ -37,14 +34,6 @@ const InlinePhones: React.FC<InlineProps> = ({ interestedId }) => {
 
     return unsubscribe;
   }, [interestedId, navigation]);
-
-  if (loading) {
-    return (
-      <Placeholder Animation={Fade}>
-        <PlaceholderLine height={12} width={30} style={{ marginTop: 5 }} />
-      </Placeholder>
-    );
-  }
 
   return <Text>{phones}</Text>;
 };

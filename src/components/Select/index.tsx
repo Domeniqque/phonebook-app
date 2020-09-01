@@ -108,7 +108,10 @@ const Select: React.FC<SelectProps> = ({
       <Container>
         <Label>{label}</Label>
 
-        <SelectButton onPress={() => setSelectVisible(!selectVisible)}>
+        <SelectButton
+          onPress={() => setSelectVisible(!selectVisible)}
+          hitSlop={{ top: 22, bottom: 22, left: 50, right: 50 }}
+        >
           <SelectButtonText>
             {selectedValue?.label || placeholder}
           </SelectButtonText>

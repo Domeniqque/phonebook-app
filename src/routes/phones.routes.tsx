@@ -10,7 +10,7 @@ import ShowPhone from '../pages/Phones/Show';
 import { useLocale } from '../hooks/locale';
 
 export type PhoneStackProps = {
-  Phones: undefined;
+  Phones: { shareApp: any | undefined };
   CreatePhone: undefined;
   ShowPhone: { id: string };
 };

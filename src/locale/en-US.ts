@@ -140,4 +140,6 @@ export default {
     adult: 'Adult',
     elderly: 'Elderly',
   },
+  shareAppText:
+    'Hi! Look at this App to help with telephone testimony! 😃\n\n Available on Android, iPhone and iPad.',
 };

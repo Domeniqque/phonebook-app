@@ -32,7 +32,7 @@ export const PhoneListItemNumber = styled.Text`
 export const Divisor = styled.View`
   height: 1px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #eee;
 `;
 
 export const SectionHeader = styled.Text`
@@ -48,4 +48,9 @@ export const EmptyContentContainer = styled.View`
   align-items: center;
   padding-top: 20px;
   flex: 1;
+`;
+
+export const ShareButton = styled.TouchableOpacity`
+  margin-right: 6px;
+  padding: 10px 12px;
 `;

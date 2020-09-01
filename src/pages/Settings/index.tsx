@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
+import { shareApp } from '../../utils/shareApp';
 import Select from '../../components/Select';
 import { useLocale } from '../../hooks/locale';
 import countries from '../../locale/countries';
@@ -15,6 +17,9 @@ import {
   LinksTitle,
   LinkButton,
   LinkButtonText,
+  Divisor,
+  ShareButton,
+  ShareText,
 } from './styles';
 
 const Settings: React.FC = () => {
@@ -52,6 +57,8 @@ const Settings: React.FC = () => {
           onSelect={handleChangeCountry}
         />
 
+        <Divisor />
+
         <Select
           label={trans('settings.language.label')}
           placeholder={trans('settings.language.placeholder')}
@@ -62,6 +69,15 @@ const Settings: React.FC = () => {
             success();
           }}
         />
+
+        <Divisor />
+
+        <ShareButton onPress={() => shareApp(trans('shareAppText'))}>
+          <ShareText>Indicar para um amigo</ShareText>
+          <Icon name="chevron-right" size={28} />
+        </ShareButton>
+
+        <Divisor />
 
         <Links>
           <LinksTitle>LINKS</LinksTitle>

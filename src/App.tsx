@@ -1,16 +1,18 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import { enableScreens } from 'react-native-screens';
 import {
   StatusBar,
   Platform,
   UIManager,
   View,
   KeyboardAvoidingView,
-  SafeAreaView,
+  Text,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
+import inAppMessaging from '@react-native-firebase/in-app-messaging';
 
 import Routes from './routes';
 import AppProvider from './hooks';
@@ -18,7 +20,13 @@ import { startI18nLaguage } from './locale';
 
 import './exception';
 
-crashlytics().setCrashlyticsCollectionEnabled(true);
+enableScreens();
+
+async function bootstrapFirebase(): Promise<void> {
+  await inAppMessaging().setMessagesDisplaySuppressed(true);
+
+  crashlytics().setCrashlyticsCollectionEnabled(true);
+}
 
 if (
   Platform.OS === 'android' &&
@@ -27,27 +35,40 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+const deepLinkConfig: LinkingOptions = {
+  prefixes: ['ppreach://'],
+  config: {
+    Phones: 'phones/:shareApp', // call "ppreach://phones/phones?shareApp=true"
+  },
+};
+
 const App: React.FC = () => {
   const [starting, setStarting] = useState(true);
 
   useEffect(() => {
-    crashlytics().log('Starting application');
-
-    async function loadLanguage(): Promise<void> {
+    async function bootstrapApp(): Promise<void> {
+      crashlytics().log('Starting application');
+      await bootstrapFirebase();
       const lang = await startI18nLaguage();
+
       crashlytics().log(`App mounted. Language: "${lang}"`);
 
-      SplashScreen.hide();
       setStarting(false);
+      SplashScreen.hide();
+
+      inAppMessaging().setMessagesDisplaySuppressed(false);
     }
 
-    loadLanguage();
+    bootstrapApp();
   }, []);
 
   if (starting) return <View />;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      linking={deepLinkConfig}
+      fallback={<Text>loading...</Text>}
+    >
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

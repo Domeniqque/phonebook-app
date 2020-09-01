@@ -143,4 +143,6 @@ export default {
     adult: 'Adulto',
     elderly: 'Idoso',
   },
+  shareAppText:
+    'Oi. Olha esse app para ajudar a organizar o testemunho por telefone! 😃\n\nDisponível para Android, iPhone e iPad.',
 };
